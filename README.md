@@ -1,5 +1,3 @@
-# 3D-DIC_IMU_RADAR_System
-pyserial, system for development of 3D-DIC measurements. 
 # University of Masachusetts Lowell
 ## Mechanical Dept & Computer Science Dept
 ### RADAR + IMU System to implement 3D-DIC technique.
@@ -7,6 +5,8 @@ pyserial, system for development of 3D-DIC measurements.
 ### Details
 
 This repo contains the programming code and scripts to get raw data from ICM20948 IMU and Sivers IMA 77GHZ Radar and to process the raw data. 
+### Report
+This report was generated for better understanding the experiment and to visualize the tests conducted.
 
 Each folder has its own read me file which has step by step process of how to get the data and process it.
 
