@@ -1,0 +1,2387 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:32
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Sensor.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Sensor.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\Sensor.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Sensor.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Sensor.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2015-2015 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "SensorTypes.h"
+     25          
+     26          #include <assert.h>
+     27          
+
+   \                                 In section .text, align 2, keep-with-next
+     28          const char * inv_sensor_2str(int sensor)
+     29          {
+   \                     inv_sensor_str: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+     30          	static const char * sensor_str[INV_SENSOR_TYPE_MAX][2] = {
+     31          		{ "SENSOR_RESERVED",               "SENSOR_RESERVED_WU" },
+     32          		{ "SENSOR_ACCELEROMETER",          "SENSOR_ACCELEROMETER_WU" },
+     33          		{ "SENSOR_MAGNETOMETER",           "SENSOR_MAGNETOMETER_WU" },
+     34          		{ "SENSOR_ORIENTATION",            "SENSOR_ORIENTATION_WU" },
+     35          		{ "SENSOR_GYROSCOPE",              "SENSOR_GYROSCOPE_WU" },
+     36          		{ "SENSOR_LIGHT",                  "SENSOR_LIGHT_WU" },
+     37          		{ "SENSOR_PRESSURE",               "SENSOR_PRESSURE_WU" },
+     38          		{ "SENSOR_TEMPERATURE",            "SENSOR_TEMPERATURE_WU" },
+     39          		{ "SENSOR_PROXIMITY",              "SENSOR_PROXIMITY_WU" },
+     40          		{ "SENSOR_GRAVITY",                "SENSOR_GRAVITY_WU" },
+     41          		{ "SENSOR_LINEAR_ACCELERATION",    "SENSOR_LINEAR_ACCELERATION_WU" },
+     42          		{ "SENSOR_ROTATION_VECTOR",        "SENSOR_ROTATION_VECTOR_WU" },
+     43          		{ "SENSOR_HUMIDITY",               "SENSOR_HUMIDITY_WU" },
+     44          		{ "SENSOR_AMBIENT_TEMPERATURE",    "SENSOR_AMBIENT_TEMPERATURE_WU" },
+     45          		{ "SENSOR_UNCAL_MAGNETOMETER",     "SENSOR_UNCAL_MAGNETOMETER_WU" },
+     46          		{ "SENSOR_GAME_ROTATION_VECTOR",   "SENSOR_GAME_ROTATION_VECTOR_WU" },
+     47          		{ "SENSOR_UNCAL_GYROSCOPE",        "SENSOR_UNCAL_GYROSCOPE_WU" },
+     48          		{ "SENSOR_SMD",                    "SENSOR_SMD_WU" },
+     49          		{ "SENSOR_STEP_DETECTOR",          "SENSOR_STEP_DETECTOR_WU" },
+     50          		{ "SENSOR_STEP_COUNTER",           "SENSOR_STEP_COUNTER_WU" },
+     51          		{ "SENSOR_GEOMAG_ROTATION_VECTOR", "SENSOR_GEOMAG_ROTATION_VECTOR_WU" },
+     52          		{ "SENSOR_HEART_RATE",             "SENSOR_HEART_RATE_WU" },
+     53          		{ "SENSOR_TILT_DETECTOR",          "SENSOR_TILT_DETECTOR_WU" },
+     54          		{ "SENSOR_WAKE_GESTURE",           "SENSOR_WAKE_GESTURE_WU" },
+     55          		{ "SENSOR_GLANCE_GESTURE",         "SENSOR_GLANCE_GESTURE_WU" },
+     56          		{ "SENSOR_PICK_UP_GESTURE",        "SENSOR_PICK_UP_GESTURE_WU" },
+     57          		{ "SENSOR_BAC",                    "SENSOR_BAC_WU" },
+     58          		{ "SENSOR_PDR",                    "SENSOR_PDR_WU" },
+     59          		{ "SENSOR_B2S",                    "SENSOR_B2S_WU" },
+     60          		{ "SENSOR_3AXIS",                  "SENSOR_3AXIS_WU" },
+     61          		{ "SENSOR_EIS",                    "SENSOR_EIS_WU" },
+     62          		{ "SENSOR_OIS",                    "SENSOR_OIS_WU" },
+     63          		{ "SENSOR_RAW_ACCELEROMETER",      "SENSOR_RAW_ACCELEROMETER_WU" },
+     64          		{ "SENSOR_RAW_GYROSCOPE",          "SENSOR_RAW_GYROSCOPE_WU" },
+     65          		{ "SENSOR_RAW_MAGNETOMETER",       "SENSOR_RAW_MAGNETOMETER_WU"},
+     66          		{ "SENSOR_RAW_TEMPERATURE",        "SENSOR_RAW_TEMPERATURE_WU"},
+     67          		{ "SENSOR_CUSTOM_PRESSURE",        "SENSOR_CUSTOM_PRESSURE_WU"},
+     68          		{ "SENSOR_MIC",                    "SENSOR_MIC_WU" },
+     69          		{ "SENSOR_TSIMU",                  "SENSOR_TSIMU_WU" },
+     70          		{ "SENSOR_RAW_PPG",                "SENSOR_RAW_PPG_WU" },
+     71          		{ "SENSOR_HRV",                    "SENSOR_HRV_WU" },
+     72          		{ "SENSOR_SLEEP_ANALYSIS",         "SENSOR_SLEEP_ANALYSIS_WU"},
+     73          		{ "SENSOR_BAC_EXTENDED",           "SENSOR_BAC_EXTENDED_WU"},
+     74          		{ "SENSOR_BAC_STATISTICS",         "SENSOR_BAC_STATISTICS_WU"},
+     75          		{ "SENSOR_FLOOR_CLIMB_COUNTER",    "SENSOR_FLOOR_CLIMB_COUNTER_WU"},
+     76          		{ "SENSOR_ENERGY_EXPENDITURE",     "SENSOR_ENERGY_EXPENDITURE_WU"},
+     77          		{ "SENSOR_DISTANCE",               "SENSOR_DISTANCE_WU"},
+     78          		{ "SENSOR_SHAKE",                  "SENSOR_SHAKE_WU"},
+     79          		{ "SENSOR_DOUBLE_TAP",             "SENSOR_DOUBLE_TAP"},
+     80          		{ "SENSOR_CUSTOM0",                "SENSOR_CUSTOM0_WU" },
+     81          		{ "SENSOR_CUSTOM1",                "SENSOR_CUSTOM1_WU" },
+     82          		{ "SENSOR_CUSTOM2",                "SENSOR_CUSTOM2_WU" },
+     83          		{ "SENSOR_CUSTOM3",                "SENSOR_CUSTOM3_WU" },
+     84          		{ "SENSOR_CUSTOM4",                "SENSOR_CUSTOM4_WU" },
+     85          		{ "SENSOR_CUSTOM5",                "SENSOR_CUSTOM5_WU" },
+     86          		{ "SENSOR_CUSTOM6",                "SENSOR_CUSTOM6_WU" },
+     87          		{ "SENSOR_CUSTOM7",                "SENSOR_CUSTOM7_WU" },
+     88          		{ "SENSOR_WOM",                    "SENSOR_WOM_WU" },
+     89          		{ "SENSOR_SEDENTARY_REMIND",       "SENSOR_SEDENTARY_REMIND_WU"},
+     90          		{ "SENSOR_DATA_ENCRYPTION",        "SENSOR_DATA_ENCRYPTION_WU"},
+     91          		{ "SENSOR_FSYNC_EVENT",            "SENSOR_FSYNC_EVENT_WU"},
+     92          		{ "SENSOR_HIGH_RATE_GYRO",         "SENSOR_HIGH_RATE_GYRO_WU"},
+     93          		{ "SENSOR_CUSTOM_BAC_SC_EE_DIST",  "SENSOR_CUSTOM_BAC_SC_EE_DIST_WU"},
+     94          		{ "SENSOR_HRM_LOGGER",             "SENSOR_HRM_LOGGER_WU"},
+     95          		{ "SENSOR_PREDICTIVE_QUATERNION",  "SENSOR_PREDICTIVE_QUATERNION_WU"},
+     96          	};
+     97          
+     98          	if (INV_SENSOR_IS_VALID(sensor)) {
+   \   00000002   0xF020 0x4100      BIC      R1,R0,#0x80000000
+   \   00000006   0x2941             CMP      R1,#+65
+   \   00000008   0xD214             BCS.N    ??inv_sensor_str_0
+     99          		const char * s = sensor_str[INV_SENSOR_ID_TO_TYPE(sensor)][INV_SENSOR_IS_WU(sensor)];
+   \   0000000A   0x....             LDR.N    R1,??DataTable132_1
+   \   0000000C   0xEB01 0x01C0      ADD      R1,R1,R0, LSL #+3
+   \   00000010   0x0FC0             LSRS     R0,R0,#+31
+   \   00000012   0xF851 0x4020      LDR      R4,[R1, R0, LSL #+2]
+    100          
+    101          		assert(s != 0); // we forgot to update the array after adding a sensor!
+   \   00000016   0x2C00             CMP      R4,#+0
+   \   00000018   0xD108             BNE.N    ??inv_sensor_str_1
+   \   0000001A   0x2265             MOVS     R2,#+101
+   \   0000001C   0x.... 0x....      ADR.W    R1,?_130
+   \   00000020   0x.... 0x....      ADR.W    R0,?_129
+   \   00000024   0x.... 0x....      BL       __aeabi_assert
+   \   00000028   0x.... 0x....      BL       __iar_EmptyStepPoint
+    102          
+    103          		if(s != 0)
+   \                     ??inv_sensor_str_1: (+1)
+   \   0000002C   0x2C00             CMP      R4,#+0
+   \   0000002E   0xD001             BEQ.N    ??inv_sensor_str_0
+    104          			return s;
+   \   00000030   0x4620             MOV      R0,R4
+   \   00000032   0xBD10             POP      {R4,PC}
+    105          	}
+    106          
+    107          	return "";
+   \                     ??inv_sensor_str_0: (+1)
+   \   00000034   0x....             ADR.N    R0,??DataTable132  ;; ""
+   \   00000036   0xBD10             POP      {R4,PC}          ;; return
+    108          }
+
+   \                                 In section .data, align 4
+   \                     `inv_sensor_str::sensor_str`:
+   \   00000000   0x........         DC32 ?_0, ?_1, ?_2, ?_3, ?_4, ?_5, ?_6, ?_7, ?_8, ?_9, ?_10, ?_11, ?_12
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   00000034   0x........         DC32 ?_13, ?_14, ?_15, ?_16, ?_17, ?_18, ?_19, ?_20, ?_21, ?_22, ?_23
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   00000060   0x........         DC32 ?_24, ?_25, ?_26, ?_27, ?_28, ?_29, ?_30, ?_31, ?_32, ?_33, ?_34
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   0000008C   0x........         DC32 ?_35, ?_36, ?_37, ?_38, ?_39, ?_40, ?_41, ?_42, ?_43, ?_44, ?_45
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   000000B8   0x........         DC32 ?_46, ?_47, ?_48, ?_49, ?_50, ?_51, ?_52, ?_53, ?_54, ?_55, ?_56
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   000000E4   0x........         DC32 ?_57, ?_58, ?_59, ?_60, ?_61, ?_62, ?_63, ?_64, ?_65, ?_66, ?_67
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   00000110   0x........         DC32 ?_68, ?_69, ?_70, ?_71, ?_72, ?_73, ?_74, ?_75, ?_76, ?_77, ?_78
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   0000013C   0x........         DC32 ?_79, ?_80, ?_81, ?_82, ?_83, ?_84, ?_85, ?_86, ?_87, ?_88, ?_89
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   00000168   0x........         DC32 ?_90, ?_91, ?_92, ?_93, ?_94, ?_95, ?_96, ?_96, ?_97, ?_98, ?_99
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   00000194   0x........         DC32 ?_100, ?_101, ?_102, ?_103, ?_104, ?_105, ?_106, ?_107, ?_108
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   000001B8   0x........         DC32 ?_109, ?_110, ?_111, ?_112, ?_113, ?_114, ?_115, ?_116, ?_117
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   000001DC   0x........         DC32 ?_118, ?_119, ?_120, ?_121, ?_122, ?_123, ?_124, ?_125, ?_126
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \              0x........   
+   \   00000200   0x........         DC32 ?_127, ?_128
+   \              0x........   
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable132:
+   \   00000000   0x00 0x00          DC8      "",0x0,0x0,0x0
+   \              0x00 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable132_1:
+   \   00000000   0x........         DC32     `inv_sensor_str::sensor_str`
+
+   \                                 In section .rodata, align 1, keep-with-next
+   \                     ?_131:
+   \   00000000   0x00               DC8 ""
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_0:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RESERVED"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x45 0x53    
+   \              0x45 0x52    
+   \              0x56 0x45    
+   \              0x44 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_1:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RESERVED_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x45 0x53    
+   \              0x45 0x52    
+   \              0x56 0x45    
+   \              0x44 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_2:
+   \   00000000   0x53 0x45          DC8 "SENSOR_ACCELEROMETER"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x41    
+   \              0x43 0x43    
+   \              0x45 0x4C    
+   \              0x45 0x52    
+   \              0x4F 0x4D    
+   \              0x45 0x54    
+   \              0x45 0x52    
+   \              0x00         
+   \   00000015   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_3:
+   \   00000000   0x53 0x45          DC8 "SENSOR_ACCELEROMETER_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x41    
+   \              0x43 0x43    
+   \              0x45 0x4C    
+   \              0x45 0x52    
+   \              0x4F 0x4D    
+   \              0x45 0x54    
+   \              0x45 0x52    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_4:
+   \   00000000   0x53 0x45          DC8 "SENSOR_MAGNETOMETER"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4D    
+   \              0x41 0x47    
+   \              0x4E 0x45    
+   \              0x54 0x4F    
+   \              0x4D 0x45    
+   \              0x54 0x45    
+   \              0x52 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_5:
+   \   00000000   0x53 0x45          DC8 "SENSOR_MAGNETOMETER_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4D    
+   \              0x41 0x47    
+   \              0x4E 0x45    
+   \              0x54 0x4F    
+   \              0x4D 0x45    
+   \              0x54 0x45    
+   \              0x52 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_6:
+   \   00000000   0x53 0x45          DC8 "SENSOR_ORIENTATION"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4F    
+   \              0x52 0x49    
+   \              0x45 0x4E    
+   \              0x54 0x41    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_7:
+   \   00000000   0x53 0x45          DC8 "SENSOR_ORIENTATION_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4F    
+   \              0x52 0x49    
+   \              0x45 0x4E    
+   \              0x54 0x41    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000016   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_8:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GYROSCOPE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x59 0x52    
+   \              0x4F 0x53    
+   \              0x43 0x4F    
+   \              0x50 0x45    
+   \              0x00         
+   \   00000011   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_9:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GYROSCOPE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x59 0x52    
+   \              0x4F 0x53    
+   \              0x43 0x4F    
+   \              0x50 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_10:
+   \   00000000   0x53 0x45          DC8 "SENSOR_LIGHT"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4C    
+   \              0x49 0x47    
+   \              0x48 0x54    
+   \              0x00         
+   \   0000000D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_11:
+   \   00000000   0x53 0x45          DC8 "SENSOR_LIGHT_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4C    
+   \              0x49 0x47    
+   \              0x48 0x54    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_12:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PRESSURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x52 0x45    
+   \              0x53 0x53    
+   \              0x55 0x52    
+   \              0x45 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_13:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PRESSURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x52 0x45    
+   \              0x53 0x53    
+   \              0x55 0x52    
+   \              0x45 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_14:
+   \   00000000   0x53 0x45          DC8 "SENSOR_TEMPERATURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x54    
+   \              0x45 0x4D    
+   \              0x50 0x45    
+   \              0x52 0x41    
+   \              0x54 0x55    
+   \              0x52 0x45    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_15:
+   \   00000000   0x53 0x45          DC8 "SENSOR_TEMPERATURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x54    
+   \              0x45 0x4D    
+   \              0x50 0x45    
+   \              0x52 0x41    
+   \              0x54 0x55    
+   \              0x52 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000016   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_16:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PROXIMITY"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x52 0x4F    
+   \              0x58 0x49    
+   \              0x4D 0x49    
+   \              0x54 0x59    
+   \              0x00         
+   \   00000011   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_17:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PROXIMITY_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x52 0x4F    
+   \              0x58 0x49    
+   \              0x4D 0x49    
+   \              0x54 0x59    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_18:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GRAVITY"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x52 0x41    
+   \              0x56 0x49    
+   \              0x54 0x59    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_19:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GRAVITY_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x52 0x41    
+   \              0x56 0x49    
+   \              0x54 0x59    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_20:
+   \   00000000   0x53 0x45          DC8 "SENSOR_LINEAR_ACCELERATION"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4C    
+   \              0x49 0x4E    
+   \              0x45 0x41    
+   \              0x52 0x5F    
+   \              0x41 0x43    
+   \              0x43 0x45    
+   \              0x4C 0x45    
+   \              0x52 0x41    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x00         
+   \   0000001B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_21:
+   \   00000000   0x53 0x45          DC8 "SENSOR_LINEAR_ACCELERATION_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4C    
+   \              0x49 0x4E    
+   \              0x45 0x41    
+   \              0x52 0x5F    
+   \              0x41 0x43    
+   \              0x43 0x45    
+   \              0x4C 0x45    
+   \              0x52 0x41    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_22:
+   \   00000000   0x53 0x45          DC8 "SENSOR_ROTATION_VECTOR"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x4F 0x54    
+   \              0x41 0x54    
+   \              0x49 0x4F    
+   \              0x4E 0x5F    
+   \              0x56 0x45    
+   \              0x43 0x54    
+   \              0x4F 0x52    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_23:
+   \   00000000   0x53 0x45          DC8 "SENSOR_ROTATION_VECTOR_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x4F 0x54    
+   \              0x41 0x54    
+   \              0x49 0x4F    
+   \              0x4E 0x5F    
+   \              0x56 0x45    
+   \              0x43 0x54    
+   \              0x4F 0x52    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_24:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HUMIDITY"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x55 0x4D    
+   \              0x49 0x44    
+   \              0x49 0x54    
+   \              0x59 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_25:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HUMIDITY_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x55 0x4D    
+   \              0x49 0x44    
+   \              0x49 0x54    
+   \              0x59 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_26:
+   \   00000000   0x53 0x45          DC8 "SENSOR_AMBIENT_TEMPERATURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x41    
+   \              0x4D 0x42    
+   \              0x49 0x45    
+   \              0x4E 0x54    
+   \              0x5F 0x54    
+   \              0x45 0x4D    
+   \              0x50 0x45    
+   \              0x52 0x41    
+   \              0x54 0x55    
+   \              0x52 0x45    
+   \              0x00         
+   \   0000001B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_27:
+   \   00000000   0x53 0x45          DC8 "SENSOR_AMBIENT_TEMPERATURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x41    
+   \              0x4D 0x42    
+   \              0x49 0x45    
+   \              0x4E 0x54    
+   \              0x5F 0x54    
+   \              0x45 0x4D    
+   \              0x50 0x45    
+   \              0x52 0x41    
+   \              0x54 0x55    
+   \              0x52 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_28:
+   \   00000000   0x53 0x45          DC8 "SENSOR_UNCAL_MAGNETOMETER"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x55    
+   \              0x4E 0x43    
+   \              0x41 0x4C    
+   \              0x5F 0x4D    
+   \              0x41 0x47    
+   \              0x4E 0x45    
+   \              0x54 0x4F    
+   \              0x4D 0x45    
+   \              0x54 0x45    
+   \              0x52 0x00    
+   \   0000001A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_29:
+   \   00000000   0x53 0x45          DC8 "SENSOR_UNCAL_MAGNETOMETER_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x55    
+   \              0x4E 0x43    
+   \              0x41 0x4C    
+   \              0x5F 0x4D    
+   \              0x41 0x47    
+   \              0x4E 0x45    
+   \              0x54 0x4F    
+   \              0x4D 0x45    
+   \              0x54 0x45    
+   \              0x52 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   0000001D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_30:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GAME_ROTATION_VECTOR"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x41 0x4D    
+   \              0x45 0x5F    
+   \              0x52 0x4F    
+   \              0x54 0x41    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x5F 0x56    
+   \              0x45 0x43    
+   \              0x54 0x4F    
+   \              0x52 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_31:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GAME_ROTATION_VECTOR_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x41 0x4D    
+   \              0x45 0x5F    
+   \              0x52 0x4F    
+   \              0x54 0x41    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x5F 0x56    
+   \              0x45 0x43    
+   \              0x54 0x4F    
+   \              0x52 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   0000001F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_32:
+   \   00000000   0x53 0x45          DC8 "SENSOR_UNCAL_GYROSCOPE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x55    
+   \              0x4E 0x43    
+   \              0x41 0x4C    
+   \              0x5F 0x47    
+   \              0x59 0x52    
+   \              0x4F 0x53    
+   \              0x43 0x4F    
+   \              0x50 0x45    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_33:
+   \   00000000   0x53 0x45          DC8 "SENSOR_UNCAL_GYROSCOPE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x55    
+   \              0x4E 0x43    
+   \              0x41 0x4C    
+   \              0x5F 0x47    
+   \              0x59 0x52    
+   \              0x4F 0x53    
+   \              0x43 0x4F    
+   \              0x50 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_34:
+   \   00000000   0x53 0x45          DC8 "SENSOR_SMD"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x4D 0x44    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_35:
+   \   00000000   0x53 0x45          DC8 "SENSOR_SMD_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x4D 0x44    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_36:
+   \   00000000   0x53 0x45          DC8 "SENSOR_STEP_DETECTOR"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x54 0x45    
+   \              0x50 0x5F    
+   \              0x44 0x45    
+   \              0x54 0x45    
+   \              0x43 0x54    
+   \              0x4F 0x52    
+   \              0x00         
+   \   00000015   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_37:
+   \   00000000   0x53 0x45          DC8 "SENSOR_STEP_DETECTOR_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x54 0x45    
+   \              0x50 0x5F    
+   \              0x44 0x45    
+   \              0x54 0x45    
+   \              0x43 0x54    
+   \              0x4F 0x52    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_38:
+   \   00000000   0x53 0x45          DC8 "SENSOR_STEP_COUNTER"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x54 0x45    
+   \              0x50 0x5F    
+   \              0x43 0x4F    
+   \              0x55 0x4E    
+   \              0x54 0x45    
+   \              0x52 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_39:
+   \   00000000   0x53 0x45          DC8 "SENSOR_STEP_COUNTER_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x54 0x45    
+   \              0x50 0x5F    
+   \              0x43 0x4F    
+   \              0x55 0x4E    
+   \              0x54 0x45    
+   \              0x52 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_40:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GEOMAG_ROTATION_VECTOR"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x45 0x4F    
+   \              0x4D 0x41    
+   \              0x47 0x5F    
+   \              0x52 0x4F    
+   \              0x54 0x41    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x5F 0x56    
+   \              0x45 0x43    
+   \              0x54 0x4F    
+   \              0x52 0x00    
+   \   0000001E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_41:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GEOMAG_ROTATION_VECTOR_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x45 0x4F    
+   \              0x4D 0x41    
+   \              0x47 0x5F    
+   \              0x52 0x4F    
+   \              0x54 0x41    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x5F 0x56    
+   \              0x45 0x43    
+   \              0x54 0x4F    
+   \              0x52 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000021   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_42:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HEART_RATE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x45 0x41    
+   \              0x52 0x54    
+   \              0x5F 0x52    
+   \              0x41 0x54    
+   \              0x45 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_43:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HEART_RATE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x45 0x41    
+   \              0x52 0x54    
+   \              0x5F 0x52    
+   \              0x41 0x54    
+   \              0x45 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000015   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_44:
+   \   00000000   0x53 0x45          DC8 "SENSOR_TILT_DETECTOR"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x54    
+   \              0x49 0x4C    
+   \              0x54 0x5F    
+   \              0x44 0x45    
+   \              0x54 0x45    
+   \              0x43 0x54    
+   \              0x4F 0x52    
+   \              0x00         
+   \   00000015   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_45:
+   \   00000000   0x53 0x45          DC8 "SENSOR_TILT_DETECTOR_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x54    
+   \              0x49 0x4C    
+   \              0x54 0x5F    
+   \              0x44 0x45    
+   \              0x54 0x45    
+   \              0x43 0x54    
+   \              0x4F 0x52    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_46:
+   \   00000000   0x53 0x45          DC8 "SENSOR_WAKE_GESTURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x57    
+   \              0x41 0x4B    
+   \              0x45 0x5F    
+   \              0x47 0x45    
+   \              0x53 0x54    
+   \              0x55 0x52    
+   \              0x45 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_47:
+   \   00000000   0x53 0x45          DC8 "SENSOR_WAKE_GESTURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x57    
+   \              0x41 0x4B    
+   \              0x45 0x5F    
+   \              0x47 0x45    
+   \              0x53 0x54    
+   \              0x55 0x52    
+   \              0x45 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_48:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GLANCE_GESTURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x4C 0x41    
+   \              0x4E 0x43    
+   \              0x45 0x5F    
+   \              0x47 0x45    
+   \              0x53 0x54    
+   \              0x55 0x52    
+   \              0x45 0x00    
+   \   00000016   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_49:
+   \   00000000   0x53 0x45          DC8 "SENSOR_GLANCE_GESTURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x47    
+   \              0x4C 0x41    
+   \              0x4E 0x43    
+   \              0x45 0x5F    
+   \              0x47 0x45    
+   \              0x53 0x54    
+   \              0x55 0x52    
+   \              0x45 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000019   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_50:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PICK_UP_GESTURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x49 0x43    
+   \              0x4B 0x5F    
+   \              0x55 0x50    
+   \              0x5F 0x47    
+   \              0x45 0x53    
+   \              0x54 0x55    
+   \              0x52 0x45    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_51:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PICK_UP_GESTURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x49 0x43    
+   \              0x4B 0x5F    
+   \              0x55 0x50    
+   \              0x5F 0x47    
+   \              0x45 0x53    
+   \              0x54 0x55    
+   \              0x52 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_52:
+   \   00000000   0x53 0x45          DC8 "SENSOR_BAC"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x42    
+   \              0x41 0x43    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_53:
+   \   00000000   0x53 0x45          DC8 "SENSOR_BAC_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x42    
+   \              0x41 0x43    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_54:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PDR"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x44 0x52    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_55:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PDR_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x44 0x52    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_56:
+   \   00000000   0x53 0x45          DC8 "SENSOR_B2S"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x42    
+   \              0x32 0x53    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_57:
+   \   00000000   0x53 0x45          DC8 "SENSOR_B2S_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x42    
+   \              0x32 0x53    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_58:
+   \   00000000   0x53 0x45          DC8 "SENSOR_3AXIS"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x33    
+   \              0x41 0x58    
+   \              0x49 0x53    
+   \              0x00         
+   \   0000000D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_59:
+   \   00000000   0x53 0x45          DC8 "SENSOR_3AXIS_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x33    
+   \              0x41 0x58    
+   \              0x49 0x53    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_60:
+   \   00000000   0x53 0x45          DC8 "SENSOR_EIS"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x45    
+   \              0x49 0x53    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_61:
+   \   00000000   0x53 0x45          DC8 "SENSOR_EIS_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x45    
+   \              0x49 0x53    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_62:
+   \   00000000   0x53 0x45          DC8 "SENSOR_OIS"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4F    
+   \              0x49 0x53    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_63:
+   \   00000000   0x53 0x45          DC8 "SENSOR_OIS_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4F    
+   \              0x49 0x53    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_64:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_ACCELEROMETER"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x41    
+   \              0x43 0x43    
+   \              0x45 0x4C    
+   \              0x45 0x52    
+   \              0x4F 0x4D    
+   \              0x45 0x54    
+   \              0x45 0x52    
+   \              0x00         
+   \   00000019   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_65:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_ACCELEROMETER_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x41    
+   \              0x43 0x43    
+   \              0x45 0x4C    
+   \              0x45 0x52    
+   \              0x4F 0x4D    
+   \              0x45 0x54    
+   \              0x45 0x52    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_66:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_GYROSCOPE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x47    
+   \              0x59 0x52    
+   \              0x4F 0x53    
+   \              0x43 0x4F    
+   \              0x50 0x45    
+   \              0x00         
+   \   00000015   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_67:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_GYROSCOPE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x47    
+   \              0x59 0x52    
+   \              0x4F 0x53    
+   \              0x43 0x4F    
+   \              0x50 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_68:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_MAGNETOMETER"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x4D    
+   \              0x41 0x47    
+   \              0x4E 0x45    
+   \              0x54 0x4F    
+   \              0x4D 0x45    
+   \              0x54 0x45    
+   \              0x52 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_69:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_MAGNETOMETER_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x4D    
+   \              0x41 0x47    
+   \              0x4E 0x45    
+   \              0x54 0x4F    
+   \              0x4D 0x45    
+   \              0x54 0x45    
+   \              0x52 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   0000001B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_70:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_TEMPERATURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x54    
+   \              0x45 0x4D    
+   \              0x50 0x45    
+   \              0x52 0x41    
+   \              0x54 0x55    
+   \              0x52 0x45    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_71:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_TEMPERATURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x54    
+   \              0x45 0x4D    
+   \              0x50 0x45    
+   \              0x52 0x41    
+   \              0x54 0x55    
+   \              0x52 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_72:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM_PRESSURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x5F    
+   \              0x50 0x52    
+   \              0x45 0x53    
+   \              0x53 0x55    
+   \              0x52 0x45    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_73:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM_PRESSURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x5F    
+   \              0x50 0x52    
+   \              0x45 0x53    
+   \              0x53 0x55    
+   \              0x52 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_74:
+   \   00000000   0x53 0x45          DC8 "SENSOR_MIC"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4D    
+   \              0x49 0x43    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_75:
+   \   00000000   0x53 0x45          DC8 "SENSOR_MIC_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x4D    
+   \              0x49 0x43    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_76:
+   \   00000000   0x53 0x45          DC8 "SENSOR_TSIMU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x54    
+   \              0x53 0x49    
+   \              0x4D 0x55    
+   \              0x00         
+   \   0000000D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_77:
+   \   00000000   0x53 0x45          DC8 "SENSOR_TSIMU_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x54    
+   \              0x53 0x49    
+   \              0x4D 0x55    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_78:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_PPG"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x50    
+   \              0x50 0x47    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_79:
+   \   00000000   0x53 0x45          DC8 "SENSOR_RAW_PPG_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x52    
+   \              0x41 0x57    
+   \              0x5F 0x50    
+   \              0x50 0x47    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_80:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HRV"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x52 0x56    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_81:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HRV_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x52 0x56    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_82:
+   \   00000000   0x53 0x45          DC8 "SENSOR_SLEEP_ANALYSIS"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x4C 0x45    
+   \              0x45 0x50    
+   \              0x5F 0x41    
+   \              0x4E 0x41    
+   \              0x4C 0x59    
+   \              0x53 0x49    
+   \              0x53 0x00    
+   \   00000016   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_83:
+   \   00000000   0x53 0x45          DC8 "SENSOR_SLEEP_ANALYSIS_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x4C 0x45    
+   \              0x45 0x50    
+   \              0x5F 0x41    
+   \              0x4E 0x41    
+   \              0x4C 0x59    
+   \              0x53 0x49    
+   \              0x53 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000019   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_84:
+   \   00000000   0x53 0x45          DC8 "SENSOR_BAC_EXTENDED"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x42    
+   \              0x41 0x43    
+   \              0x5F 0x45    
+   \              0x58 0x54    
+   \              0x45 0x4E    
+   \              0x44 0x45    
+   \              0x44 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_85:
+   \   00000000   0x53 0x45          DC8 "SENSOR_BAC_EXTENDED_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x42    
+   \              0x41 0x43    
+   \              0x5F 0x45    
+   \              0x58 0x54    
+   \              0x45 0x4E    
+   \              0x44 0x45    
+   \              0x44 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_86:
+   \   00000000   0x53 0x45          DC8 "SENSOR_BAC_STATISTICS"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x42    
+   \              0x41 0x43    
+   \              0x5F 0x53    
+   \              0x54 0x41    
+   \              0x54 0x49    
+   \              0x53 0x54    
+   \              0x49 0x43    
+   \              0x53 0x00    
+   \   00000016   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_87:
+   \   00000000   0x53 0x45          DC8 "SENSOR_BAC_STATISTICS_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x42    
+   \              0x41 0x43    
+   \              0x5F 0x53    
+   \              0x54 0x41    
+   \              0x54 0x49    
+   \              0x53 0x54    
+   \              0x49 0x43    
+   \              0x53 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000019   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_88:
+   \   00000000   0x53 0x45          DC8 "SENSOR_FLOOR_CLIMB_COUNTER"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x46    
+   \              0x4C 0x4F    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x4C 0x49    
+   \              0x4D 0x42    
+   \              0x5F 0x43    
+   \              0x4F 0x55    
+   \              0x4E 0x54    
+   \              0x45 0x52    
+   \              0x00         
+   \   0000001B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_89:
+   \   00000000   0x53 0x45          DC8 "SENSOR_FLOOR_CLIMB_COUNTER_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x46    
+   \              0x4C 0x4F    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x4C 0x49    
+   \              0x4D 0x42    
+   \              0x5F 0x43    
+   \              0x4F 0x55    
+   \              0x4E 0x54    
+   \              0x45 0x52    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_90:
+   \   00000000   0x53 0x45          DC8 "SENSOR_ENERGY_EXPENDITURE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x45    
+   \              0x4E 0x45    
+   \              0x52 0x47    
+   \              0x59 0x5F    
+   \              0x45 0x58    
+   \              0x50 0x45    
+   \              0x4E 0x44    
+   \              0x49 0x54    
+   \              0x55 0x52    
+   \              0x45 0x00    
+   \   0000001A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_91:
+   \   00000000   0x53 0x45          DC8 "SENSOR_ENERGY_EXPENDITURE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x45    
+   \              0x4E 0x45    
+   \              0x52 0x47    
+   \              0x59 0x5F    
+   \              0x45 0x58    
+   \              0x50 0x45    
+   \              0x4E 0x44    
+   \              0x49 0x54    
+   \              0x55 0x52    
+   \              0x45 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   0000001D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_92:
+   \   00000000   0x53 0x45          DC8 "SENSOR_DISTANCE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x44    
+   \              0x49 0x53    
+   \              0x54 0x41    
+   \              0x4E 0x43    
+   \              0x45 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_93:
+   \   00000000   0x53 0x45          DC8 "SENSOR_DISTANCE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x44    
+   \              0x49 0x53    
+   \              0x54 0x41    
+   \              0x4E 0x43    
+   \              0x45 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_94:
+   \   00000000   0x53 0x45          DC8 "SENSOR_SHAKE"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x48 0x41    
+   \              0x4B 0x45    
+   \              0x00         
+   \   0000000D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_95:
+   \   00000000   0x53 0x45          DC8 "SENSOR_SHAKE_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x48 0x41    
+   \              0x4B 0x45    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_96:
+   \   00000000   0x53 0x45          DC8 "SENSOR_DOUBLE_TAP"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x44    
+   \              0x4F 0x55    
+   \              0x42 0x4C    
+   \              0x45 0x5F    
+   \              0x54 0x41    
+   \              0x50 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_97:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM0"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x30    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_98:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM0_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x30    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_99:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM1"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x31    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_100:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM1_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x31    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_101:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM2"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x32    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_102:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM2_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x32    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_103:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM3"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x33    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_104:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM3_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x33    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_105:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM4"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x34    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_106:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM4_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x34    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_107:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM5"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x35    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_108:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM5_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x35    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_109:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM6"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x36    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_110:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM6_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x36    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_111:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM7"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x37    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_112:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM7_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x37    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_113:
+   \   00000000   0x53 0x45          DC8 "SENSOR_WOM"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x57    
+   \              0x4F 0x4D    
+   \              0x00         
+   \   0000000B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_114:
+   \   00000000   0x53 0x45          DC8 "SENSOR_WOM_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x57    
+   \              0x4F 0x4D    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_115:
+   \   00000000   0x53 0x45          DC8 "SENSOR_SEDENTARY_REMIND"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x45 0x44    
+   \              0x45 0x4E    
+   \              0x54 0x41    
+   \              0x52 0x59    
+   \              0x5F 0x52    
+   \              0x45 0x4D    
+   \              0x49 0x4E    
+   \              0x44 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_116:
+   \   00000000   0x53 0x45          DC8 "SENSOR_SEDENTARY_REMIND_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x53    
+   \              0x45 0x44    
+   \              0x45 0x4E    
+   \              0x54 0x41    
+   \              0x52 0x59    
+   \              0x5F 0x52    
+   \              0x45 0x4D    
+   \              0x49 0x4E    
+   \              0x44 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   0000001B   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_117:
+   \   00000000   0x53 0x45          DC8 "SENSOR_DATA_ENCRYPTION"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x44    
+   \              0x41 0x54    
+   \              0x41 0x5F    
+   \              0x45 0x4E    
+   \              0x43 0x52    
+   \              0x59 0x50    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x00         
+   \   00000017   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_118:
+   \   00000000   0x53 0x45          DC8 "SENSOR_DATA_ENCRYPTION_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x44    
+   \              0x41 0x54    
+   \              0x41 0x5F    
+   \              0x45 0x4E    
+   \              0x43 0x52    
+   \              0x59 0x50    
+   \              0x54 0x49    
+   \              0x4F 0x4E    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   0000001A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_119:
+   \   00000000   0x53 0x45          DC8 "SENSOR_FSYNC_EVENT"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x46    
+   \              0x53 0x59    
+   \              0x4E 0x43    
+   \              0x5F 0x45    
+   \              0x56 0x45    
+   \              0x4E 0x54    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_120:
+   \   00000000   0x53 0x45          DC8 "SENSOR_FSYNC_EVENT_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x46    
+   \              0x53 0x59    
+   \              0x4E 0x43    
+   \              0x5F 0x45    
+   \              0x56 0x45    
+   \              0x4E 0x54    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+   \   00000016   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_121:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HIGH_RATE_GYRO"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x49 0x47    
+   \              0x48 0x5F    
+   \              0x52 0x41    
+   \              0x54 0x45    
+   \              0x5F 0x47    
+   \              0x59 0x52    
+   \              0x4F 0x00    
+   \   00000016   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_122:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HIGH_RATE_GYRO_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x49 0x47    
+   \              0x48 0x5F    
+   \              0x52 0x41    
+   \              0x54 0x45    
+   \              0x5F 0x47    
+   \              0x59 0x52    
+   \              0x4F 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000019   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_123:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM_BAC_SC_EE_DIST"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x5F    
+   \              0x42 0x41    
+   \              0x43 0x5F    
+   \              0x53 0x43    
+   \              0x5F 0x45    
+   \              0x45 0x5F    
+   \              0x44 0x49    
+   \              0x53 0x54    
+   \              0x00         
+   \   0000001D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_124:
+   \   00000000   0x53 0x45          DC8 "SENSOR_CUSTOM_BAC_SC_EE_DIST_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x43    
+   \              0x55 0x53    
+   \              0x54 0x4F    
+   \              0x4D 0x5F    
+   \              0x42 0x41    
+   \              0x43 0x5F    
+   \              0x53 0x43    
+   \              0x5F 0x45    
+   \              0x45 0x5F    
+   \              0x44 0x49    
+   \              0x53 0x54    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_125:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HRM_LOGGER"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x52 0x4D    
+   \              0x5F 0x4C    
+   \              0x4F 0x47    
+   \              0x47 0x45    
+   \              0x52 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_126:
+   \   00000000   0x53 0x45          DC8 "SENSOR_HRM_LOGGER_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x48    
+   \              0x52 0x4D    
+   \              0x5F 0x4C    
+   \              0x4F 0x47    
+   \              0x47 0x45    
+   \              0x52 0x5F    
+   \              0x57 0x55    
+   \              0x00         
+   \   00000015   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_127:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PREDICTIVE_QUATERNION"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x52 0x45    
+   \              0x44 0x49    
+   \              0x43 0x54    
+   \              0x49 0x56    
+   \              0x45 0x5F    
+   \              0x51 0x55    
+   \              0x41 0x54    
+   \              0x45 0x52    
+   \              0x4E 0x49    
+   \              0x4F 0x4E    
+   \              0x00         
+   \   0000001D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_128:
+   \   00000000   0x53 0x45          DC8 "SENSOR_PREDICTIVE_QUATERNION_WU"
+   \              0x4E 0x53    
+   \              0x4F 0x52    
+   \              0x5F 0x50    
+   \              0x52 0x45    
+   \              0x44 0x49    
+   \              0x43 0x54    
+   \              0x49 0x56    
+   \              0x45 0x5F    
+   \              0x51 0x55    
+   \              0x41 0x54    
+   \              0x45 0x52    
+   \              0x4E 0x49    
+   \              0x4F 0x4E    
+   \              0x5F 0x57    
+   \              0x55 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_129:
+   \   00000000   0x73 0x20          DC8 "s != 0"
+   \              0x21 0x3D    
+   \              0x20 0x30    
+   \              0x00         
+   \   00000007   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_130:
+   \   00000000   0x43 0x3A          DC8 43H, 3AH, 5CH, 55H, 73H, 65H, 72H, 73H
+   \              0x5C 0x55    
+   \              0x73 0x65    
+   \              0x72 0x73    
+   \   00000008   0x5C 0x70          DC8 5CH, 70H, 72H, 61H, 73H, 61H, 5CH, 44H
+   \              0x72 0x61    
+   \              0x73 0x61    
+   \              0x5C 0x44    
+   \   00000010   0x6F 0x63          DC8 6FH, 63H, 75H, 6DH, 65H, 6EH, 74H, 73H
+   \              0x75 0x6D    
+   \              0x65 0x6E    
+   \              0x74 0x73    
+   \   00000018   0x5C 0x31          DC8 5CH, 31H, 2EH, 30H, 2EH, 30H, 5CH, 73H
+   \              0x2E 0x30    
+   \              0x2E 0x30    
+   \              0x5C 0x73    
+   \   00000020   0x6F 0x75          DC8 6FH, 75H, 72H, 63H, 65H, 73H, 5CH, 49H
+   \              0x72 0x63    
+   \              0x65 0x73    
+   \              0x5C 0x49    
+   \   00000028   0x6E 0x76          DC8 6EH, 76H, 6EH, 5CH, 44H, 65H, 76H, 69H
+   \              0x6E 0x5C    
+   \              0x44 0x65    
+   \              0x76 0x69    
+   \   00000030   0x63 0x65          DC8 63H, 65H, 73H, 5CH, 53H, 65H, 6EH, 73H
+   \              0x73 0x5C    
+   \              0x53 0x65    
+   \              0x6E 0x73    
+   \   00000038   0x6F 0x72          DC8 6FH, 72H, 2EH, 63H, 0
+   \              0x2E 0x63    
+   \              0x00         
+   \   0000003D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   inv_sensor_str
+         8   -> __aeabi_assert
+         8   -> __iar_EmptyStepPoint
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable132
+       4  ??DataTable132_1
+      16  ?_0
+      20  ?_1
+      16  ?_10
+      20  ?_100
+      16  ?_101
+      20  ?_102
+      16  ?_103
+      20  ?_104
+      16  ?_105
+      20  ?_106
+      16  ?_107
+      20  ?_108
+      16  ?_109
+      16  ?_11
+      20  ?_110
+      16  ?_111
+      20  ?_112
+      12  ?_113
+      16  ?_114
+      24  ?_115
+      28  ?_116
+      24  ?_117
+      28  ?_118
+      20  ?_119
+      16  ?_12
+      24  ?_120
+      24  ?_121
+      28  ?_122
+      32  ?_123
+      32  ?_124
+      20  ?_125
+      24  ?_126
+      32  ?_127
+      32  ?_128
+       8  ?_129
+      20  ?_13
+      64  ?_130
+       1  ?_131
+      20  ?_14
+      24  ?_15
+      20  ?_16
+      20  ?_17
+      16  ?_18
+      20  ?_19
+      24  ?_2
+      28  ?_20
+      32  ?_21
+      24  ?_22
+      28  ?_23
+      16  ?_24
+      20  ?_25
+      28  ?_26
+      32  ?_27
+      28  ?_28
+      32  ?_29
+      24  ?_3
+      28  ?_30
+      32  ?_31
+      24  ?_32
+      28  ?_33
+      12  ?_34
+      16  ?_35
+      24  ?_36
+      24  ?_37
+      20  ?_38
+      24  ?_39
+      20  ?_4
+      32  ?_40
+      36  ?_41
+      20  ?_42
+      24  ?_43
+      24  ?_44
+      24  ?_45
+      20  ?_46
+      24  ?_47
+      24  ?_48
+      28  ?_49
+      24  ?_5
+      24  ?_50
+      28  ?_51
+      12  ?_52
+      16  ?_53
+      12  ?_54
+      16  ?_55
+      12  ?_56
+      16  ?_57
+      16  ?_58
+      16  ?_59
+      20  ?_6
+      12  ?_60
+      16  ?_61
+      12  ?_62
+      16  ?_63
+      28  ?_64
+      28  ?_65
+      24  ?_66
+      24  ?_67
+      24  ?_68
+      28  ?_69
+      24  ?_7
+      24  ?_70
+      28  ?_71
+      24  ?_72
+      28  ?_73
+      12  ?_74
+      16  ?_75
+      16  ?_76
+      16  ?_77
+      16  ?_78
+      20  ?_79
+      20  ?_8
+      12  ?_80
+      16  ?_81
+      24  ?_82
+      28  ?_83
+      20  ?_84
+      24  ?_85
+      24  ?_86
+      28  ?_87
+      28  ?_88
+      32  ?_89
+      20  ?_9
+      28  ?_90
+      32  ?_91
+      16  ?_92
+      20  ?_93
+      16  ?_94
+      16  ?_95
+      20  ?_96
+      16  ?_97
+      20  ?_98
+      16  ?_99
+      56  inv_sensor_str
+     520  sensor_str
+
+ 
+   520 bytes in section .data
+ 2 809 bytes in section .rodata
+   136 bytes in section .text
+ 
+   136 bytes of CODE  memory
+ 2 809 bytes of CONST memory
+   520 bytes of DATA  memory
+
+Errors: none
+Warnings: none

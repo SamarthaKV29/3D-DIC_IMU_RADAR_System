@@ -1,0 +1,427 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:25
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\ErrorHelper.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\ErrorHelper.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\ErrorHelper.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\ErrorHelper.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\ErrorHelper.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2015-2015 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "ErrorHelper.h"
+     25          
+
+   \                                 In section .text, align 4, keep-with-next
+     26          const char * inv_error_str(int error)
+     27          {
+     28          	switch(error) {
+   \                     inv_error_str: (+1)
+   \   00000000   0x3010             ADDS     R0,R0,#+16
+   \   00000002   0x2810             CMP      R0,#+16
+   \   00000004   0xD83A             BHI.N    ??inv_error_str_1
+   \   00000006   0xE8DF 0xF000      TBB      [PC, R0]
+   \                     ??inv_error_str_0:
+   \   0000000A   0x36 0x33          DC8      0x36,0x33,0x30,0x2D
+   \              0x30 0x2D    
+   \   0000000E   0x2A 0x27          DC8      0x2A,0x27,0x24,0x21
+   \              0x24 0x21    
+   \   00000012   0x39 0x1E          DC8      0x39,0x1E,0x1B,0x18
+   \              0x1B 0x18    
+   \   00000016   0x15 0x12          DC8      0x15,0x12,0xF,0xC
+   \              0x0F 0x0C    
+   \   0000001A   0x09 0x00          DC8      0x9,0x0
+     29          	case INV_ERROR_SUCCESS:      return "Success";
+   \                     ??inv_error_str_2: (+1)
+   \   0000001C   0x.... 0x....      ADR.W    R0,?_0
+   \   00000020   0x4770             BX       LR
+     30          	case INV_ERROR:              return "Unspecified error";
+   \                     ??inv_error_str_3: (+1)
+   \   00000022   0x.... 0x....      ADR.W    R0,?_1
+   \   00000026   0x4770             BX       LR
+     31          	case INV_ERROR_NIMPL:        return "Not implemented";
+   \                     ??inv_error_str_4: (+1)
+   \   00000028   0x.... 0x....      ADR.W    R0,?_2
+   \   0000002C   0x4770             BX       LR
+     32          	case INV_ERROR_TRANSPORT:    return "Transport error";
+   \                     ??inv_error_str_5: (+1)
+   \   0000002E   0x.... 0x....      ADR.W    R0,?_3
+   \   00000032   0x4770             BX       LR
+     33          	case INV_ERROR_TIMEOUT:      return "Timeout, action did not complete in time";
+   \                     ??inv_error_str_6: (+1)
+   \   00000034   0x.... 0x....      ADR.W    R0,?_4
+   \   00000038   0x4770             BX       LR
+     34          	case INV_ERROR_SIZE:         return "Wrong size error";
+   \                     ??inv_error_str_7: (+1)
+   \   0000003A   0x.... 0x....      ADR.W    R0,?_5
+   \   0000003E   0x4770             BX       LR
+     35          	case INV_ERROR_OS:           return "Operating system failure";
+   \                     ??inv_error_str_8: (+1)
+   \   00000040   0x.... 0x....      ADR.W    R0,?_6
+   \   00000044   0x4770             BX       LR
+     36          	case INV_ERROR_IO:           return "Input/Output error";
+   \                     ??inv_error_str_9: (+1)
+   \   00000046   0x.... 0x....      ADR.W    R0,?_7
+   \   0000004A   0x4770             BX       LR
+     37          	case INV_ERROR_MEM: 		 return "Bad allocation";
+   \                     ??inv_error_str_10: (+1)
+   \   0000004C   0x.... 0x....      ADR.W    R0,?_8
+   \   00000050   0x4770             BX       LR
+     38          	case INV_ERROR_HW:           return "Hardware error";
+   \                     ??inv_error_str_11: (+1)
+   \   00000052   0x.... 0x....      ADR.W    R0,?_9
+   \   00000056   0x4770             BX       LR
+     39          	case INV_ERROR_BAD_ARG:      return "Invalid arguments";
+   \                     ??inv_error_str_12: (+1)
+   \   00000058   0x.... 0x....      ADR.W    R0,?_10
+   \   0000005C   0x4770             BX       LR
+     40          	case INV_ERROR_UNEXPECTED:   return "Unexpected error";
+   \                     ??inv_error_str_13: (+1)
+   \   0000005E   0x.... 0x....      ADR.W    R0,?_11
+   \   00000062   0x4770             BX       LR
+     41          	case INV_ERROR_FILE:         return "Invalid file format";
+   \                     ??inv_error_str_14: (+1)
+   \   00000064   0x.... 0x....      ADR.W    R0,?_12
+   \   00000068   0x4770             BX       LR
+     42          	case INV_ERROR_PATH:         return "Invalid file path";
+   \                     ??inv_error_str_15: (+1)
+   \   0000006A   0x.... 0x....      ADR.W    R0,?_13
+   \   0000006E   0x4770             BX       LR
+     43          	case INV_ERROR_IMAGE_TYPE:   return "Unknown image type";
+   \                     ??inv_error_str_16: (+1)
+   \   00000070   0x.... 0x....      ADR.W    R0,?_14
+   \   00000074   0x4770             BX       LR
+     44          	case INV_ERROR_WATCHDOG:     return "Watchdog error";
+   \                     ??inv_error_str_17: (+1)
+   \   00000076   0x.... 0x....      ADR.W    R0,?_15
+   \   0000007A   0x4770             BX       LR
+     45          	default:                     return "Unknown error";
+   \                     ??inv_error_str_1: (+1)
+   \   0000007C   0x.... 0x....      ADR.W    R0,?_16
+   \   00000080   0x4770             BX       LR               ;; return
+     46          	}
+     47          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_0:
+   \   00000000   0x53 0x75          DC8 "Success"
+   \              0x63 0x63    
+   \              0x65 0x73    
+   \              0x73 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_1:
+   \   00000000   0x55 0x6E          DC8 "Unspecified error"
+   \              0x73 0x70    
+   \              0x65 0x63    
+   \              0x69 0x66    
+   \              0x69 0x65    
+   \              0x64 0x20    
+   \              0x65 0x72    
+   \              0x72 0x6F    
+   \              0x72 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_2:
+   \   00000000   0x4E 0x6F          DC8 "Not implemented"
+   \              0x74 0x20    
+   \              0x69 0x6D    
+   \              0x70 0x6C    
+   \              0x65 0x6D    
+   \              0x65 0x6E    
+   \              0x74 0x65    
+   \              0x64 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_3:
+   \   00000000   0x54 0x72          DC8 "Transport error"
+   \              0x61 0x6E    
+   \              0x73 0x70    
+   \              0x6F 0x72    
+   \              0x74 0x20    
+   \              0x65 0x72    
+   \              0x72 0x6F    
+   \              0x72 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_4:
+   \   00000000   0x54 0x69          DC8 "Timeout, action did not complete in time"
+   \              0x6D 0x65    
+   \              0x6F 0x75    
+   \              0x74 0x2C    
+   \              0x20 0x61    
+   \              0x63 0x74    
+   \              0x69 0x6F    
+   \              0x6E 0x20    
+   \              0x64 0x69    
+   \              0x64 0x20    
+   \              0x6E 0x6F    
+   \              0x74 0x20    
+   \              0x63 0x6F    
+   \              0x6D 0x70    
+   \              0x6C 0x65    
+   \              0x74 0x65    
+   \              0x20 0x69    
+   \              0x6E 0x20    
+   \              0x74 0x69    
+   \              0x6D 0x65    
+   \              0x00         
+   \   00000029   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_5:
+   \   00000000   0x57 0x72          DC8 "Wrong size error"
+   \              0x6F 0x6E    
+   \              0x67 0x20    
+   \              0x73 0x69    
+   \              0x7A 0x65    
+   \              0x20 0x65    
+   \              0x72 0x72    
+   \              0x6F 0x72    
+   \              0x00         
+   \   00000011   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_6:
+   \   00000000   0x4F 0x70          DC8 "Operating system failure"
+   \              0x65 0x72    
+   \              0x61 0x74    
+   \              0x69 0x6E    
+   \              0x67 0x20    
+   \              0x73 0x79    
+   \              0x73 0x74    
+   \              0x65 0x6D    
+   \              0x20 0x66    
+   \              0x61 0x69    
+   \              0x6C 0x75    
+   \              0x72 0x65    
+   \              0x00         
+   \   00000019   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_7:
+   \   00000000   0x49 0x6E          DC8 "Input/Output error"
+   \              0x70 0x75    
+   \              0x74 0x2F    
+   \              0x4F 0x75    
+   \              0x74 0x70    
+   \              0x75 0x74    
+   \              0x20 0x65    
+   \              0x72 0x72    
+   \              0x6F 0x72    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_8:
+   \   00000000   0x42 0x61          DC8 "Bad allocation"
+   \              0x64 0x20    
+   \              0x61 0x6C    
+   \              0x6C 0x6F    
+   \              0x63 0x61    
+   \              0x74 0x69    
+   \              0x6F 0x6E    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_9:
+   \   00000000   0x48 0x61          DC8 "Hardware error"
+   \              0x72 0x64    
+   \              0x77 0x61    
+   \              0x72 0x65    
+   \              0x20 0x65    
+   \              0x72 0x72    
+   \              0x6F 0x72    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_10:
+   \   00000000   0x49 0x6E          DC8 "Invalid arguments"
+   \              0x76 0x61    
+   \              0x6C 0x69    
+   \              0x64 0x20    
+   \              0x61 0x72    
+   \              0x67 0x75    
+   \              0x6D 0x65    
+   \              0x6E 0x74    
+   \              0x73 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_11:
+   \   00000000   0x55 0x6E          DC8 "Unexpected error"
+   \              0x65 0x78    
+   \              0x70 0x65    
+   \              0x63 0x74    
+   \              0x65 0x64    
+   \              0x20 0x65    
+   \              0x72 0x72    
+   \              0x6F 0x72    
+   \              0x00         
+   \   00000011   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_12:
+   \   00000000   0x49 0x6E          DC8 "Invalid file format"
+   \              0x76 0x61    
+   \              0x6C 0x69    
+   \              0x64 0x20    
+   \              0x66 0x69    
+   \              0x6C 0x65    
+   \              0x20 0x66    
+   \              0x6F 0x72    
+   \              0x6D 0x61    
+   \              0x74 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_13:
+   \   00000000   0x49 0x6E          DC8 "Invalid file path"
+   \              0x76 0x61    
+   \              0x6C 0x69    
+   \              0x64 0x20    
+   \              0x66 0x69    
+   \              0x6C 0x65    
+   \              0x20 0x70    
+   \              0x61 0x74    
+   \              0x68 0x00    
+   \   00000012   0x00 0x00          DC8 0, 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_14:
+   \   00000000   0x55 0x6E          DC8 "Unknown image type"
+   \              0x6B 0x6E    
+   \              0x6F 0x77    
+   \              0x6E 0x20    
+   \              0x69 0x6D    
+   \              0x61 0x67    
+   \              0x65 0x20    
+   \              0x74 0x79    
+   \              0x70 0x65    
+   \              0x00         
+   \   00000013   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_15:
+   \   00000000   0x57 0x61          DC8 "Watchdog error"
+   \              0x74 0x63    
+   \              0x68 0x64    
+   \              0x6F 0x67    
+   \              0x20 0x65    
+   \              0x72 0x72    
+   \              0x6F 0x72    
+   \              0x00         
+   \   0000000F   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_16:
+   \   00000000   0x55 0x6E          DC8 "Unknown error"
+   \              0x6B 0x6E    
+   \              0x6F 0x77    
+   \              0x6E 0x20    
+   \              0x65 0x72    
+   \              0x72 0x6F    
+   \              0x72 0x00    
+   \   0000000E   0x00 0x00          DC8 0, 0
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   inv_error_str
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  ?_0
+      20  ?_1
+      20  ?_10
+      20  ?_11
+      20  ?_12
+      20  ?_13
+      20  ?_14
+      16  ?_15
+      16  ?_16
+      16  ?_2
+      16  ?_3
+      44  ?_4
+      20  ?_5
+      28  ?_6
+      20  ?_7
+      16  ?_8
+      16  ?_9
+     130  inv_error_str
+
+ 
+ 466 bytes in section .text
+ 
+ 466 bytes of CODE memory
+
+Errors: none
+Warnings: none

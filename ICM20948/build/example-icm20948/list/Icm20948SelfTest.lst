@@ -1,0 +1,1331 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:29
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948SelfTest.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948SelfTest.c
+#        -D IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D
+#        NUCLEO -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000
+#        -D STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\Icm20948SelfTest.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948SelfTest.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948SelfTest.c
+      1          /*
+      2          * ________________________________________________________________________________________________________
+      3          * Copyright © 2014-2015 InvenSense Inc. Portions Copyright © 2014-2015 Movea. All rights reserved.
+      4          * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      5          * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright and
+      6          * other intellectual property rights laws.
+      7          * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+      8          * and any use, reproduction, disclosure or distribution of the Software without an express license
+      9          * agreement from InvenSense is strictly prohibited.
+     10          * ________________________________________________________________________________________________________
+     11          */
+     12           
+     13          #include "Icm20948.h"
+     14          #include "Icm20948SelfTest.h"
+     15           
+     16          #include "Icm20948Defs.h"
+     17          #include "Icm20948DataBaseDriver.h"
+     18          #include "Icm20948AuxCompassAkm.h"
+     19          
+     20          /* full scale and LPF setting */
+     21          #define SELFTEST_GYRO_FS            ((0 << 3) | 1)
+     22          #define SELFTEST_ACCEL_FS           ((7 << 3) | 1)
+     23          
+     24          /* register settings */
+     25          #define SELFTEST_GYRO_SMPLRT_DIV        10
+     26          #define SELFTEST_GYRO_AVGCFG        	3
+     27          #define SELFTEST_ACCEL_SMPLRT_DIV       10
+     28          #define SELFTEST_ACCEL_DEC3_CFG     	2
+     29          
+     30          /* wait time in ms between 2 data collection */
+     31          #define WAIT_TIME_BTW_2_SAMPLESREAD     10
+     32          /* wait time in ms after sensor self-test enabling for oscillations to stabilize */
+     33          #define DEF_ST_STABLE_TIME              20 //ms
+     34          /* number of times self test reading should be done until abord */
+     35          #define DEF_ST_TRY_TIMES                2
+     36          /* number of samples to be read to be averaged */
+     37          #define DEF_ST_SAMPLES                  200
+     38          
+     39          #define LOWER_BOUND_CHECK(value) ((value)>>1) // value * 0.5
+     40          #define UPPER_BOUND_CHECK(value) ((value) + ((value)>>1) ) // value * 1.5
+     41          
+     42          struct recover_regs {
+     43          	// Bank#0
+     44          	uint8_t fifo_cfg;			// REG_FIFO_CFG
+     45          	uint8_t user_ctrl;			// REG_USER_CTRL
+     46          	uint8_t lp_config;			// REG_LP_CONFIG
+     47          	uint8_t int_enable;			// REG_INT_ENABLE
+     48          	uint8_t int_enable_1;		// REG_INT_ENABLE_1
+     49              uint8_t int_enable_2;       // REG_INT_ENABLE_2
+     50          	uint8_t fifo_en;				// REG_FIFO_EN
+     51          	uint8_t fifo_en_2;			// REG_FIFO_EN_2
+     52          	uint8_t fifo_rst;			// REG_FIFO_RST
+     53              
+     54          	// Bank#2
+     55          	uint8_t gyro_smplrt_div;		// REG_GYRO_SMPLRT_DIV
+     56          	uint8_t gyro_config_1;		// REG_GYRO_CONFIG_1
+     57          	uint8_t gyro_config_2;		// REG_GYRO_CONFIG_2
+     58          	uint8_t accel_smplrt_div_1;	// REG_ACCEL_SMPLRT_DIV_1
+     59          	uint8_t accel_smplrt_div_2;	// REG_ACCEL_SMPLRT_DIV_2
+     60          	uint8_t accel_config;		// REG_ACCEL_CONFIG
+     61          	uint8_t accel_config_2;		// REG_ACCEL_CONFIG_2
+     62          };
+     63          
+     64          // Table for list of results for factory self-test value equation
+     65          // st_otp = 2620/2^FS * 1.01^(st_value - 1)
+     66          // for gyro and accel FS = 0 so 2620 * 1.01^(st_value - 1)
+     67          // st_value = 1 => 2620
+     68          // st_value = 2 => 2620 * 1.01 = 2646
+     69          // etc../
+
+   \                                 In section .text, align 4, keep-with-next
+     70          static const uint16_t sSelfTestEquation[256] = {
+   \                     sSelfTestEquation:
+   \   00000000   0x0A3C 0x0A56      DC16 2620, 2646, 2672, 2699, 2726, 2753, 2781, 2808, 2837, 2865, 2894
+   \              0x0A70 0x0A8B
+   \              0x0AA6 0x0AC1
+   \              0x0ADD 0x0AF8
+   \              0x0B15 0x0B31
+   \              0x0B4E       
+   \   00000016   0x0B6B 0x0B88      DC16 2923, 2952, 2981, 3011, 3041, 3072, 3102, 3133, 3165, 3196, 3228
+   \              0x0BA5 0x0BC3
+   \              0x0BE1 0x0C00
+   \              0x0C1E 0x0C3D
+   \              0x0C5D 0x0C7C
+   \              0x0C9C       
+   \   0000002C   0x0CBD 0x0CDD      DC16 3261, 3293, 3326, 3359, 3393, 3427, 3461, 3496, 3531, 3566, 3602
+   \              0x0CFE 0x0D1F
+   \              0x0D41 0x0D63
+   \              0x0D85 0x0DA8
+   \              0x0DCB 0x0DEE
+   \              0x0E12       
+   \   00000042   0x0E36 0x0E5A      DC16 3638, 3674, 3711, 3748, 3786, 3823, 3862, 3900, 3939, 3979, 4019
+   \              0x0E7F 0x0EA4
+   \              0x0ECA 0x0EEF
+   \              0x0F16 0x0F3C
+   \              0x0F63 0x0F8B
+   \              0x0FB3       
+   \   00000058   0x0FDB 0x1003      DC16 4059, 4099, 4140, 4182, 4224, 4266, 4308, 4352, 4395, 4439, 4483
+   \              0x102C 0x1056
+   \              0x1080 0x10AA
+   \              0x10D4 0x1100
+   \              0x112B 0x1157
+   \              0x1183       
+   \   0000006E   0x11B0 0x11DE      DC16 4528, 4574, 4619, 4665, 4712, 4759, 4807, 4855, 4903, 4953, 5002
+   \              0x120B 0x1239
+   \              0x1268 0x1297
+   \              0x12C7 0x12F7
+   \              0x1327 0x1359
+   \              0x138A       
+   \   00000084   0x13BC 0x13EF      DC16 5052, 5103, 5154, 5205, 5257, 5310, 5363, 5417, 5471, 5525, 5581
+   \              0x1422 0x1455
+   \              0x1489 0x14BE
+   \              0x14F3 0x1529
+   \              0x155F 0x1595
+   \              0x15CD       
+   \   0000009A   0x1604 0x163D      DC16 5636, 5693, 5750, 5807, 5865, 5924, 5983, 6043, 6104, 6165, 6226
+   \              0x1676 0x16AF
+   \              0x16E9 0x1724
+   \              0x175F 0x179B
+   \              0x17D8 0x1815
+   \              0x1852       
+   \   000000B0   0x1891 0x18CF      DC16 6289, 6351, 6415, 6479, 6544, 6609, 6675, 6742, 6810, 6878, 6946
+   \              0x190F 0x194F
+   \              0x1990 0x19D1
+   \              0x1A13 0x1A56
+   \              0x1A9A 0x1ADE
+   \              0x1B22       
+   \   000000C6   0x1B68 0x1BAE      DC16 7016, 7086, 7157, 7229, 7301, 7374, 7448, 7522, 7597, 7673, 7750
+   \              0x1BF5 0x1C3D
+   \              0x1C85 0x1CCE
+   \              0x1D18 0x1D62
+   \              0x1DAD 0x1DF9
+   \              0x1E46       
+   \   000000DC   0x1E94 0x1EE2      DC16 7828, 7906, 7985, 8065, 8145, 8227, 8309, 8392, 8476, 8561, 8647
+   \              0x1F31 0x1F81
+   \              0x1FD1 0x2023
+   \              0x2075 0x20C8
+   \              0x211C 0x2171
+   \              0x21C7       
+   \   000000F2   0x221D 0x2274      DC16 8733, 8820, 8909, 8998, 9088, 9178, 9270, 9363, 9457, 9551, 9647
+   \              0x22CD 0x2326
+   \              0x2380 0x23DA
+   \              0x2436 0x2493
+   \              0x24F1 0x254F
+   \              0x25AF       
+   \   00000108   0x260F 0x2671      DC16 9743, 9841, 9939, 10038, 10139, 10240, 10343, 10446, 10550, 10656
+   \              0x26D3 0x2736
+   \              0x279B 0x2800
+   \              0x2867 0x28CE
+   \              0x2936 0x29A0
+   \   0000011C   0x2A0B 0x2A76      DC16 10763, 10870, 10979, 11089, 11200, 11312, 11425, 11539, 11654
+   \              0x2AE3 0x2B51
+   \              0x2BC0 0x2C30
+   \              0x2CA1 0x2D13
+   \              0x2D86       
+   \   0000012E   0x2DFB 0x2E71      DC16 11771, 11889, 12008, 12128, 12249, 12371, 12495, 12620, 12746
+   \              0x2EE8 0x2F60
+   \              0x2FD9 0x3053
+   \              0x30CF 0x314C
+   \              0x31CA       
+   \   00000140   0x324A 0x32CA      DC16 12874, 13002, 13132, 13264, 13396, 13530, 13666, 13802, 13940
+   \              0x334C 0x33D0
+   \              0x3454 0x34DA
+   \              0x3562 0x35EA
+   \              0x3674       
+   \   00000152   0x3700 0x378D      DC16 14080, 14221, 14363, 14506, 14652, 14798, 14946, 15096, 15247
+   \              0x381B 0x38AA
+   \              0x393C 0x39CE
+   \              0x3A62 0x3AF8
+   \              0x3B8F       
+   \   00000164   0x3C27 0x3CC1      DC16 15399, 15553, 15709, 15866, 16024, 16184, 16346, 16510, 16675
+   \              0x3D5D 0x3DFA
+   \              0x3E98 0x3F38
+   \              0x3FDA 0x407E
+   \              0x4123       
+   \   00000176   0x41CA 0x4272      DC16 16842, 17010, 17180, 17352, 17526, 17701, 17878, 18057, 18237
+   \              0x431C 0x43C8
+   \              0x4476 0x4525
+   \              0x45D6 0x4689
+   \              0x473D       
+   \   00000188   0x47F4 0x48AC      DC16 18420, 18604, 18790, 18978, 19167, 19359, 19553, 19748, 19946
+   \              0x4966 0x4A22
+   \              0x4ADF 0x4B9F
+   \              0x4C61 0x4D24
+   \              0x4DEA       
+   \   0000019A   0x4EB1 0x4F7B      DC16 20145, 20347, 20550, 20756, 20963, 21173, 21385, 21598, 21814
+   \              0x5046 0x5114
+   \              0x51E3 0x52B5
+   \              0x5389 0x545E
+   \              0x5536       
+   \   000001AC   0x5611 0x56ED      DC16 22033, 22253, 22475, 22700, 22927, 23156, 23388, 23622, 23858
+   \              0x57CB 0x58AC
+   \              0x598F 0x5A74
+   \              0x5B5C 0x5C46
+   \              0x5D32       
+   \   000001BE   0x5E21 0x5F12      DC16 24097, 24338, 24581, 24827, 25075, 25326, 25579, 25835, 26093
+   \              0x6005 0x60FB
+   \              0x61F3 0x62EE
+   \              0x63EB 0x64EB
+   \              0x65ED       
+   \   000001D0   0x66F2 0x67FA      DC16 26354, 26618, 26884, 27153, 27424, 27699, 27976, 28255, 28538
+   \              0x6904 0x6A11
+   \              0x6B20 0x6C33
+   \              0x6D48 0x6E5F
+   \              0x6F7A       
+   \   000001E2   0x7097 0x71B8      DC16 28823, 29112, 29403, 29697, 29994, 30294, 30597, 30903, 31212
+   \              0x72DB 0x7401
+   \              0x752A 0x7656
+   \              0x7785 0x78B7
+   \              0x79EC       
+   \   000001F4   0x7B24 0x7C5F      DC16 31524, 31839, 32157, 32479, 32804, 0
+   \              0x7D9D 0x7EDF
+   \              0x8024 0x0000
+     71          	2620, 2646, 2672, 2699, 2726, 2753, 2781, 2808,
+     72          	2837, 2865, 2894, 2923, 2952, 2981, 3011, 3041,
+     73          	3072, 3102, 3133, 3165, 3196, 3228, 3261, 3293,
+     74          	3326, 3359, 3393, 3427, 3461, 3496, 3531, 3566,
+     75          	3602, 3638, 3674, 3711, 3748, 3786, 3823, 3862,
+     76          	3900, 3939, 3979, 4019, 4059, 4099, 4140, 4182,
+     77          	4224, 4266, 4308, 4352, 4395, 4439, 4483, 4528,
+     78          	4574, 4619, 4665, 4712, 4759, 4807, 4855, 4903,
+     79          	4953, 5002, 5052, 5103, 5154, 5205, 5257, 5310,
+     80          	5363, 5417, 5471, 5525, 5581, 5636, 5693, 5750,
+     81          	5807, 5865, 5924, 5983, 6043, 6104, 6165, 6226,
+     82          	6289, 6351, 6415, 6479, 6544, 6609, 6675, 6742,
+     83          	6810, 6878, 6946, 7016, 7086, 7157, 7229, 7301,
+     84          	7374, 7448, 7522, 7597, 7673, 7750, 7828, 7906,
+     85          	7985, 8065, 8145, 8227, 8309, 8392, 8476, 8561,
+     86          	8647, 8733, 8820, 8909, 8998, 9088, 9178, 9270,
+     87          	9363, 9457, 9551, 9647, 9743, 9841, 9939, 10038,
+     88          	10139, 10240, 10343, 10446, 10550, 10656, 10763, 10870,
+     89          	10979, 11089, 11200, 11312, 11425, 11539, 11654, 11771,
+     90          	11889, 12008, 12128, 12249, 12371, 12495, 12620, 12746,
+     91          	12874, 13002, 13132, 13264, 13396, 13530, 13666, 13802,
+     92          	13940, 14080, 14221, 14363, 14506, 14652, 14798, 14946,
+     93          	15096, 15247, 15399, 15553, 15709, 15866, 16024, 16184,
+     94          	16346, 16510, 16675, 16842, 17010, 17180, 17352, 17526,
+     95          	17701, 17878, 18057, 18237, 18420, 18604, 18790, 18978,
+     96          	19167, 19359, 19553, 19748, 19946, 20145, 20347, 20550,
+     97          	20756, 20963, 21173, 21385, 21598, 21814, 22033, 22253,
+     98          	22475, 22700, 22927, 23156, 23388, 23622, 23858, 24097,
+     99          	24338, 24581, 24827, 25075, 25326, 25579, 25835, 26093,
+    100          	26354, 26618, 26884, 27153, 27424, 27699, 27976, 28255,
+    101          	28538, 28823, 29112, 29403, 29697, 29994, 30294, 30597,
+    102          	30903, 31212, 31524, 31839, 32157, 32479, 32804
+    103          };
+    104          
+
+   \                                 In section .text, align 2, keep-with-next
+    105          static int inv_save_setting(struct inv_icm20948 * s, struct recover_regs * saved_regs)
+    106          {
+   \                     inv_save_setting: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+    107          	int result = 0;
+    108          
+    109          	result |= inv_icm20948_read_mems_reg(s, REG_FIFO_CFG, 1, &saved_regs->fifo_cfg);
+   \   00000006   0x462B             MOV      R3,R5
+   \   00000008   0x2201             MOVS     R2,#+1
+   \   0000000A   0x2176             MOVS     R1,#+118
+   \   0000000C   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+    110          
+    111          	result |= inv_icm20948_read_mems_reg(s, REG_USER_CTRL, 1, &saved_regs->user_ctrl);
+   \   00000010   0x1C6B             ADDS     R3,R5,#+1
+   \   00000012   0x2201             MOVS     R2,#+1
+   \   00000014   0x2103             MOVS     R1,#+3
+   \   00000016   0x4620             MOV      R0,R4
+   \   00000018   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+    112          
+    113          	result = inv_icm20948_read_mems_reg(s, REG_LP_CONFIG, 1, &saved_regs->lp_config);
+   \   0000001C   0x1CAB             ADDS     R3,R5,#+2
+   \   0000001E   0x2201             MOVS     R2,#+1
+   \   00000020   0x2105             MOVS     R1,#+5
+   \   00000022   0x4620             MOV      R0,R4
+   \   00000024   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000028   0x4606             MOV      R6,R0
+    114          
+    115          	result |= inv_icm20948_read_mems_reg(s, REG_INT_ENABLE, 1, &saved_regs->int_enable);
+   \   0000002A   0x1CEB             ADDS     R3,R5,#+3
+   \   0000002C   0x2201             MOVS     R2,#+1
+   \   0000002E   0x2110             MOVS     R1,#+16
+   \   00000030   0x4620             MOV      R0,R4
+   \   00000032   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000036   0x4306             ORRS     R6,R0,R6
+    116          	
+    117          	result |= inv_icm20948_read_mems_reg(s, REG_INT_ENABLE_1, 1, &saved_regs->int_enable_1);
+   \   00000038   0x1D2B             ADDS     R3,R5,#+4
+   \   0000003A   0x2201             MOVS     R2,#+1
+   \   0000003C   0x2111             MOVS     R1,#+17
+   \   0000003E   0x4620             MOV      R0,R4
+   \   00000040   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000044   0x4306             ORRS     R6,R0,R6
+    118          
+    119              result |= inv_icm20948_read_mems_reg(s, REG_INT_ENABLE_2, 1, &saved_regs->int_enable_2);
+   \   00000046   0x1D6B             ADDS     R3,R5,#+5
+   \   00000048   0x2201             MOVS     R2,#+1
+   \   0000004A   0x2112             MOVS     R1,#+18
+   \   0000004C   0x4620             MOV      R0,R4
+   \   0000004E   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000052   0x4306             ORRS     R6,R0,R6
+    120          
+    121          	result |= inv_icm20948_read_mems_reg(s, REG_FIFO_EN, 1, &saved_regs->fifo_en);
+   \   00000054   0x1DAB             ADDS     R3,R5,#+6
+   \   00000056   0x2201             MOVS     R2,#+1
+   \   00000058   0x2166             MOVS     R1,#+102
+   \   0000005A   0x4620             MOV      R0,R4
+   \   0000005C   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000060   0x4306             ORRS     R6,R0,R6
+    122          
+    123          	result |= inv_icm20948_read_mems_reg(s, REG_FIFO_EN_2, 1, &saved_regs->fifo_en_2);
+   \   00000062   0x1DEB             ADDS     R3,R5,#+7
+   \   00000064   0x2201             MOVS     R2,#+1
+   \   00000066   0x2167             MOVS     R1,#+103
+   \   00000068   0x4620             MOV      R0,R4
+   \   0000006A   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   0000006E   0x4306             ORRS     R6,R0,R6
+    124          
+    125          	result |= inv_icm20948_read_mems_reg(s, REG_FIFO_RST, 1, &saved_regs->fifo_rst);
+   \   00000070   0xF105 0x0308      ADD      R3,R5,#+8
+   \   00000074   0x2201             MOVS     R2,#+1
+   \   00000076   0x2168             MOVS     R1,#+104
+   \   00000078   0x4620             MOV      R0,R4
+   \   0000007A   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   0000007E   0x4306             ORRS     R6,R0,R6
+    126          
+    127          	result |= inv_icm20948_read_mems_reg(s, REG_GYRO_SMPLRT_DIV, 1, &saved_regs->gyro_smplrt_div);
+   \   00000080   0xF105 0x0309      ADD      R3,R5,#+9
+   \   00000084   0x2201             MOVS     R2,#+1
+   \   00000086   0xF44F 0x7180      MOV      R1,#+256
+   \   0000008A   0x4620             MOV      R0,R4
+   \   0000008C   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000090   0x4306             ORRS     R6,R0,R6
+    128          
+    129          	result |= inv_icm20948_read_mems_reg(s, REG_GYRO_CONFIG_1, 1, &saved_regs->gyro_config_1);
+   \   00000092   0xF105 0x030A      ADD      R3,R5,#+10
+   \   00000096   0x2201             MOVS     R2,#+1
+   \   00000098   0xF240 0x1101      MOVW     R1,#+257
+   \   0000009C   0x4620             MOV      R0,R4
+   \   0000009E   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   000000A2   0x4306             ORRS     R6,R0,R6
+    130          
+    131          	result |= inv_icm20948_read_mems_reg(s, REG_GYRO_CONFIG_2, 1, &saved_regs->gyro_config_2);
+   \   000000A4   0xF105 0x030B      ADD      R3,R5,#+11
+   \   000000A8   0x2201             MOVS     R2,#+1
+   \   000000AA   0xF44F 0x7181      MOV      R1,#+258
+   \   000000AE   0x4620             MOV      R0,R4
+   \   000000B0   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   000000B4   0x4306             ORRS     R6,R0,R6
+    132          
+    133          	result |= inv_icm20948_read_mems_reg(s, REG_ACCEL_SMPLRT_DIV_1, 1, &saved_regs->accel_smplrt_div_1);
+   \   000000B6   0xF105 0x030C      ADD      R3,R5,#+12
+   \   000000BA   0x2201             MOVS     R2,#+1
+   \   000000BC   0xF44F 0x7188      MOV      R1,#+272
+   \   000000C0   0x4620             MOV      R0,R4
+   \   000000C2   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   000000C6   0x4306             ORRS     R6,R0,R6
+    134          
+    135          	result |= inv_icm20948_read_mems_reg(s, REG_ACCEL_SMPLRT_DIV_2, 1, &saved_regs->accel_smplrt_div_2);
+   \   000000C8   0xF105 0x030D      ADD      R3,R5,#+13
+   \   000000CC   0x2201             MOVS     R2,#+1
+   \   000000CE   0xF240 0x1111      MOVW     R1,#+273
+   \   000000D2   0x4620             MOV      R0,R4
+   \   000000D4   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   000000D8   0x4306             ORRS     R6,R0,R6
+    136          
+    137          	result |= inv_icm20948_read_mems_reg(s, REG_ACCEL_CONFIG, 1, &saved_regs->accel_config);
+   \   000000DA   0xF105 0x030E      ADD      R3,R5,#+14
+   \   000000DE   0x2201             MOVS     R2,#+1
+   \   000000E0   0xF44F 0x718A      MOV      R1,#+276
+   \   000000E4   0x4620             MOV      R0,R4
+   \   000000E6   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   000000EA   0x4306             ORRS     R6,R0,R6
+    138          
+    139          	result |= inv_icm20948_read_mems_reg(s, REG_ACCEL_CONFIG_2, 1, &saved_regs->accel_config_2);
+   \   000000EC   0xF105 0x030F      ADD      R3,R5,#+15
+   \   000000F0   0x2201             MOVS     R2,#+1
+   \   000000F2   0xF240 0x1115      MOVW     R1,#+277
+   \   000000F6   0x4620             MOV      R0,R4
+   \   000000F8   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   000000FC   0x4330             ORRS     R0,R0,R6
+    140          
+    141          	return result;
+   \   000000FE   0xBD70             POP      {R4-R6,PC}       ;; return
+    142          }
+    143          
+
+   \                                 In section .text, align 2, keep-with-next
+    144          static int inv_recover_setting(struct inv_icm20948 * s, const struct recover_regs * saved_regs)
+    145          {
+   \                     inv_recover_setting: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+    146          	int result = 0;
+    147          
+    148          	// Stop sensors
+    149              result |= inv_icm20948_write_single_mems_reg(s, REG_PWR_MGMT_2, 
+    150                                               BIT_PWR_PRESSURE_STBY | BIT_PWR_ACCEL_STBY | BIT_PWR_GYRO_STBY);
+   \   00000006   0x227F             MOVS     R2,#+127
+   \   00000008   0x2107             MOVS     R1,#+7
+   \   0000000A   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   0000000E   0x4606             MOV      R6,R0
+    151          
+    152          	// Restore sensor configurations
+    153          	result |= inv_icm20948_write_single_mems_reg(s, REG_GYRO_SMPLRT_DIV, saved_regs->gyro_smplrt_div);
+   \   00000010   0x7A6A             LDRB     R2,[R5, #+9]
+   \   00000012   0xF44F 0x7180      MOV      R1,#+256
+   \   00000016   0x4620             MOV      R0,R4
+   \   00000018   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   0000001C   0x4306             ORRS     R6,R0,R6
+    154          	
+    155          	result |= inv_icm20948_write_single_mems_reg(s, REG_GYRO_CONFIG_1, saved_regs->gyro_config_1);
+   \   0000001E   0x7AAA             LDRB     R2,[R5, #+10]
+   \   00000020   0xF240 0x1101      MOVW     R1,#+257
+   \   00000024   0x4620             MOV      R0,R4
+   \   00000026   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   0000002A   0x4306             ORRS     R6,R0,R6
+    156          
+    157          	result |= inv_icm20948_write_single_mems_reg(s, REG_GYRO_CONFIG_2, saved_regs->gyro_config_2);
+   \   0000002C   0x7AEA             LDRB     R2,[R5, #+11]
+   \   0000002E   0xF44F 0x7181      MOV      R1,#+258
+   \   00000032   0x4620             MOV      R0,R4
+   \   00000034   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000038   0x4306             ORRS     R6,R0,R6
+    158          	
+    159          	result |= inv_icm20948_write_single_mems_reg(s, REG_ACCEL_SMPLRT_DIV_1, saved_regs->accel_smplrt_div_1);
+   \   0000003A   0x7B2A             LDRB     R2,[R5, #+12]
+   \   0000003C   0xF44F 0x7188      MOV      R1,#+272
+   \   00000040   0x4620             MOV      R0,R4
+   \   00000042   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000046   0x4306             ORRS     R6,R0,R6
+    160          
+    161          	result |= inv_icm20948_write_single_mems_reg(s, REG_ACCEL_SMPLRT_DIV_2, saved_regs->accel_smplrt_div_2);
+   \   00000048   0x7B6A             LDRB     R2,[R5, #+13]
+   \   0000004A   0xF240 0x1111      MOVW     R1,#+273
+   \   0000004E   0x4620             MOV      R0,R4
+   \   00000050   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000054   0x4306             ORRS     R6,R0,R6
+    162          
+    163          	result |= inv_icm20948_write_single_mems_reg(s, REG_ACCEL_CONFIG, saved_regs->accel_config);
+   \   00000056   0x7BAA             LDRB     R2,[R5, #+14]
+   \   00000058   0xF44F 0x718A      MOV      R1,#+276
+   \   0000005C   0x4620             MOV      R0,R4
+   \   0000005E   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000062   0x4306             ORRS     R6,R0,R6
+    164          
+    165          	result |= inv_icm20948_write_single_mems_reg(s, REG_ACCEL_CONFIG_2, saved_regs->accel_config_2);
+   \   00000064   0x7BEA             LDRB     R2,[R5, #+15]
+   \   00000066   0xF240 0x1115      MOVW     R1,#+277
+   \   0000006A   0x4620             MOV      R0,R4
+   \   0000006C   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000070   0x4306             ORRS     R6,R0,R6
+    166          
+    167          	// Restore FIFO configurations
+    168          	result |= inv_icm20948_write_single_mems_reg(s, REG_FIFO_CFG, saved_regs->fifo_cfg);
+   \   00000072   0x782A             LDRB     R2,[R5, #+0]
+   \   00000074   0x2176             MOVS     R1,#+118
+   \   00000076   0x4620             MOV      R0,R4
+   \   00000078   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   0000007C   0x4306             ORRS     R6,R0,R6
+    169          
+    170          	result |= inv_icm20948_write_single_mems_reg(s, REG_LP_CONFIG, saved_regs->lp_config);
+   \   0000007E   0x78AA             LDRB     R2,[R5, #+2]
+   \   00000080   0x2105             MOVS     R1,#+5
+   \   00000082   0x4620             MOV      R0,R4
+   \   00000084   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000088   0x4306             ORRS     R6,R0,R6
+    171          
+    172          	result |= inv_icm20948_write_single_mems_reg(s, REG_INT_ENABLE, saved_regs->int_enable);
+   \   0000008A   0x78EA             LDRB     R2,[R5, #+3]
+   \   0000008C   0x2110             MOVS     R1,#+16
+   \   0000008E   0x4620             MOV      R0,R4
+   \   00000090   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000094   0x4306             ORRS     R6,R0,R6
+    173          
+    174          	result |= inv_icm20948_write_single_mems_reg(s, REG_INT_ENABLE_1, saved_regs->int_enable_1);
+   \   00000096   0x792A             LDRB     R2,[R5, #+4]
+   \   00000098   0x2111             MOVS     R1,#+17
+   \   0000009A   0x4620             MOV      R0,R4
+   \   0000009C   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000A0   0x4306             ORRS     R6,R0,R6
+    175          
+    176          	result |= inv_icm20948_write_single_mems_reg(s, REG_FIFO_EN, saved_regs->fifo_en);
+   \   000000A2   0x79AA             LDRB     R2,[R5, #+6]
+   \   000000A4   0x2166             MOVS     R1,#+102
+   \   000000A6   0x4620             MOV      R0,R4
+   \   000000A8   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000AC   0x4306             ORRS     R6,R0,R6
+    177          
+    178          	result |= inv_icm20948_write_single_mems_reg(s, REG_FIFO_EN_2, saved_regs->fifo_en_2);
+   \   000000AE   0x79EA             LDRB     R2,[R5, #+7]
+   \   000000B0   0x2167             MOVS     R1,#+103
+   \   000000B2   0x4620             MOV      R0,R4
+   \   000000B4   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000B8   0x4306             ORRS     R6,R0,R6
+    179          
+    180          	result |= inv_icm20948_write_single_mems_reg(s, REG_FIFO_RST, MAX_5_BIT_VALUE);
+   \   000000BA   0x221F             MOVS     R2,#+31
+   \   000000BC   0x2168             MOVS     R1,#+104
+   \   000000BE   0x4620             MOV      R0,R4
+   \   000000C0   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000C4   0x4306             ORRS     R6,R0,R6
+    181          
+    182          	result |= inv_icm20948_write_single_mems_reg(s, REG_FIFO_RST, saved_regs->fifo_rst);
+   \   000000C6   0x7A2A             LDRB     R2,[R5, #+8]
+   \   000000C8   0x2168             MOVS     R1,#+104
+   \   000000CA   0x4620             MOV      R0,R4
+   \   000000CC   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000D0   0x4306             ORRS     R6,R0,R6
+    183          
+    184          	// Reset DMP
+    185          	result |= inv_icm20948_write_single_mems_reg(s, REG_USER_CTRL, 
+    186                                               (saved_regs->user_ctrl & (~BIT_FIFO_EN)) | BIT_DMP_RST);
+   \   000000D2   0x7868             LDRB     R0,[R5, #+1]
+   \   000000D4   0xF000 0x00BF      AND      R0,R0,#0xBF
+   \   000000D8   0xF040 0x0208      ORR      R2,R0,#0x8
+   \   000000DC   0x2103             MOVS     R1,#+3
+   \   000000DE   0x4620             MOV      R0,R4
+   \   000000E0   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000E4   0xEA40 0x0506      ORR      R5,R0,R6
+    187          	inv_icm20948_sleep_us(DMP_RESET_TIME*1000);
+   \   000000E8   0xF644 0x6020      MOVW     R0,#+20000
+   \   000000EC   0x.... 0x....      BL       inv_icm20948_sleep_us
+    188              
+    189              result |=inv_icm20948_set_dmp_address(s);
+   \   000000F0   0x4620             MOV      R0,R4
+   \   000000F2   0x.... 0x....      BL       inv_icm20948_set_dmp_address
+   \   000000F6   0x4305             ORRS     R5,R0,R5
+    190              result |=inv_icm20948_set_secondary(s);
+   \   000000F8   0x4620             MOV      R0,R4
+   \   000000FA   0x.... 0x....      BL       inv_icm20948_set_secondary
+   \   000000FE   0x4305             ORRS     R5,R0,R5
+    191              result |=inv_icm20948_setup_compass_akm(s);
+   \   00000100   0x4620             MOV      R0,R4
+   \   00000102   0x.... 0x....      BL       inv_icm20948_setup_compass_akm
+   \   00000106   0x4305             ORRS     R5,R0,R5
+    192              result |= inv_icm20948_sleep_mems(s);
+   \   00000108   0x4620             MOV      R0,R4
+   \   0000010A   0x.... 0x....      BL       inv_icm20948_sleep_mems
+   \   0000010E   0x4328             ORRS     R0,R0,R5
+    193          	return result;
+   \   00000110   0xBD70             POP      {R4-R6,PC}       ;; return
+    194          }
+    195          
+    196          /**
+    197          *  @brief check accel or gyro self test
+    198          *  @param[in] sensorType type of sensor to be tested
+    199          *  @param[in] selfTestValuesReadFromReg self test written in register at production time.
+    200          *  @param[in] meanNormalTestValues average value of normal test.
+    201          *  @param[in] meanSelfTestValues   average value of self test
+    202          *  @return zero as success. A non-zero return value indicates failure in self test.
+    203          */
+
+   \                                 In section .text, align 2, keep-with-next
+    204          static int inv_check_accelgyro_self_test(enum INV_SENSORS sensorType, uint8_t * selfTestValuesReadFromReg, int *meanNormalTestValues, int *meanSelfTestValues) 
+    205          {
+   \                     inv_check_accelgyro_self_test: (+1)
+   \   00000000   0xB5F0             PUSH     {R4-R7,LR}
+   \   00000002   0xB086             SUB      SP,SP,#+24
+    206              int ret_val;
+    207              int lIsStOtpReadZero = 0;
+   \   00000004   0x2500             MOVS     R5,#+0
+    208              int l_st_otp_read[3], lDiffNormalStValues[3], i;
+    209              
+    210              ret_val = 0;
+   \   00000006   0x462C             MOV      R4,R5
+    211              
+    212              // Calculate factory Self-Test value (ST_OTP) based on the following equation:
+    213              // The factory Self-Test value (ST_OTP) is calculated from the ST_Code (the SELF_TEST values read)
+    214              // using the following equation, where “FS” is the full scale value code:
+    215              // st_otp = 2620/2^FS * 1.01^(st_value - 1)
+    216              // the result of the equation is in sSelfTestEquation array
+    217              for (i = 0; i < 3; i++) {
+   \   00000008   0x4627             MOV      R7,R4
+   \   0000000A   0x466E             MOV      R6,SP
+   \   0000000C   0xE004             B.N      ??inv_check_accelgyro_self_test_0
+    218                  if (selfTestValuesReadFromReg[i] != 0) {
+    219                      l_st_otp_read[i] = sSelfTestEquation[selfTestValuesReadFromReg[i] - 1];
+    220                  } else {
+    221                      l_st_otp_read[i] = 0;
+   \                     ??inv_check_accelgyro_self_test_1: (+1)
+   \   0000000E   0x4625             MOV      R5,R4
+   \   00000010   0xF846 0x5027      STR      R5,[R6, R7, LSL #+2]
+    222                      lIsStOtpReadZero = 1;
+   \   00000014   0x2501             MOVS     R5,#+1
+    223                  }
+   \                     ??inv_check_accelgyro_self_test_2: (+1)
+   \   00000016   0x1C7F             ADDS     R7,R7,#+1
+   \                     ??inv_check_accelgyro_self_test_0: (+1)
+   \   00000018   0x2F03             CMP      R7,#+3
+   \   0000001A   0xDA0E             BGE.N    ??inv_check_accelgyro_self_test_3
+   \   0000001C   0xF811 0xC007      LDRB     R12,[R1, R7]
+   \   00000020   0x46E6             MOV      LR,R12
+   \   00000022   0xF1BE 0x0F00      CMP      LR,#+0
+   \   00000026   0xD0F2             BEQ.N    ??inv_check_accelgyro_self_test_1
+   \   00000028   0x.... 0x....      ADR.W    LR,sSelfTestEquation
+   \   0000002C   0xEB0E 0x0C4C      ADD      R12,LR,R12, LSL #+1
+   \   00000030   0xF83C 0xCC02      LDRH     R12,[R12, #-2]
+   \   00000034   0xF846 0xC027      STR      R12,[R6, R7, LSL #+2]
+   \   00000038   0xE7ED             B.N      ??inv_check_accelgyro_self_test_2
+    224              }
+    225              
+    226              // Calculate the Self-Test response as follows:
+    227              // - GXST = GX_ST_OS - GX_OS
+    228              // - GYST = GY_ST_OS - GY_OS
+    229              // - GZST = GZ_ST_OS - GZ_OS
+    230              // - AXST = AX_ST_OS - AX_OS
+    231              // - AYST = AY_ST_OS - AY_OS
+    232              // - AZST = AZ_ST_OS - AZ_OS
+    233              for (i = 0; i < 3; i++) {
+   \                     ??inv_check_accelgyro_self_test_3: (+1)
+   \   0000003A   0x4621             MOV      R1,R4
+   \   0000003C   0xE001             B.N      ??inv_check_accelgyro_self_test_4
+    234                  lDiffNormalStValues[i] = meanSelfTestValues[i] - meanNormalTestValues[i];
+    235                  
+    236                  // Ensure the factory Self-Test values ST_OTP are not 0
+    237                  if (!lIsStOtpReadZero) {
+    238                      // Compare the current Self-Test response (GXST, GYST, GZST, AXST, AYST and AZST) to the factory Self-Test values (ST_OTP)
+    239                      // and report Self-Test is passing if all the following criteria are fulfilled:
+    240                      // (GXST / GXST_OTP)  > 0.5
+    241                      if (lDiffNormalStValues[i] < LOWER_BOUND_CHECK(l_st_otp_read[i]) )
+    242                          ret_val = 1;
+    243                      if (sensorType != INV_SENSOR_GYRO)
+    244          				// (AXST / AXST_OTP)  < 1.5
+    245                          if (lDiffNormalStValues[i] > UPPER_BOUND_CHECK(l_st_otp_read[i]) )
+    246                              ret_val = 1;
+    247                  } else
+    248                      ret_val = 1;
+   \                     ??inv_check_accelgyro_self_test_5: (+1)
+   \   0000003E   0x2401             MOVS     R4,#+1
+   \                     ??inv_check_accelgyro_self_test_6: (+1)
+   \   00000040   0x1C49             ADDS     R1,R1,#+1
+   \                     ??inv_check_accelgyro_self_test_4: (+1)
+   \   00000042   0x2903             CMP      R1,#+3
+   \   00000044   0xDA18             BGE.N    ??inv_check_accelgyro_self_test_7
+   \   00000046   0xF853 0x6021      LDR      R6,[R3, R1, LSL #+2]
+   \   0000004A   0xF852 0x7021      LDR      R7,[R2, R1, LSL #+2]
+   \   0000004E   0x1BF7             SUBS     R7,R6,R7
+   \   00000050   0xAE03             ADD      R6,SP,#+12
+   \   00000052   0xF846 0x7021      STR      R7,[R6, R1, LSL #+2]
+   \   00000056   0x2D00             CMP      R5,#+0
+   \   00000058   0xD1F1             BNE.N    ??inv_check_accelgyro_self_test_5
+   \   0000005A   0x466E             MOV      R6,SP
+   \   0000005C   0xF856 0x6021      LDR      R6,[R6, R1, LSL #+2]
+   \   00000060   0xEBB7 0x0F66      CMP      R7,R6, ASR #+1
+   \   00000064   0xDA00             BGE.N    ??inv_check_accelgyro_self_test_8
+   \   00000066   0x2401             MOVS     R4,#+1
+   \                     ??inv_check_accelgyro_self_test_8: (+1)
+   \   00000068   0x2801             CMP      R0,#+1
+   \   0000006A   0xD0E9             BEQ.N    ??inv_check_accelgyro_self_test_6
+   \   0000006C   0xEB06 0x0666      ADD      R6,R6,R6, ASR #+1
+   \   00000070   0x42BE             CMP      R6,R7
+   \   00000072   0xDAE5             BGE.N    ??inv_check_accelgyro_self_test_6
+   \   00000074   0x2401             MOVS     R4,#+1
+   \   00000076   0xE7E3             B.N      ??inv_check_accelgyro_self_test_6
+    249              }
+    250              
+    251              return ret_val;
+   \                     ??inv_check_accelgyro_self_test_7: (+1)
+   \   00000078   0x4620             MOV      R0,R4
+   \   0000007A   0xB006             ADD      SP,SP,#+24
+   \   0000007C   0xBDF0             POP      {R4-R7,PC}       ;; return
+    252          }
+    253          
+
+   \                                 In section .text, align 2, keep-with-next
+    254          static int inv_setup_selftest(struct inv_icm20948 * s, struct recover_regs * recover_regs)
+    255          {
+   \                     inv_setup_selftest: (+1)
+   \   00000000   0xE92D 0x41F0      PUSH     {R4-R8,LR}
+   \   00000004   0x4604             MOV      R4,R0
+   \   00000006   0x460F             MOV      R7,R1
+    256          	int result = 0;
+    257          
+    258          	// reset static value
+    259          	memset(s->gyro_st_data, 0, sizeof(s->gyro_st_data));
+   \   00000008   0xF104 0x0591      ADD      R5,R4,#+145
+   \   0000000C   0x2200             MOVS     R2,#+0
+   \   0000000E   0x2103             MOVS     R1,#+3
+   \   00000010   0x4628             MOV      R0,R5
+   \   00000012   0x.... 0x....      BL       __aeabi_memset
+    260          	memset(s->accel_st_data, 0, sizeof(s->accel_st_data));
+   \   00000016   0xF104 0x0694      ADD      R6,R4,#+148
+   \   0000001A   0x2200             MOVS     R2,#+0
+   \   0000001C   0x2103             MOVS     R1,#+3
+   \   0000001E   0x4630             MOV      R0,R6
+   \   00000020   0x.... 0x....      BL       __aeabi_memset4
+    261          	
+    262          	// Wake up
+    263              result |= inv_icm20948_write_single_mems_reg(s, REG_PWR_MGMT_1, BIT_CLK_PLL);
+   \   00000024   0x2201             MOVS     R2,#+1
+   \   00000026   0x2106             MOVS     R1,#+6
+   \   00000028   0x4620             MOV      R0,R4
+   \   0000002A   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   0000002E   0x4680             MOV      R8,R0
+    264              
+    265          	// Save the current settings
+    266          	result |= inv_save_setting(s, recover_regs);
+   \   00000030   0x4639             MOV      R1,R7
+   \   00000032   0x4620             MOV      R0,R4
+   \   00000034   0x.... 0x....      BL       inv_save_setting
+   \   00000038   0xEA40 0x0708      ORR      R7,R0,R8
+    267              
+    268          	// Stop sensors
+    269              result |= inv_icm20948_write_single_mems_reg(s, REG_PWR_MGMT_2, BIT_PWR_ACCEL_STBY | BIT_PWR_GYRO_STBY);
+   \   0000003C   0x223F             MOVS     R2,#+63
+   \   0000003E   0x2107             MOVS     R1,#+7
+   \   00000040   0x4620             MOV      R0,R4
+   \   00000042   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000046   0x4307             ORRS     R7,R0,R7
+    270              
+    271              /*   Perform a soft-reset of the chip by setting the MSB of PWR_MGMT_1 register
+    272              * This will clear any prior states in the chip
+    273              */
+    274              result |= inv_icm20948_write_single_mems_reg(s, REG_PWR_MGMT_1, BIT_H_RESET);               
+   \   00000048   0x2280             MOVS     R2,#+128
+   \   0000004A   0x2106             MOVS     R1,#+6
+   \   0000004C   0x4620             MOV      R0,R4
+   \   0000004E   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000052   0x4307             ORRS     R7,R0,R7
+    275              inv_icm20948_sleep_us(100000); //100ms delay after soft reset--yd
+   \   00000054   0x....             LDR.N    R0,??DataTable1  ;; 0x186a0
+   \   00000056   0x.... 0x....      BL       inv_icm20948_sleep_us
+    276                  
+    277              // Wake up
+    278              result |= inv_icm20948_write_single_mems_reg(s, REG_PWR_MGMT_1, BIT_CLK_PLL);
+   \   0000005A   0x2201             MOVS     R2,#+1
+   \   0000005C   0x2106             MOVS     R1,#+6
+   \   0000005E   0x4620             MOV      R0,R4
+   \   00000060   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000064   0x4307             ORRS     R7,R0,R7
+    279          	if (result)
+   \   00000066   0xD001             BEQ.N    ??inv_setup_selftest_0
+    280          		return result;
+   \   00000068   0x4638             MOV      R0,R7
+   \   0000006A   0xE06B             B.N      ??inv_setup_selftest_1
+    281                  
+    282          	// Set cycle mode
+    283          	result |= inv_icm20948_write_single_mems_reg(s, REG_LP_CONFIG, 
+    284                                               BIT_I2C_MST_CYCLE | BIT_ACCEL_CYCLE | BIT_GYRO_CYCLE);
+   \                     ??inv_setup_selftest_0: (+1)
+   \   0000006C   0x2270             MOVS     R2,#+112
+   \   0000006E   0x2105             MOVS     R1,#+5
+   \   00000070   0x4620             MOV      R0,R4
+   \   00000072   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000076   0x4607             MOV      R7,R0
+    285              
+    286          	// Configure FSR and DLPF for gyro
+    287          	result |= inv_icm20948_write_single_mems_reg(s, REG_GYRO_SMPLRT_DIV, SELFTEST_GYRO_SMPLRT_DIV);
+   \   00000078   0x220A             MOVS     R2,#+10
+   \   0000007A   0xF44F 0x7180      MOV      R1,#+256
+   \   0000007E   0x4620             MOV      R0,R4
+   \   00000080   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000084   0x4307             ORRS     R7,R0,R7
+    288          
+    289          	result |= inv_icm20948_write_single_mems_reg(s, REG_GYRO_CONFIG_1, SELFTEST_GYRO_FS);
+   \   00000086   0x2201             MOVS     R2,#+1
+   \   00000088   0xF240 0x1101      MOVW     R1,#+257
+   \   0000008C   0x4620             MOV      R0,R4
+   \   0000008E   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000092   0x4307             ORRS     R7,R0,R7
+    290          
+    291          	result |= inv_icm20948_write_single_mems_reg(s, REG_GYRO_CONFIG_2, SELFTEST_GYRO_AVGCFG);
+   \   00000094   0x2203             MOVS     R2,#+3
+   \   00000096   0xF44F 0x7181      MOV      R1,#+258
+   \   0000009A   0x4620             MOV      R0,R4
+   \   0000009C   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000A0   0x4307             ORRS     R7,R0,R7
+    292              
+    293          	// Configure FSR and DLPF for accel
+    294          	result |= inv_icm20948_write_single_mems_reg(s, REG_ACCEL_SMPLRT_DIV_1, 0);
+   \   000000A2   0x2200             MOVS     R2,#+0
+   \   000000A4   0xF44F 0x7188      MOV      R1,#+272
+   \   000000A8   0x4620             MOV      R0,R4
+   \   000000AA   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000AE   0x4307             ORRS     R7,R0,R7
+    295          
+    296          	result |= inv_icm20948_write_single_mems_reg(s, REG_ACCEL_SMPLRT_DIV_2, SELFTEST_ACCEL_SMPLRT_DIV);
+   \   000000B0   0x220A             MOVS     R2,#+10
+   \   000000B2   0xF240 0x1111      MOVW     R1,#+273
+   \   000000B6   0x4620             MOV      R0,R4
+   \   000000B8   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000BC   0x4307             ORRS     R7,R0,R7
+    297          
+    298          	result |= inv_icm20948_write_single_mems_reg(s, REG_ACCEL_CONFIG, SELFTEST_ACCEL_FS);
+   \   000000BE   0x2239             MOVS     R2,#+57
+   \   000000C0   0xF44F 0x718A      MOV      R1,#+276
+   \   000000C4   0x4620             MOV      R0,R4
+   \   000000C6   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000CA   0x4307             ORRS     R7,R0,R7
+    299          
+    300          	result |= inv_icm20948_write_single_mems_reg(s, REG_ACCEL_CONFIG_2, SELFTEST_ACCEL_DEC3_CFG);
+   \   000000CC   0x2202             MOVS     R2,#+2
+   \   000000CE   0xF240 0x1115      MOVW     R1,#+277
+   \   000000D2   0x4620             MOV      R0,R4
+   \   000000D4   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   000000D8   0x4307             ORRS     R7,R0,R7
+    301          
+    302              // Read selftest values
+    303              // Retrieve factory Self-Test code (ST_Code) from SELF_TEST registers  (User Bank 1): 
+    304          	result |= inv_icm20948_read_mems_reg(s, REG_SELF_TEST1, 1, &s->gyro_st_data[0]);
+   \   000000DA   0x462B             MOV      R3,R5
+   \   000000DC   0x2201             MOVS     R2,#+1
+   \   000000DE   0x2182             MOVS     R1,#+130
+   \   000000E0   0x4620             MOV      R0,R4
+   \   000000E2   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   000000E6   0xEA40 0x0507      ORR      R5,R0,R7
+    305          
+    306          	result |= inv_icm20948_read_mems_reg(s, REG_SELF_TEST2, 1, &s->gyro_st_data[1]);
+   \   000000EA   0xF104 0x0392      ADD      R3,R4,#+146
+   \   000000EE   0x2201             MOVS     R2,#+1
+   \   000000F0   0x2183             MOVS     R1,#+131
+   \   000000F2   0x4620             MOV      R0,R4
+   \   000000F4   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   000000F8   0x4305             ORRS     R5,R0,R5
+    307          
+    308          	result |= inv_icm20948_read_mems_reg(s, REG_SELF_TEST3, 1, &s->gyro_st_data[2]);
+   \   000000FA   0xF104 0x0393      ADD      R3,R4,#+147
+   \   000000FE   0x2201             MOVS     R2,#+1
+   \   00000100   0x2184             MOVS     R1,#+132
+   \   00000102   0x4620             MOV      R0,R4
+   \   00000104   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000108   0x4305             ORRS     R5,R0,R5
+    309          
+    310          	result |= inv_icm20948_read_mems_reg(s, REG_SELF_TEST4, 1, &s->accel_st_data[0]);
+   \   0000010A   0x4633             MOV      R3,R6
+   \   0000010C   0x2201             MOVS     R2,#+1
+   \   0000010E   0x218E             MOVS     R1,#+142
+   \   00000110   0x4620             MOV      R0,R4
+   \   00000112   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000116   0x4305             ORRS     R5,R0,R5
+    311          
+    312          	result |= inv_icm20948_read_mems_reg(s, REG_SELF_TEST5, 1, &s->accel_st_data[1]);
+   \   00000118   0xF104 0x0395      ADD      R3,R4,#+149
+   \   0000011C   0x2201             MOVS     R2,#+1
+   \   0000011E   0x218F             MOVS     R1,#+143
+   \   00000120   0x4620             MOV      R0,R4
+   \   00000122   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000126   0x4305             ORRS     R5,R0,R5
+    313          
+    314          	result |= inv_icm20948_read_mems_reg(s, REG_SELF_TEST6, 1, &s->accel_st_data[2]);
+   \   00000128   0xF104 0x0396      ADD      R3,R4,#+150
+   \   0000012C   0x2201             MOVS     R2,#+1
+   \   0000012E   0x2190             MOVS     R1,#+144
+   \   00000130   0x4620             MOV      R0,R4
+   \   00000132   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000136   0xEA40 0x0705      ORR      R7,R0,R5
+    315          
+    316          	// Restart sensors
+    317              inv_icm20948_sleep_us(GYRO_ENGINE_UP_TIME*1000);
+   \   0000013A   0xF24C 0x3050      MOVW     R0,#+50000
+   \   0000013E   0x.... 0x....      BL       inv_icm20948_sleep_us
+    318              
+    319          	return result;
+   \   00000142   0x4638             MOV      R0,R7
+   \                     ??inv_setup_selftest_1: (+1)
+   \   00000144   0xE8BD 0x81F0      POP      {R4-R8,PC}       ;; return
+    320          }
+    321          
+
+   \                                 In section .text, align 2, keep-with-next
+    322          static int inv_selftest_read_samples(struct inv_icm20948 * self, enum INV_SENSORS type, int *sum_result, int *s)
+    323          {
+   \                     inv_selftest_read_samples: (+1)
+   \   00000000   0xB5F0             PUSH     {R4-R7,LR}
+   \   00000002   0xB085             SUB      SP,SP,#+20
+   \   00000004   0x4604             MOV      R4,R0
+   \   00000006   0x4615             MOV      R5,R2
+   \   00000008   0x461E             MOV      R6,R3
+    324          	uint8_t w;
+    325          	int16_t vals[3];
+    326          	uint8_t d[BYTES_PER_SENSOR];
+    327          	int j;
+    328              
+    329          	// Average 200 readings and save the averaged values as GX_OS, GY_OS, GZ_OS, AX_OS, AY_OS and AZ_OS. 
+    330          	// - GX_OS = Average (GYRO_XOUT_H | GYRO_XOUT_L)
+    331          	// - GY_OS = Average (GYRO_YOUT_H | GYRO_YOUT_L)
+    332          	// - GZ_OS = Average (GYRO_ZOUT_H | GYRO_ZOUT_L)
+    333          	// - AX_OS = Average (ACCEL_XOUT_H | ACCEL_XOUT_L)
+    334          	// - AY_OS = Average (ACCEL_YOUT_H | ACCEL_YOUT_L)
+    335          	// - AZ_OS = Average (ACCEL_ZOUT_H | ACCEL_ZOUT_L)
+    336          
+    337              if (INV_SENSOR_GYRO == type)
+   \   0000000A   0x2901             CMP      R1,#+1
+   \   0000000C   0xD101             BNE.N    ??inv_selftest_read_samples_0
+    338                  w = REG_GYRO_XOUT_H_SH;
+   \   0000000E   0x2733             MOVS     R7,#+51
+   \   00000010   0xE01D             B.N      ??inv_selftest_read_samples_1
+    339              else
+    340                  w = REG_ACCEL_XOUT_H_SH;
+   \                     ??inv_selftest_read_samples_0: (+1)
+   \   00000012   0x272D             MOVS     R7,#+45
+   \   00000014   0xE01B             B.N      ??inv_selftest_read_samples_1
+    341              
+    342              while (*s < DEF_ST_SAMPLES) {
+    343                  
+    344                      if(inv_icm20948_read_mems_reg(self, w, BYTES_PER_SENSOR, d))
+    345                          return -1;
+    346                         
+    347                      for (j = 0; j < THREE_AXES; j++) {
+    348                          vals[j] = (d[(2*j)]<<8) | (d[(2*j)+ 1] & 0xff);
+   \                     ??inv_selftest_read_samples_2: (+1)
+   \   00000016   0x4668             MOV      R0,SP
+   \   00000018   0xF810 0x0011      LDRB     R0,[R0, R1, LSL #+1]
+   \   0000001C   0x466A             MOV      R2,SP
+   \   0000001E   0xEB02 0x0241      ADD      R2,R2,R1, LSL #+1
+   \   00000022   0x7852             LDRB     R2,[R2, #+1]
+   \   00000024   0xEA42 0x2000      ORR      R0,R2,R0, LSL #+8
+   \   00000028   0xAA02             ADD      R2,SP,#+8
+   \   0000002A   0xF822 0x0011      STRH     R0,[R2, R1, LSL #+1]
+    349                          sum_result[j] += vals[j];
+   \   0000002E   0xF855 0x2021      LDR      R2,[R5, R1, LSL #+2]
+   \   00000032   0xFA02 0xF080      SXTAH    R0,R2,R0
+   \   00000036   0xF845 0x0021      STR      R0,[R5, R1, LSL #+2]
+    350                      }
+   \   0000003A   0x1C49             ADDS     R1,R1,#+1
+   \                     ??inv_selftest_read_samples_3: (+1)
+   \   0000003C   0x2903             CMP      R1,#+3
+   \   0000003E   0xDBEA             BLT.N    ??inv_selftest_read_samples_2
+    351          
+    352                      (*s)++;
+   \   00000040   0x6830             LDR      R0,[R6, #+0]
+   \   00000042   0x1C40             ADDS     R0,R0,#+1
+   \   00000044   0x6030             STR      R0,[R6, #+0]
+    353          
+    354          			inv_icm20948_sleep_us(WAIT_TIME_BTW_2_SAMPLESREAD*1000);
+   \   00000046   0xF242 0x7010      MOVW     R0,#+10000
+   \   0000004A   0x.... 0x....      BL       inv_icm20948_sleep_us
+   \                     ??inv_selftest_read_samples_1: (+1)
+   \   0000004E   0x6830             LDR      R0,[R6, #+0]
+   \   00000050   0x28C8             CMP      R0,#+200
+   \   00000052   0xDA0C             BGE.N    ??inv_selftest_read_samples_4
+   \   00000054   0x466B             MOV      R3,SP
+   \   00000056   0x2206             MOVS     R2,#+6
+   \   00000058   0x4639             MOV      R1,R7
+   \   0000005A   0x4620             MOV      R0,R4
+   \   0000005C   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   00000060   0x2800             CMP      R0,#+0
+   \   00000062   0xD002             BEQ.N    ??inv_selftest_read_samples_5
+   \   00000064   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000068   0xE002             B.N      ??inv_selftest_read_samples_6
+   \                     ??inv_selftest_read_samples_5: (+1)
+   \   0000006A   0x2100             MOVS     R1,#+0
+   \   0000006C   0xE7E6             B.N      ??inv_selftest_read_samples_3
+    355              }
+    356          	return 0;
+   \                     ??inv_selftest_read_samples_4: (+1)
+   \   0000006E   0x2000             MOVS     R0,#+0
+   \                     ??inv_selftest_read_samples_6: (+1)
+   \   00000070   0xB005             ADD      SP,SP,#+20
+   \   00000072   0xBDF0             POP      {R4-R7,PC}       ;; return
+    357          }
+    358          
+    359          /*
+    360          *  inv_do_test_accelgyro() - do the actual test of self testing
+    361          */
+
+   \                                 In section .text, align 2, keep-with-next
+    362          static int inv_do_test_accelgyro(struct inv_icm20948 * s, enum INV_SENSORS sensorType, int *meanValue, int *stMeanValue)
+    363          {
+   \                     inv_do_test_accelgyro: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   \   00000006   0x4617             MOV      R7,R2
+   \   00000008   0x461E             MOV      R6,R3
+    364          	int result, i, j;
+    365          	int lNbSamples = 0;
+   \   0000000A   0x2000             MOVS     R0,#+0
+   \   0000000C   0x9000             STR      R0,[SP, #+0]
+    366              
+    367              // initialize output to be 0
+    368          	for (i = 0; i < THREE_AXES; i++) {
+   \   0000000E   0x4601             MOV      R1,R0
+   \   00000010   0xE004             B.N      ??inv_do_test_accelgyro_0
+    369          		meanValue[i] = 0;
+   \                     ??inv_do_test_accelgyro_1: (+1)
+   \   00000012   0xF847 0x1020      STR      R1,[R7, R0, LSL #+2]
+    370          		stMeanValue[i] = 0;
+   \   00000016   0xF846 0x1020      STR      R1,[R6, R0, LSL #+2]
+    371          	}
+   \   0000001A   0x1C40             ADDS     R0,R0,#+1
+   \                     ??inv_do_test_accelgyro_0: (+1)
+   \   0000001C   0x2803             CMP      R0,#+3
+   \   0000001E   0xDBF8             BLT.N    ??inv_do_test_accelgyro_1
+    372          	
+    373              // read the accel/gyro output
+    374              // the output values are 16 bits wide and in 2’s complement
+    375              // Average 200 readings and save the averaged values
+    376              result = inv_selftest_read_samples(s, sensorType, meanValue, &lNbSamples);
+   \   00000020   0x466B             MOV      R3,SP
+   \   00000022   0x4629             MOV      R1,R5
+   \   00000024   0x4620             MOV      R0,R4
+   \   00000026   0x.... 0x....      BL       inv_selftest_read_samples
+    377              if (result)
+   \   0000002A   0x2800             CMP      R0,#+0
+   \   0000002C   0xD137             BNE.N    ??inv_do_test_accelgyro_2
+    378                  return result;
+    379          	for (j = 0; j < THREE_AXES; j++) {
+   \   0000002E   0x2000             MOVS     R0,#+0
+   \   00000030   0xE007             B.N      ??inv_do_test_accelgyro_3
+    380          		meanValue[j] /= lNbSamples;
+   \                     ??inv_do_test_accelgyro_4: (+1)
+   \   00000032   0xF857 0x1020      LDR      R1,[R7, R0, LSL #+2]
+   \   00000036   0x9A00             LDR      R2,[SP, #+0]
+   \   00000038   0xFB91 0xF1F2      SDIV     R1,R1,R2
+   \   0000003C   0xF847 0x1020      STR      R1,[R7, R0, LSL #+2]
+    381          	}
+   \   00000040   0x1C40             ADDS     R0,R0,#+1
+   \                     ??inv_do_test_accelgyro_3: (+1)
+   \   00000042   0x2803             CMP      R0,#+3
+   \   00000044   0xDBF5             BLT.N    ??inv_do_test_accelgyro_4
+    382              
+    383              // Set Self-Test Bit
+    384              if (sensorType == INV_SENSOR_GYRO)
+   \   00000046   0x2D01             CMP      R5,#+1
+   \   00000048   0xD106             BNE.N    ??inv_do_test_accelgyro_5
+    385              {
+    386                  // Enable gyroscope Self-Test by setting register User Bank 2, Register Address 02 (02h) Bit [5:3] to b111
+    387                  result = inv_icm20948_write_single_mems_reg(s, REG_GYRO_CONFIG_2, BIT_GYRO_CTEN | SELFTEST_GYRO_AVGCFG);
+   \   0000004A   0x223B             MOVS     R2,#+59
+   \   0000004C   0xF44F 0x7181      MOV      R1,#+258
+   \   00000050   0x4620             MOV      R0,R4
+   \   00000052   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+   \   00000056   0xE005             B.N      ??inv_do_test_accelgyro_6
+    388              } else
+    389              {
+    390                  result = inv_icm20948_write_single_mems_reg(s, REG_ACCEL_CONFIG_2, BIT_ACCEL_CTEN | SELFTEST_ACCEL_DEC3_CFG);
+   \                     ??inv_do_test_accelgyro_5: (+1)
+   \   00000058   0x221E             MOVS     R2,#+30
+   \   0000005A   0xF240 0x1115      MOVW     R1,#+277
+   \   0000005E   0x4620             MOV      R0,R4
+   \   00000060   0x.... 0x....      BL       inv_icm20948_write_single_mems_reg
+    391              }
+    392              if (result)
+   \                     ??inv_do_test_accelgyro_6: (+1)
+   \   00000064   0x2800             CMP      R0,#+0
+   \   00000066   0xD11A             BNE.N    ??inv_do_test_accelgyro_2
+    393                  return result;
+    394              
+    395              // Wait 20ms for oscillations to stabilize. 
+    396              inv_icm20948_sleep_us(DEF_ST_STABLE_TIME*1000);
+   \   00000068   0xF644 0x6020      MOVW     R0,#+20000
+   \   0000006C   0x.... 0x....      BL       inv_icm20948_sleep_us
+    397                  
+    398              // Read the accel/gyro output and average 200 readings
+    399              // These readings are in units of LSBs
+    400              lNbSamples = 0; 
+   \   00000070   0x2000             MOVS     R0,#+0
+   \   00000072   0x9000             STR      R0,[SP, #+0]
+    401              result = inv_selftest_read_samples(s, sensorType, stMeanValue, &lNbSamples);
+   \   00000074   0x466B             MOV      R3,SP
+   \   00000076   0x4632             MOV      R2,R6
+   \   00000078   0x4629             MOV      R1,R5
+   \   0000007A   0x4620             MOV      R0,R4
+   \   0000007C   0x.... 0x....      BL       inv_selftest_read_samples
+    402              if (result)
+   \   00000080   0x2800             CMP      R0,#+0
+   \   00000082   0xD10C             BNE.N    ??inv_do_test_accelgyro_2
+    403                  return result;
+    404          	for (j = 0; j < THREE_AXES; j++) {
+   \   00000084   0x2000             MOVS     R0,#+0
+   \   00000086   0xE007             B.N      ??inv_do_test_accelgyro_7
+    405          		stMeanValue[j] /= lNbSamples;
+   \                     ??inv_do_test_accelgyro_8: (+1)
+   \   00000088   0xF856 0x1020      LDR      R1,[R6, R0, LSL #+2]
+   \   0000008C   0x9A00             LDR      R2,[SP, #+0]
+   \   0000008E   0xFB91 0xF1F2      SDIV     R1,R1,R2
+   \   00000092   0xF846 0x1020      STR      R1,[R6, R0, LSL #+2]
+    406          	}
+   \   00000096   0x1C40             ADDS     R0,R0,#+1
+   \                     ??inv_do_test_accelgyro_7: (+1)
+   \   00000098   0x2803             CMP      R0,#+3
+   \   0000009A   0xDBF5             BLT.N    ??inv_do_test_accelgyro_8
+    407              
+    408          	return 0;
+   \   0000009C   0x2000             MOVS     R0,#+0
+   \                     ??inv_do_test_accelgyro_2: (+1)
+   \   0000009E   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+    409          }
+    410          
+    411          
+    412          
+    413          
+
+   \                                 In section .text, align 2, keep-with-next
+    414          int inv_icm20948_run_selftest(struct inv_icm20948 * s)
+    415          {
+   \                     inv_icm20948_run_selftest: (+1)
+   \   00000000   0xE92D 0x41F0      PUSH     {R4-R8,LR}
+   \   00000004   0xB090             SUB      SP,SP,#+64
+   \   00000006   0x4604             MOV      R4,R0
+    416          	int result;
+    417          	int gyro_bias_st[THREE_AXES], gyro_bias_regular[THREE_AXES];
+    418          	int accel_bias_st[THREE_AXES], accel_bias_regular[THREE_AXES];
+    419          	int test_times;
+    420          	char accel_result, gyro_result, compass_result;
+    421              struct recover_regs recover_regs;
+    422          	
+    423          	accel_result = 0;
+   \   00000008   0x2500             MOVS     R5,#+0
+    424          	gyro_result = 0;
+   \   0000000A   0x462E             MOV      R6,R5
+    425          	compass_result = 0;
+   \   0000000C   0x462F             MOV      R7,R5
+    426              
+    427          	// save original state of the chip, initialize registers, configure sensors and read ST values
+    428              result = inv_setup_selftest(s, &recover_regs);
+   \   0000000E   0xA90C             ADD      R1,SP,#+48
+   \   00000010   0x.... 0x....      BL       inv_setup_selftest
+    429              if (result)
+   \   00000014   0x2800             CMP      R0,#+0
+   \   00000016   0xD13D             BNE.N    ??inv_icm20948_run_selftest_0
+    430          		goto test_fail;
+    431              
+    432          	// perform self test for gyro
+    433          	test_times = DEF_ST_TRY_TIMES;	
+   \   00000018   0xF04F 0x0802      MOV      R8,#+2
+   \   0000001C   0xE001             B.N      ??inv_icm20948_run_selftest_1
+    434          	while (test_times > 0) {
+    435          		result = inv_do_test_accelgyro(s, INV_SENSOR_GYRO, gyro_bias_regular, gyro_bias_st);
+    436          		if (result)
+    437          			test_times--;
+   \                     ??inv_icm20948_run_selftest_2: (+1)
+   \   0000001E   0xF1A8 0x0801      SUB      R8,R8,#+1
+   \                     ??inv_icm20948_run_selftest_1: (+1)
+   \   00000022   0xF1B8 0x0F01      CMP      R8,#+1
+   \   00000026   0xDB07             BLT.N    ??inv_icm20948_run_selftest_3
+   \   00000028   0xAB09             ADD      R3,SP,#+36
+   \   0000002A   0xAA06             ADD      R2,SP,#+24
+   \   0000002C   0x2101             MOVS     R1,#+1
+   \   0000002E   0x4620             MOV      R0,R4
+   \   00000030   0x.... 0x....      BL       inv_do_test_accelgyro
+   \   00000034   0x2800             CMP      R0,#+0
+   \   00000036   0xD1F2             BNE.N    ??inv_icm20948_run_selftest_2
+    438                  else
+    439                      break;
+    440          	}
+    441          	if (result)
+   \                     ??inv_icm20948_run_selftest_3: (+1)
+   \   00000038   0x2800             CMP      R0,#+0
+   \   0000003A   0xD12B             BNE.N    ??inv_icm20948_run_selftest_0
+    442          		goto test_fail;    
+    443              
+    444          	// perform self test for accel
+    445          	test_times = DEF_ST_TRY_TIMES;
+   \   0000003C   0xF04F 0x0802      MOV      R8,#+2
+   \   00000040   0xE001             B.N      ??inv_icm20948_run_selftest_4
+    446          	while (test_times > 0) {
+    447          		result = inv_do_test_accelgyro(s, INV_SENSOR_ACCEL, accel_bias_regular, accel_bias_st);
+    448          		if (result)
+    449          			test_times--;
+   \                     ??inv_icm20948_run_selftest_5: (+1)
+   \   00000042   0xF1A8 0x0801      SUB      R8,R8,#+1
+   \                     ??inv_icm20948_run_selftest_4: (+1)
+   \   00000046   0xF1B8 0x0F01      CMP      R8,#+1
+   \   0000004A   0xDB07             BLT.N    ??inv_icm20948_run_selftest_6
+   \   0000004C   0xAB03             ADD      R3,SP,#+12
+   \   0000004E   0x466A             MOV      R2,SP
+   \   00000050   0x4629             MOV      R1,R5
+   \   00000052   0x4620             MOV      R0,R4
+   \   00000054   0x.... 0x....      BL       inv_do_test_accelgyro
+   \   00000058   0x2800             CMP      R0,#+0
+   \   0000005A   0xD1F2             BNE.N    ??inv_icm20948_run_selftest_5
+    450                  else
+    451                      break;
+    452          	}
+    453          	if (result)
+   \                     ??inv_icm20948_run_selftest_6: (+1)
+   \   0000005C   0x2800             CMP      R0,#+0
+   \   0000005E   0xD119             BNE.N    ??inv_icm20948_run_selftest_0
+    454          		goto test_fail;
+    455              
+    456          	// check values read at various steps
+    457          	accel_result = !inv_check_accelgyro_self_test(INV_SENSOR_ACCEL, s->accel_st_data, accel_bias_regular, accel_bias_st);
+   \   00000060   0xAB03             ADD      R3,SP,#+12
+   \   00000062   0x466A             MOV      R2,SP
+   \   00000064   0xF104 0x0194      ADD      R1,R4,#+148
+   \   00000068   0x4628             MOV      R0,R5
+   \   0000006A   0x.... 0x....      BL       inv_check_accelgyro_self_test
+   \   0000006E   0x2800             CMP      R0,#+0
+   \   00000070   0xD100             BNE.N    ??inv_icm20948_run_selftest_7
+   \   00000072   0x2501             MOVS     R5,#+1
+    458          	gyro_result = !inv_check_accelgyro_self_test(INV_SENSOR_GYRO, s->gyro_st_data, gyro_bias_regular, gyro_bias_st);
+   \                     ??inv_icm20948_run_selftest_7: (+1)
+   \   00000074   0xAB09             ADD      R3,SP,#+36
+   \   00000076   0xAA06             ADD      R2,SP,#+24
+   \   00000078   0xF104 0x0191      ADD      R1,R4,#+145
+   \   0000007C   0x2001             MOVS     R0,#+1
+   \   0000007E   0x.... 0x....      BL       inv_check_accelgyro_self_test
+   \   00000082   0x2800             CMP      R0,#+0
+   \   00000084   0xD100             BNE.N    ??inv_icm20948_run_selftest_8
+   \   00000086   0x2601             MOVS     R6,#+1
+    459          	compass_result = !inv_icm20948_check_akm_self_test(s);
+   \                     ??inv_icm20948_run_selftest_8: (+1)
+   \   00000088   0x4620             MOV      R0,R4
+   \   0000008A   0x.... 0x....      BL       inv_icm20948_check_akm_self_test
+   \   0000008E   0x2800             CMP      R0,#+0
+   \   00000090   0xD100             BNE.N    ??inv_icm20948_run_selftest_0
+   \   00000092   0x2701             MOVS     R7,#+1
+    460              
+    461          test_fail:
+    462          	// restore original state of the chips
+    463          	inv_recover_setting(s, &recover_regs);
+   \                     ??inv_icm20948_run_selftest_0: (+1)
+   \   00000094   0xA90C             ADD      R1,SP,#+48
+   \   00000096   0x4620             MOV      R0,R4
+   \   00000098   0x.... 0x....      BL       inv_recover_setting
+    464          
+    465              return (compass_result << 2) |
+    466                     (accel_result   << 1) |
+    467                      gyro_result;
+   \   0000009C   0x0068             LSLS     R0,R5,#+1
+   \   0000009E   0xEA40 0x0087      ORR      R0,R0,R7, LSL #+2
+   \   000000A2   0x4330             ORRS     R0,R6,R0
+   \   000000A4   0xB010             ADD      SP,SP,#+64
+   \   000000A6   0xE8BD 0x81F0      POP      {R4-R8,PC}       ;; return
+    468          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   0x000186A0         DC32     0x186a0
+    469           /**
+    470           * @}
+    471           */
+    472           
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      44   inv_check_accelgyro_self_test
+      24   inv_do_test_accelgyro
+        24   -> inv_icm20948_sleep_us
+        24   -> inv_icm20948_write_single_mems_reg
+        24   -> inv_selftest_read_samples
+      88   inv_icm20948_run_selftest
+        88   -> inv_check_accelgyro_self_test
+        88   -> inv_do_test_accelgyro
+        88   -> inv_icm20948_check_akm_self_test
+        88   -> inv_recover_setting
+        88   -> inv_setup_selftest
+      16   inv_recover_setting
+        16   -> inv_icm20948_set_dmp_address
+        16   -> inv_icm20948_set_secondary
+        16   -> inv_icm20948_setup_compass_akm
+        16   -> inv_icm20948_sleep_mems
+        16   -> inv_icm20948_sleep_us
+        16   -> inv_icm20948_write_single_mems_reg
+      16   inv_save_setting
+        16   -> inv_icm20948_read_mems_reg
+      40   inv_selftest_read_samples
+        40   -> inv_icm20948_read_mems_reg
+        40   -> inv_icm20948_sleep_us
+      24   inv_setup_selftest
+        24   -> __aeabi_memset
+        24   -> __aeabi_memset4
+        24   -> inv_icm20948_read_mems_reg
+        24   -> inv_icm20948_sleep_us
+        24   -> inv_icm20948_write_single_mems_reg
+        24   -> inv_save_setting
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+     126  inv_check_accelgyro_self_test
+     160  inv_do_test_accelgyro
+     170  inv_icm20948_run_selftest
+     274  inv_recover_setting
+     256  inv_save_setting
+     116  inv_selftest_read_samples
+     328  inv_setup_selftest
+     512  sSelfTestEquation
+
+ 
+ 1 946 bytes in section .text
+ 
+ 1 946 bytes of CODE memory
+
+Errors: none
+Warnings: none

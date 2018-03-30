@@ -1,0 +1,326 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:30
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvList.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvList.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\InvList.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvList.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvList.c
+      1          /*
+      2              Copyright (c) 2014-2015 InvenSense Inc. Portions Copyright (c) 2014-2015 Movea. All rights reserved.
+      3          
+      4              This software, related documentation and any modifications thereto (collectively "Software") is subject
+      5              to InvenSense and its licensors' intellectual property rights under U.S. and international copyright and
+      6              other intellectual property rights laws.
+      7          
+      8              InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+      9              and any use, reproduction, disclosure or distribution of the Software without an express license
+     10              agreement from InvenSense is strictly prohibited.
+     11          */
+     12          
+     13          #include "InvList.h"
+     14          
+
+   \                                 In section .text, align 2, keep-with-next
+     15          int InvList_add(InvList *list, InvList *node)
+     16          {
+   \                     InvList_add: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+     17          	InvList *cur = list;
+     18          
+     19          	ASSERT(list && node);
+   \   00000006   0x2C00             CMP      R4,#+0
+   \   00000008   0xD001             BEQ.N    ??InvList_add_0
+   \   0000000A   0x2D00             CMP      R5,#+0
+   \   0000000C   0xD108             BNE.N    ??InvList_add_1
+   \                     ??InvList_add_0: (+1)
+   \   0000000E   0x2213             MOVS     R2,#+19
+   \   00000010   0x.... 0x....      ADR.W    R1,?_1
+   \   00000014   0x.... 0x....      ADR.W    R0,?_0
+   \   00000018   0x.... 0x....      BL       InvAssert
+   \   0000001C   0xE000             B.N      ??InvList_add_1
+     20          
+     21          	while (cur->next != 0) {
+     22          		if (cur->next == node)
+     23          			return -1;
+     24          
+     25          		cur = cur->next;
+   \                     ??InvList_add_2: (+1)
+   \   0000001E   0x4604             MOV      R4,R0
+   \                     ??InvList_add_1: (+1)
+   \   00000020   0x6820             LDR      R0,[R4, #+0]
+   \   00000022   0x2800             CMP      R0,#+0
+   \   00000024   0xD004             BEQ.N    ??InvList_add_3
+   \   00000026   0x42A8             CMP      R0,R5
+   \   00000028   0xD1F9             BNE.N    ??InvList_add_2
+   \   0000002A   0xF04F 0x30FF      MOV      R0,#-1
+   \   0000002E   0xBD32             POP      {R1,R4,R5,PC}
+     26          	}
+     27          
+     28          	cur->next = node;
+   \                     ??InvList_add_3: (+1)
+   \   00000030   0x6025             STR      R5,[R4, #+0]
+     29          	node->next = 0;
+   \   00000032   0x2000             MOVS     R0,#+0
+   \   00000034   0x6028             STR      R0,[R5, #+0]
+     30          
+     31          	return 0;
+   \   00000036   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+     32          }
+     33          
+
+   \                                 In section .text, align 2, keep-with-next
+     34          int InvList_remove(InvList *list, InvList *node)
+     35          {
+   \                     InvList_remove: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+     36          	InvList *cur = list;
+     37          
+     38          	ASSERT(list && node);
+   \   00000006   0x2C00             CMP      R4,#+0
+   \   00000008   0xD001             BEQ.N    ??InvList_remove_0
+   \   0000000A   0x2D00             CMP      R5,#+0
+   \   0000000C   0xD108             BNE.N    ??InvList_remove_1
+   \                     ??InvList_remove_0: (+1)
+   \   0000000E   0x2226             MOVS     R2,#+38
+   \   00000010   0x.... 0x....      ADR.W    R1,?_1
+   \   00000014   0x.... 0x....      ADR.W    R0,?_0
+   \   00000018   0x.... 0x....      BL       InvAssert
+   \   0000001C   0xE000             B.N      ??InvList_remove_1
+     39          
+     40          	while (cur->next != 0) {
+     41          		if (cur->next == node) {
+     42          			cur->next = node->next;
+     43          			return 0;
+     44          		}
+     45          
+     46          		cur = cur->next;
+   \                     ??InvList_remove_2: (+1)
+   \   0000001E   0x4604             MOV      R4,R0
+   \                     ??InvList_remove_1: (+1)
+   \   00000020   0x6820             LDR      R0,[R4, #+0]
+   \   00000022   0x2800             CMP      R0,#+0
+   \   00000024   0xD005             BEQ.N    ??InvList_remove_3
+   \   00000026   0x42A8             CMP      R0,R5
+   \   00000028   0xD1F9             BNE.N    ??InvList_remove_2
+   \   0000002A   0x6828             LDR      R0,[R5, #+0]
+   \   0000002C   0x6020             STR      R0,[R4, #+0]
+   \   0000002E   0x2000             MOVS     R0,#+0
+   \   00000030   0xBD32             POP      {R1,R4,R5,PC}
+     47          	}
+     48          
+     49          	return -1;
+   \                     ??InvList_remove_3: (+1)
+   \   00000032   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000036   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+     50          }
+     51          
+
+   \                                 In section .text, align 2, keep-with-next
+     52          inv_bool_t InvList_isIn(const InvList *list, const InvList *node)
+     53          {
+   \                     InvList_isIn: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+     54          	const InvList *cur = list;
+     55          
+     56          	ASSERT(list && node);
+   \   00000006   0x2C00             CMP      R4,#+0
+   \   00000008   0xD001             BEQ.N    ??InvList_isIn_0
+   \   0000000A   0x2D00             CMP      R5,#+0
+   \   0000000C   0xD106             BNE.N    ??InvList_isIn_1
+   \                     ??InvList_isIn_0: (+1)
+   \   0000000E   0x2238             MOVS     R2,#+56
+   \   00000010   0x.... 0x....      ADR.W    R1,?_1
+   \   00000014   0x.... 0x....      ADR.W    R0,?_0
+   \   00000018   0x.... 0x....      BL       InvAssert
+     57          
+     58          	while (cur->next != 0) {
+     59          		if (cur->next == node)
+     60          			return true;
+     61          
+     62          		cur = cur->next;
+   \                     ??InvList_isIn_1: (+1)
+   \   0000001C   0x6824             LDR      R4,[R4, #+0]
+   \   0000001E   0x2C00             CMP      R4,#+0
+   \   00000020   0xD003             BEQ.N    ??InvList_isIn_2
+   \   00000022   0x42AC             CMP      R4,R5
+   \   00000024   0xD1FA             BNE.N    ??InvList_isIn_1
+   \   00000026   0x2001             MOVS     R0,#+1
+   \   00000028   0xBD32             POP      {R1,R4,R5,PC}
+     63          	}
+     64          
+     65          	return false;
+   \                     ??InvList_isIn_2: (+1)
+   \   0000002A   0x2000             MOVS     R0,#+0
+   \   0000002C   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+     66          }
+     67          
+
+   \                                 In section .text, align 2, keep-with-next
+     68          unsigned InvList_getListCount(const InvList *list)
+     69          {
+   \                     InvList_getListCount: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+     70          	unsigned count = 0;
+   \   00000004   0x2500             MOVS     R5,#+0
+     71          	const InvList *cur = list;
+     72          
+     73          	ASSERT(list);
+   \   00000006   0x2C00             CMP      R4,#+0
+   \   00000008   0xD108             BNE.N    ??InvList_getListCount_0
+   \   0000000A   0x2249             MOVS     R2,#+73
+   \   0000000C   0x.... 0x....      ADR.W    R1,?_1
+   \   00000010   0x.... 0x....      ADR.W    R0,?_2
+   \   00000014   0x.... 0x....      BL       InvAssert
+   \   00000018   0xE000             B.N      ??InvList_getListCount_0
+     74          
+     75          	while (cur->next != 0) {
+     76          		++count;
+   \                     ??InvList_getListCount_1: (+1)
+   \   0000001A   0x1C6D             ADDS     R5,R5,#+1
+     77          		cur = cur->next;
+     78          	}
+   \                     ??InvList_getListCount_0: (+1)
+   \   0000001C   0x6824             LDR      R4,[R4, #+0]
+   \   0000001E   0x2C00             CMP      R4,#+0
+   \   00000020   0xD1FB             BNE.N    ??InvList_getListCount_1
+     79          
+     80          	return count;
+   \   00000022   0x4628             MOV      R0,R5
+   \   00000024   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+     81          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_0:
+   \   00000000   0x6C 0x69          DC8 "list && node"
+   \              0x73 0x74    
+   \              0x20 0x26    
+   \              0x26 0x20    
+   \              0x6E 0x6F    
+   \              0x64 0x65    
+   \              0x00         
+   \   0000000D   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_1:
+   \   00000000   0x43 0x3A          DC8 43H, 3AH, 5CH, 55H, 73H, 65H, 72H, 73H
+   \              0x5C 0x55    
+   \              0x73 0x65    
+   \              0x72 0x73    
+   \   00000008   0x5C 0x70          DC8 5CH, 70H, 72H, 61H, 73H, 61H, 5CH, 44H
+   \              0x72 0x61    
+   \              0x73 0x61    
+   \              0x5C 0x44    
+   \   00000010   0x6F 0x63          DC8 6FH, 63H, 75H, 6DH, 65H, 6EH, 74H, 73H
+   \              0x75 0x6D    
+   \              0x65 0x6E    
+   \              0x74 0x73    
+   \   00000018   0x5C 0x31          DC8 5CH, 31H, 2EH, 30H, 2EH, 30H, 5CH, 73H
+   \              0x2E 0x30    
+   \              0x2E 0x30    
+   \              0x5C 0x73    
+   \   00000020   0x6F 0x75          DC8 6FH, 75H, 72H, 63H, 65H, 73H, 5CH, 49H
+   \              0x72 0x63    
+   \              0x65 0x73    
+   \              0x5C 0x49    
+   \   00000028   0x6E 0x76          DC8 6EH, 76H, 6EH, 5CH, 45H, 6DH, 62H, 55H
+   \              0x6E 0x5C    
+   \              0x45 0x6D    
+   \              0x62 0x55    
+   \   00000030   0x74 0x69          DC8 74H, 69H, 6CH, 73H, 5CH, 49H, 6EH, 76H
+   \              0x6C 0x73    
+   \              0x5C 0x49    
+   \              0x6E 0x76    
+   \   00000038   0x4C 0x69          DC8 4CH, 69H, 73H, 74H, 2EH, 63H, 0
+   \              0x73 0x74    
+   \              0x2E 0x63    
+   \              0x00         
+   \   0000003F   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_2:
+   \   00000000   0x6C 0x69          DC8 "list"
+   \              0x73 0x74    
+   \              0x00         
+   \   00000005   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   InvList_add
+        16   -> InvAssert
+      16   InvList_getListCount
+        16   -> InvAssert
+      16   InvList_isIn
+        16   -> InvAssert
+      16   InvList_remove
+        16   -> InvAssert
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      16  ?_0
+      64  ?_1
+       8  ?_2
+      56  InvList_add
+      38  InvList_getListCount
+      46  InvList_isIn
+      56  InvList_remove
+
+ 
+ 284 bytes in section .text
+ 
+ 284 bytes of CODE memory
+
+Errors: none
+Warnings: none

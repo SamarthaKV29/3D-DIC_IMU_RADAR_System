@@ -1,0 +1,219 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:40
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\UartTxEmulator.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\UartTxEmulator.c
+#        -D IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D
+#        NUCLEO -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000
+#        -D STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\UartTxEmulator.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\UartTxEmulator.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\UartTxEmulator.c
+      1          /*
+      2              Copyright (c) 2014-2015 InvenSense Inc. Portions Copyright (c) 2014-2015 Movea. All rights reserved.
+      3          
+      4              This software, related documentation and any modifications thereto (collectively "Software") is subject
+      5              to InvenSense and its licensors' intellectual property rights under U.S. and international copyright and
+      6              other intellectual property rights laws.
+      7          
+      8              InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+      9              and any use, reproduction, disclosure or distribution of the Software without an express license
+     10              agreement from InvenSense is strictly prohibited.
+     11          */
+     12          
+     13          #include "UartTxEmulator.h"
+     14          #include "RingBuffer.h"
+     15          
+     16          /** @brief Set of possible values for UARTTxEmulator current state */
+     17          enum UartTxEmulatorState {
+     18          	UARTXEMULATOR_STATE_STOPPED, /**< UART Tx emulator is currently sending nothing*/
+     19          	UARTXEMULATOR_STATE_START_BIT, /**< UART Tx emulator is currently sending start bit*/
+     20          	UARTXEMULATOR_STATE_SEND_BIT, /**< UART Tx emulator is currently sending data itself*/
+     21          	UARTXEMULATOR_STATE_STOP_BIT /**< UART Tx emulator is currently sending stop bit*/
+     22          };
+     23          
+
+   \                                 In section .bss, align 4
+     24          static RINGBUFFER(sUartTxEmulatorFifoData, UARTTXEMULATOR_MAX_BUFFER_SIZE,
+     25                            uint8_t);
+   \                     sUartTxEmulatorFifoData:
+   \   00000000                      DS8 132
+     26          
+     27          static void UartTxEmulator_IRQTimerHandlerHook(void)
+     28          {
+     29          	static enum UartTxEmulatorState sUartTxEmulatorState =
+     30          	        UARTXEMULATOR_STATE_STOPPED; // current UART Tx emulator state
+     31          	static uint8_t lBitsToSend; // number of data bits still to be sent
+     32          	uint32_t nitem; // number of bytes to send over UART
+     33          	static uint8_t item; // byte to send over UART
+     34          
+     35          	if (sUartTxEmulatorState == UARTXEMULATOR_STATE_STOPPED) {
+     36          		nitem = RINGBUFFER_SIZE(&sUartTxEmulatorFifoData);
+     37          		if (nitem != 0) {
+     38          			// in case some UART data is to be sent, pop 1 byte
+     39          			RINGBUFFER_POP(&sUartTxEmulatorFifoData, &item);
+     40          			// and start to send it right now
+     41          			sUartTxEmulatorState = UARTXEMULATOR_STATE_START_BIT;
+     42          		}
+     43          	}
+     44          
+     45          	switch (sUartTxEmulatorState) {
+     46          	case UARTXEMULATOR_STATE_STOPPED:
+     47          		// nothing to do
+     48          		break;
+     49          
+     50          	case UARTXEMULATOR_STATE_START_BIT:
+     51          		// start bit
+     52          		UARTTXEMULATOR_SETGPIOHOOK(0) ;
+     53          		// configuration is 8 data bits
+     54          		lBitsToSend = 8;
+     55          
+     56          		// update UART TX emulator state
+     57          		sUartTxEmulatorState = UARTXEMULATOR_STATE_SEND_BIT;
+     58          		break;
+     59          
+     60          	case UARTXEMULATOR_STATE_SEND_BIT:
+     61          		if (item & 0x01)
+     62          			UARTTXEMULATOR_SETGPIOHOOK(1) ;
+     63          		else
+     64          			UARTTXEMULATOR_SETGPIOHOOK(0) ;
+     65          		item = item >> 1;
+     66          		lBitsToSend--;
+     67          
+     68          		// update UART TX emulator state if 8 bits where previously sent
+     69          		if (lBitsToSend == 0)
+     70          			sUartTxEmulatorState = UARTXEMULATOR_STATE_STOP_BIT;
+     71          		break;
+     72          
+     73          	case UARTXEMULATOR_STATE_STOP_BIT:
+     74          		// stop bit
+     75          		UARTTXEMULATOR_SETGPIOHOOK(1) ;
+     76          		// update UART TX emulator state, end of current transaction
+     77          		sUartTxEmulatorState = UARTXEMULATOR_STATE_STOPPED;
+     78          		break;
+     79          
+     80          	default:
+     81          		// error
+     82          		break;
+     83          	}
+     84          }
+     85          
+
+   \                                 In section .text, align 2, keep-with-next
+     86          void UartTxEmulator_init(void)
+     87          {
+     88          	UARTTXEMULATOR_INITGPIOHOOK();
+     89          	UARTTXEMULATOR_SETGPIOHOOK(1);
+     90          	// UARTTXEMULATOR_BAUDRATE bit per second
+     91          	// so timer must be triggered every 1000000/UARTTXEMULATOR_BAUDRATE us
+     92          	UARTTXEMULATOR_INITTIMERHOOK((1000000 / UARTTXEMULATOR_BAUDRATE),
+     93          	                             UartTxEmulator_IRQTimerHandlerHook);
+     94          
+     95          	RINGBUFFER_CLEAR(&sUartTxEmulatorFifoData);
+   \                     UartTxEmulator_init: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable1
+   \   00000002   0x2100             MOVS     R1,#+0
+   \   00000004   0x6001             STR      R1,[R0, #+0]
+     96          }
+   \   00000006   0x4770             BX       LR               ;; return
+     97          
+
+   \                                 In section .text, align 2, keep-with-next
+     98          int8_t UartTxEmulator_send(uint8_t c)
+     99          {
+    100          	uint32_t nitem = RINGBUFFER_SIZE(&sUartTxEmulatorFifoData);
+    101          	if (nitem < RINGBUFFER_MAXSIZE(&sUartTxEmulatorFifoData)) {
+   \                     UartTxEmulator_send: (+1)
+   \   00000000   0x....             LDR.N    R1,??DataTable1
+   \   00000002   0x884A             LDRH     R2,[R1, #+2]
+   \   00000004   0x880B             LDRH     R3,[R1, #+0]
+   \   00000006   0x1AD3             SUBS     R3,R2,R3
+   \   00000008   0xB29B             UXTH     R3,R3
+   \   0000000A   0x2B80             CMP      R3,#+128
+   \   0000000C   0xD208             BCS.N    ??UartTxEmulator_send_0
+    102          		const uint8_t data = c;
+    103          		RINGBUFFER_PUSH(&sUartTxEmulatorFifoData, &data);
+   \   0000000E   0xF002 0x027F      AND      R2,R2,#0x7F
+   \   00000012   0x440A             ADD      R2,R1,R2
+   \   00000014   0x7110             STRB     R0,[R2, #+4]
+   \   00000016   0x8848             LDRH     R0,[R1, #+2]
+   \   00000018   0x1C40             ADDS     R0,R0,#+1
+   \   0000001A   0x8048             STRH     R0,[R1, #+2]
+    104          		// data correctly pushed on UART FIFO, will be poped during next timer interrupt
+    105          		return 0;
+   \   0000001C   0x2000             MOVS     R0,#+0
+   \   0000001E   0x4770             BX       LR
+    106          	} else {
+    107          		// FIFO is full, return an error
+    108          		return -1;
+   \                     ??UartTxEmulator_send_0: (+1)
+   \   00000020   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000024   0x4770             BX       LR               ;; return
+    109          	}
+    110          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   0x........         DC32     sUartTxEmulatorFifoData
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   UartTxEmulator_init
+       0   UartTxEmulator_send
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       8  UartTxEmulator_init
+      38  UartTxEmulator_send
+     132  sUartTxEmulatorFifoData
+
+ 
+ 132 bytes in section .bss
+  50 bytes in section .text
+ 
+  50 bytes of CODE memory
+ 132 bytes of DATA memory
+
+Errors: none
+Warnings: none

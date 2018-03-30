@@ -1,0 +1,3397 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:41
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  C:\Users\prasa\Documents\1.0.0\sources\board-hal\uart.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\uart.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\uart.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\uart.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\uart.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2016-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "common.h"
+     25          #include "uart.h"
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp int RingByteBuffer_isFull(RingByteBuffer const *)
+   \                     RingByteBuffer_isFull: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0xD106             BNE.N    ??RingByteBuffer_isFull_0
+   \   00000006   0x2251             MOVS     R2,#+81
+   \   00000008   0x.... 0x....      ADR.W    R1,?_1
+   \   0000000C   0x.... 0x....      ADR.W    R0,?_0
+   \   00000010   0x.... 0x....      BL       InvAssert
+   \                     ??RingByteBuffer_isFull_0: (+1)
+   \   00000014   0x8920             LDRH     R0,[R4, #+8]
+   \   00000016   0x88E1             LDRH     R1,[R4, #+6]
+   \   00000018   0x4288             CMP      R0,R1
+   \   0000001A   0xD105             BNE.N    ??RingByteBuffer_isFull_1
+   \   0000001C   0x7AE0             LDRB     R0,[R4, #+11]
+   \   0000001E   0x7AA1             LDRB     R1,[R4, #+10]
+   \   00000020   0x4288             CMP      R0,R1
+   \   00000022   0xD001             BEQ.N    ??RingByteBuffer_isFull_1
+   \   00000024   0x2001             MOVS     R0,#+1
+   \   00000026   0xBD10             POP      {R4,PC}
+   \                     ??RingByteBuffer_isFull_1: (+1)
+   \   00000028   0x2000             MOVS     R0,#+0
+   \   0000002A   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp int RingByteBuffer_isEmpty(RingByteBuffer const *)
+   \                     RingByteBuffer_isEmpty: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0xD106             BNE.N    ??RingByteBuffer_isEmpty_0
+   \   00000006   0x225B             MOVS     R2,#+91
+   \   00000008   0x.... 0x....      ADR.W    R1,?_1
+   \   0000000C   0x.... 0x....      ADR.W    R0,?_0
+   \   00000010   0x.... 0x....      BL       InvAssert
+   \                     ??RingByteBuffer_isEmpty_0: (+1)
+   \   00000014   0x8920             LDRH     R0,[R4, #+8]
+   \   00000016   0x88E1             LDRH     R1,[R4, #+6]
+   \   00000018   0x4288             CMP      R0,R1
+   \   0000001A   0xD105             BNE.N    ??RingByteBuffer_isEmpty_1
+   \   0000001C   0x7AE0             LDRB     R0,[R4, #+11]
+   \   0000001E   0x7AA1             LDRB     R1,[R4, #+10]
+   \   00000020   0x4288             CMP      R0,R1
+   \   00000022   0xD101             BNE.N    ??RingByteBuffer_isEmpty_1
+   \   00000024   0x2001             MOVS     R0,#+1
+   \   00000026   0xBD10             POP      {R4,PC}
+   \                     ??RingByteBuffer_isEmpty_1: (+1)
+   \   00000028   0x2000             MOVS     R0,#+0
+   \   0000002A   0xBD10             POP      {R4,PC}          ;; return
+     26          
+     27          #include "nvic_config.h"
+     28          
+     29          #include <stdio.h>
+     30          
+     31          #include "stm32f4xx.h"
+     32          #include "stm32f4xx_dma.h"
+     33          #include "stm32f4xx_usart.h"
+     34          #include "stm32f4xx_gpio.h" 
+     35          #include "stm32f4xx_exti.h"
+     36          #include "stm32f4xx_rcc.h"
+     37          
+     38          #include "Invn/EmbUtils/RingBuffer.h"
+     39          
+     40          /********************************* Defines ************************************/
+     41          
+     42          //////////////////  USART1
+     43          #define USART1_CLK                  RCC_APB2Periph_USART1
+     44          #define USART1_CLK_INIT             RCC_APB2PeriphClockCmd
+     45          #define USART1_IRQn                 USART1_IRQn
+     46          
+     47          #define USART1_TX_PIN               GPIO_Pin_9
+     48          #define USART1_TX_GPIO_PORT         GPIOA
+     49          #define USART1_TX_GPIO_CLK          RCC_AHB1Periph_GPIOA
+     50          #define USART1_TX_SOURCE            GPIO_PinSource9
+     51          #define USART1_TX_AF                GPIO_AF_USART1
+     52          
+     53          #define USART1_RX_PIN               GPIO_Pin_10
+     54          #define USART1_RX_GPIO_PORT         GPIOA
+     55          #define USART1_RX_GPIO_CLK          RCC_AHB1Periph_GPIOA
+     56          #define USART1_RX_SOURCE            GPIO_PinSource10
+     57          #define USART1_RX_AF                GPIO_AF_USART1
+     58          
+     59          #define USART1_CTS_PIN              GPIO_Pin_11
+     60          #define USART1_CTS_GPIO_PORT        GPIOA
+     61          #define USART1_CTS_GPIO_CLK         RCC_AHB1Periph_GPIOA
+     62          #define USART1_CTS_SOURCE           GPIO_PinSource11
+     63          #define USART1_CTS_AF               GPIO_AF_USART1
+     64          
+     65          #define USART1_RTS_PIN              GPIO_Pin_12
+     66          #define USART1_RTS_GPIO_PORT        GPIOA
+     67          #define USART1_RTS_GPIO_CLK         RCC_AHB1Periph_GPIOA
+     68          #define USART1_RTS_SOURCE           GPIO_PinSource12
+     69          #define USART1_RTS_AF               GPIO_AF_USART1
+     70          
+     71          #define USART1_DMAx_CLK             RCC_AHB1Periph_DMA2
+     72          
+     73          #define USART1_TX_DMA               DMA2
+     74          #define USART1_TX_DMA_CHANNEL       DMA_Channel_4
+     75          #define USART1_TX_DMA_STREAM        DMA2_Stream7
+     76          #define USART1_TX_DMA_IRQ_CHANNEL   DMA2_Stream7_IRQn
+     77          #define USART1_TX_DMA_IRQ_HANDLER   DMA2_Stream7_IRQHandler
+     78          #define USART1_TX_DMA_ISR           HISR
+     79          #define USART1_TX_DMA_IFCR          HIFCR
+     80          #define USART1_TX_DMA_FLAG_TCIF     DMA_FLAG_TCIF7
+     81          #define USART1_TX_DMA_IT_TCIF       DMA_IT_TCIF7
+     82          
+     83          #define USART1_RX_DMA               DMA2
+     84          #define USART1_RX_DMA_CHANNEL       DMA_Channel_4
+     85          #define USART1_RX_DMA_STREAM        DMA2_Stream5
+     86          #define USART1_RX_DMA_IRQ_CHANNEL   DMA2_Stream5_IRQn
+     87          #define USART1_RX_DMA_IRQ_HANDLER   DMA2_Stream5_IRQHandler
+     88          #define USART1_RX_DMA_ISR           HISR
+     89          #define USART1_RX_DMA_IFCR          HIFCR
+     90          #define USART1_RX_DMA_FLAG_TCIF     DMA_FLAG_TCIF5
+     91          #define USART1_RX_DMA_FLAG_TEIF     DMA_FLAG_TEIF5
+     92          #define USART1_RX_DMA_IT_TCIF       DMA_IT_TCIF5
+     93          #define USART1_RX_DMA_IT_TEIF       DMA_IT_TEIF5
+     94          
+     95          //////////////////  USART2
+     96          #define USART2_CLK                  RCC_APB1Periph_USART2
+     97          #define USART2_CLK_INIT             RCC_APB1PeriphClockCmd
+     98          #define USART2_IRQn                 USART2_IRQn
+     99          #define USART2_IRQHandler           USART2_IRQHandler
+    100          
+    101          #define USART2_TX_PIN               GPIO_Pin_2
+    102          #define USART2_TX_GPIO_PORT         GPIOA
+    103          #define USART2_TX_GPIO_CLK          RCC_AHB1Periph_GPIOA
+    104          #define USART2_TX_SOURCE            GPIO_PinSource2
+    105          #define USART2_TX_AF                GPIO_AF_USART2
+    106          
+    107          #define USART2_RX_PIN               GPIO_Pin_3
+    108          #define USART2_RX_GPIO_PORT         GPIOA
+    109          #define USART2_RX_GPIO_CLK          RCC_AHB1Periph_GPIOA
+    110          #define USART2_RX_SOURCE            GPIO_PinSource3
+    111          #define USART2_RX_AF                GPIO_AF_USART2
+    112          
+    113          #define USART2_DMAx_CLK             RCC_AHB1Periph_DMA1
+    114          
+    115          #define USART2_TX_DMA               DMA1
+    116          #define USART2_TX_DMA_CHANNEL       DMA_Channel_4
+    117          #define USART2_TX_DMA_STREAM        DMA1_Stream6
+    118          #define USART2_TX_DMA_IRQ_CHANNEL   DMA1_Stream6_IRQn
+    119          #define USART2_TX_DMA_IRQ_HANDLER   DMA1_Stream6_IRQHandler
+    120          #define USART2_TX_DMA_ISR           HISR
+    121          #define USART2_TX_DMA_IFCR          HIFCR
+    122          #define USART2_TX_DMA_FLAG_TCIF     DMA_FLAG_TCIF6
+    123          #define USART2_TX_DMA_IT_TCIF       DMA_IT_TCIF6
+    124          
+    125          #define USART2_RX_DMA               DMA1
+    126          #define USART2_RX_DMA_CHANNEL       DMA_Channel_6
+    127          #define USART2_RX_DMA_STREAM        DMA1_Stream7
+    128          #define USART2_RX_DMA_IRQ_CHANNEL   DMA1_Stream7_IRQn
+    129          #define USART2_RX_DMA_IRQ_HANDLER   DMA1_Stream7_IRQHandler
+    130          #define USART2_RX_DMA_ISR           HISR
+    131          #define USART2_RX_DMA_IFCR          HIFCR
+    132          #define USART2_RX_DMA_FLAG_TCIF     DMA_FLAG_TCIF7
+    133          #define USART2_RX_DMA_FLAG_TEIF     DMA_FLAG_TEIF7
+    134          #define USART2_RX_DMA_IT_TCIF       DMA_IT_TCIF7
+    135          #define USART2_RX_DMA_IT_TEIF       DMA_IT_TEIF7
+    136          
+    137          //////////////////  USART6
+    138          #define USART6_CLK                  RCC_APB2Periph_USART6
+    139          #define USART6_CLK_INIT             RCC_APB2PeriphClockCmd
+    140          #define USART6_IRQn                 USART6_IRQn
+    141          
+    142          #define USART6_TX_PIN               GPIO_Pin_11
+    143          #define USART6_TX_GPIO_PORT         GPIOA
+    144          #define USART6_TX_GPIO_CLK          RCC_AHB1Periph_GPIOA
+    145          #define USART6_TX_SOURCE            GPIO_PinSource11
+    146          #define USART6_TX_AF                GPIO_AF_USART6
+    147          
+    148          #define USART6_RX_PIN               GPIO_Pin_12
+    149          #define USART6_RX_GPIO_PORT         GPIOA
+    150          #define USART6_RX_GPIO_CLK          RCC_AHB1Periph_GPIOA
+    151          #define USART6_RX_SOURCE            GPIO_PinSource12
+    152          #define USART6_RX_AF                GPIO_AF_USART6
+    153          
+    154          #define USART6_DMAx_CLK             RCC_AHB1Periph_DMA2
+    155          
+    156          #define USART6_TX_DMA               DMA2
+    157          #define USART6_TX_DMA_CHANNEL       DMA_Channel_5
+    158          #define USART6_TX_DMA_STREAM        DMA2_Stream6
+    159          #define USART6_TX_DMA_IRQ_CHANNEL   DMA2_Stream6_IRQn
+    160          #define USART6_TX_DMA_IRQ_HANDLER   DMA2_Stream6_IRQHandler
+    161          #define USART6_TX_DMA_ISR           HISR
+    162          #define USART6_TX_DMA_IFCR          HIFCR
+    163          #define USART6_TX_DMA_FLAG_TCIF     DMA_FLAG_TCIF6
+    164          #define USART6_TX_DMA_IT_TCIF       DMA_IT_TCIF6
+    165          
+    166          #define USART6_RX_DMA               DMA2
+    167          #define USART6_RX_DMA_CHANNEL       DMA_Channel_5
+    168          #define USART6_RX_DMA_STREAM        DMA2_Stream2
+    169          #define USART6_RX_DMA_IRQ_CHANNEL   DMA2_Stream2_IRQn
+    170          #define USART6_RX_DMA_IRQ_HANDLER   DMA2_Stream2_IRQHandler
+    171          #define USART6_RX_DMA_ISR           LISR
+    172          #define USART6_RX_DMA_IFCR          LIFCR
+    173          #define USART6_RX_DMA_FLAG_TCIF     DMA_FLAG_TCIF2
+    174          #define USART6_RX_DMA_FLAG_TEIF     DMA_FLAG_TEIF2
+    175          #define USART6_RX_DMA_IT_TCIF       DMA_IT_TCIF2
+    176          #define USART6_RX_DMA_IT_TEIF       DMA_IT_TEIF2
+    177          
+    178          /********************************* Globals ************************************/
+    179          
+    180          static volatile RingByteBuffer sUART1BufferTx;
+    181          static volatile RingByteBuffer sUART1BufferRx;
+    182          
+    183          static volatile RingByteBuffer sUART2BufferRx;
+    184          static volatile RingByteBuffer sUART2BufferTx;
+    185          
+    186          static volatile RingByteBuffer sUART6BufferTx;
+    187          static volatile RingByteBuffer sUART6BufferRx;
+    188          
+    189          
+
+   \                                 In section .bss, align 4
+    190          static uart_struct_t UART_1, UART_2, UART_6;
+   \                     UART_2:
+   \   00000000                      DS8 100
+
+   \                                 In section .bss, align 4
+   \                     UART_6:
+   \   00000000                      DS8 100
+    191          
+    192          static struct {
+    193          	uart_dma_tx_buffer_t buffers[UART_DMA_BUF_TX_NR];
+    194          	volatile uart_dma_tx_buffer_t * ongoing;
+    195          	volatile RINGBUFFER(empty_r_buf, UART_DMA_BUF_TX_NR, uart_dma_tx_buffer_t *);
+    196          	volatile RINGBUFFER(ready_r_buf, UART_DMA_BUF_TX_NR, uart_dma_tx_buffer_t *);
+
+   \                                 In section .bss, align 4
+    197          }uart_dma_tx_buffers_struct;
+   \                     uart_dma_tx_buffers_struct:
+   \   00000000                      DS8 35340
+    198          
+    199          static struct {
+    200          	uart_dma_rx_buffer_t buffers[UART_DMA_BUF_RX_NR];
+    201          	volatile uart_dma_rx_buffer_t * ongoing;
+    202          	volatile RINGBUFFER(empty_r_buf, UART_DMA_BUF_RX_NR, uart_dma_rx_buffer_t *);
+    203          	volatile RINGBUFFER(ready_r_buf, UART_DMA_BUF_RX_NR, uart_dma_rx_buffer_t *);
+
+   \                                 In section .bss, align 4
+    204          }uart_dma_rx_buffers_struct;
+   \                     uart_dma_rx_buffers_struct:
+   \   00000000                      DS8 2220
+
+   \                                 In section .data, align 4
+   \                     UART_1:
+   \   00000000   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   00000010   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   00000020   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   00000030   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   00000040   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   00000050   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   00000064   0x00000009         DC32 9
+   \   00000068   0x00000000         DC32 0
+   \   0000006C   0x40011400         DC32 40011400H
+   \   00000070   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   0000007C   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   00000088   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   00000094   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   000000A0   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \   000000AC   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+    205          
+    206          
+    207          /* Configured though an API call */
+    208          static int irq_channel_premption_priority = NVIC_PRIORITY_UART;
+    209          static int irq_channel_subpriority = 0;
+    210          
+    211          /* UART number used when syscalls to printf are done */
+    212          static USART_TypeDef* usart_for_printf = USART6;
+    213          
+    214          /********************************* Prototypes *********************************/
+    215          
+
+   \                                 In section .text, align 2, keep-with-next
+    216          static uart_struct_t * uart_get_instance(uart_num_t uart)
+    217          {
+    218          	void * pInstance = NULL;
+   \                     uart_get_instance: (+1)
+   \   00000000   0x2100             MOVS     R1,#+0
+    219          
+    220          	if(uart == UART1)
+   \   00000002   0x0002             MOVS     R2,R0
+   \   00000004   0xD102             BNE.N    ??uart_get_instance_0
+    221          		pInstance = &UART_1;
+   \   00000006   0x.... 0x....      LDR.W    R1,??DataTable17
+   \   0000000A   0xE008             B.N      ??uart_get_instance_1
+    222          	else if(uart == UART2)
+   \                     ??uart_get_instance_0: (+1)
+   \   0000000C   0x2801             CMP      R0,#+1
+   \   0000000E   0xD102             BNE.N    ??uart_get_instance_2
+    223          		pInstance = &UART_2;
+   \   00000010   0x.... 0x....      LDR.W    R1,??DataTable17_1
+   \   00000014   0xE003             B.N      ??uart_get_instance_1
+    224          	else if(uart == UART6)
+   \                     ??uart_get_instance_2: (+1)
+   \   00000016   0x2802             CMP      R0,#+2
+   \   00000018   0xD101             BNE.N    ??uart_get_instance_1
+    225          		pInstance = &UART_6;
+   \   0000001A   0x.... 0x....      LDR.W    R1,??DataTable18
+    226          
+    227          	return pInstance;
+   \                     ??uart_get_instance_1: (+1)
+   \   0000001E   0x4608             MOV      R0,R1
+   \   00000020   0x4770             BX       LR               ;; return
+    228          }
+    229          
+
+   \                                 In section .text, align 2, keep-with-next
+    230          USART_TypeDef * uart_get_uart_for_printf(void)
+    231          {
+    232          	return usart_for_printf;
+   \                     uart_get_uart_for_printf: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R0,??DataTable17
+   \   00000004   0x6EC0             LDR      R0,[R0, #+108]
+   \   00000006   0x4770             BX       LR               ;; return
+    233          }
+    234          
+
+   \                                 In section .text, align 2, keep-with-next
+    235          static void uart_dma_tx_config_uartid(uart_num_t uart, uint32_t DMA_Channel, uint32_t RCC_AHB1Periph, DMA_Stream_TypeDef* DMAy_Streamx, uint8_t NVIC_IRQChannel, DMA_InitTypeDef * DMA_InitStructure, NVIC_InitTypeDef * NVIC_InitStructure)
+    236          {
+   \                     uart_dma_tx_config_uartid: (+1)
+   \   00000000   0xE92D 0x41F0      PUSH     {R4-R8,LR}
+   \   00000004   0x4604             MOV      R4,R0
+   \   00000006   0x460E             MOV      R6,R1
+   \   00000008   0x4617             MOV      R7,R2
+   \   0000000A   0x461D             MOV      R5,R3
+    237          	DMA_InitStructure->DMA_PeripheralBaseAddr =(uint32_t) (&(uart_get_instance(uart)->usartx->DR)) ;
+   \   0000000C   0x.... 0x....      BL       uart_get_instance
+   \   00000010   0xF8DD 0x801C      LDR      R8,[SP, #+28]
+   \   00000014   0x6C40             LDR      R0,[R0, #+68]
+   \   00000016   0x1D00             ADDS     R0,R0,#+4
+   \   00000018   0xF8C8 0x0004      STR      R0,[R8, #+4]
+    238          	DMA_InitStructure->DMA_Channel = DMA_Channel;
+   \   0000001C   0xF8C8 0x6000      STR      R6,[R8, #+0]
+    239          	DMA_InitStructure->DMA_DIR = DMA_DIR_MemoryToPeripheral;
+   \   00000020   0x2040             MOVS     R0,#+64
+   \   00000022   0xF8C8 0x000C      STR      R0,[R8, #+12]
+    240          	// Enable the DMA clock 
+    241          	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph, ENABLE);
+   \   00000026   0x2101             MOVS     R1,#+1
+   \   00000028   0x4638             MOV      R0,R7
+   \   0000002A   0x.... 0x....      BL       RCC_AHB1PeriphClockCmd
+    242          	// Configure TX DMA 
+    243          	DMA_Init(DMAy_Streamx, DMA_InitStructure);
+   \   0000002E   0x4641             MOV      R1,R8
+   \   00000030   0x4628             MOV      R0,R5
+   \   00000032   0x.... 0x....      BL       DMA_Init
+   \   00000036   0x9908             LDR      R1,[SP, #+32]
+    244          	// Enable DMA NVIC interrupt 
+    245          	NVIC_InitStructure->NVIC_IRQChannel = NVIC_IRQChannel;
+   \   00000038   0x9806             LDR      R0,[SP, #+24]
+   \   0000003A   0x7008             STRB     R0,[R1, #+0]
+    246          	NVIC_Init(NVIC_InitStructure);
+   \   0000003C   0x4608             MOV      R0,R1
+   \   0000003E   0x.... 0x....      BL       NVIC_Init
+    247          	// Enable transfer complete interrupt 
+    248          	DMA_ITConfig(DMAy_Streamx, DMA_IT_TC, ENABLE);
+   \   00000042   0x2201             MOVS     R2,#+1
+   \   00000044   0x2110             MOVS     R1,#+16
+   \   00000046   0x4628             MOV      R0,R5
+   \   00000048   0x.... 0x....      BL       DMA_ITConfig
+    249          	
+    250          	uart_get_instance(uart)->state_tx = UART_STATE_IDLE;
+   \   0000004C   0x4620             MOV      R0,R4
+   \   0000004E   0x.... 0x....      BL       uart_get_instance
+   \   00000052   0x2100             MOVS     R1,#+0
+   \   00000054   0xF880 0x1050      STRB     R1,[R0, #+80]
+    251          	
+    252          	uart_get_instance(uart)->TxDMAy_Streamx = DMAy_Streamx;
+   \   00000058   0x4620             MOV      R0,R4
+   \   0000005A   0x.... 0x....      BL       uart_get_instance
+   \   0000005E   0x6305             STR      R5,[R0, #+48]
+    253          }
+   \   00000060   0xE8BD 0x81F0      POP      {R4-R8,PC}       ;; return
+    254          
+
+   \                                 In section .text, align 2, keep-with-next
+    255          static int uart_dma_tx_config(uart_num_t uart)
+    256          {
+   \                     uart_dma_tx_config: (+1)
+   \   00000000   0xB530             PUSH     {R4,R5,LR}
+   \   00000002   0xB093             SUB      SP,SP,#+76
+   \   00000004   0x4604             MOV      R4,R0
+    257          	unsigned int i;
+    258          	DMA_InitTypeDef DMA_InitStructure;
+    259          	NVIC_InitTypeDef NVIC_InitStructure;
+    260          	uart_struct_t * uart_inst = uart_get_instance(uart);
+   \   00000006   0x.... 0x....      BL       uart_get_instance
+   \   0000000A   0x4605             MOV      R5,R0
+    261          
+    262          	// Configure NVIC DMA Interrupt structure 
+    263          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = irq_channel_premption_priority;
+   \   0000000C   0x.... 0x....      LDR.W    R0,??DataTable17
+   \   00000010   0x6E41             LDR      R1,[R0, #+100]
+   \   00000012   0xF88D 0x100D      STRB     R1,[SP, #+13]
+    264          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = irq_channel_subpriority;
+   \   00000016   0x6E80             LDR      R0,[R0, #+104]
+   \   00000018   0xF88D 0x000E      STRB     R0,[SP, #+14]
+    265          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+   \   0000001C   0x2001             MOVS     R0,#+1
+   \   0000001E   0xF88D 0x000F      STRB     R0,[SP, #+15]
+    266          
+    267          	// Configure DMA Initialization Structure 
+    268          	DMA_StructInit(&DMA_InitStructure);
+   \   00000022   0xA804             ADD      R0,SP,#+16
+   \   00000024   0x.... 0x....      BL       DMA_StructInit
+    269          	DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable ;
+   \   00000028   0x2000             MOVS     R0,#+0
+   \   0000002A   0x900F             STR      R0,[SP, #+60]
+    270          	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_1QuarterFull ;
+   \   0000002C   0x9010             STR      R0,[SP, #+64]
+    271          	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single ;
+   \   0000002E   0x9011             STR      R0,[SP, #+68]
+    272          	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+   \   00000030   0x900C             STR      R0,[SP, #+48]
+    273          	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+   \   00000032   0xF44F 0x6080      MOV      R0,#+1024
+   \   00000036   0x900A             STR      R0,[SP, #+40]
+    274          	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+   \   00000038   0x2000             MOVS     R0,#+0
+   \   0000003A   0x900D             STR      R0,[SP, #+52]
+    275          	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
+   \   0000003C   0x9012             STR      R0,[SP, #+72]
+    276          	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+   \   0000003E   0x900B             STR      R0,[SP, #+44]
+    277          	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+   \   00000040   0x9009             STR      R0,[SP, #+36]
+    278          	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+   \   00000042   0xF44F 0x3000      MOV      R0,#+131072
+   \   00000046   0x900E             STR      R0,[SP, #+56]
+    279          
+    280          	if(uart == UART2) {
+   \   00000048   0x4620             MOV      R0,R4
+   \   0000004A   0x2801             CMP      R0,#+1
+   \   0000004C   0xD11C             BNE.N    ??uart_dma_tx_config_0
+    281          		uart_inst->TxDMAy = USART2_TX_DMA;
+   \   0000004E   0x.... 0x....      LDR.W    R0,??DataTable18_1  ;; 0x40026000
+   \   00000052   0x62E8             STR      R0,[R5, #+44]
+    282          		uart_inst->TxDMA_ItStatusRegAddr = &USART2_TX_DMA->USART2_TX_DMA_ISR;
+   \   00000054   0x1D01             ADDS     R1,R0,#+4
+   \   00000056   0x6369             STR      R1,[R5, #+52]
+    283          		uart_inst->TxDMA_ClearItStatusRegAddr = &USART2_TX_DMA->USART2_TX_DMA_IFCR;
+   \   00000058   0x300C             ADDS     R0,R0,#+12
+   \   0000005A   0x63A8             STR      R0,[R5, #+56]
+    284          		uart_inst->TxDMA_ItTcIf = USART2_TX_DMA_IT_TCIF;
+   \   0000005C   0x.... 0x....      LDR.W    R0,??DataTable18_2  ;; 0x20208000
+   \   00000060   0x63E8             STR      R0,[R5, #+60]
+    285          		uart_inst->TxDMA_FlagItTcIf = USART2_TX_DMA_FLAG_TCIF;
+   \   00000062   0x.... 0x....      LDR.W    R0,??DataTable18_3  ;; 0x20200000
+   \   00000066   0x6428             STR      R0,[R5, #+64]
+    286          		uart_dma_tx_config_uartid(uart, USART2_TX_DMA_CHANNEL, USART2_DMAx_CLK, USART2_TX_DMA_STREAM, USART2_TX_DMA_IRQ_CHANNEL, &DMA_InitStructure, &NVIC_InitStructure);
+   \   00000068   0xA803             ADD      R0,SP,#+12
+   \   0000006A   0x9002             STR      R0,[SP, #+8]
+   \   0000006C   0xA804             ADD      R0,SP,#+16
+   \   0000006E   0x9001             STR      R0,[SP, #+4]
+   \   00000070   0x2011             MOVS     R0,#+17
+   \   00000072   0x9000             STR      R0,[SP, #+0]
+   \   00000074   0x.... 0x....      LDR.W    R3,??DataTable18_4  ;; 0x400260a0
+   \   00000078   0xF44F 0x1200      MOV      R2,#+2097152
+   \   0000007C   0xF04F 0x6100      MOV      R1,#+134217728
+   \   00000080   0x4620             MOV      R0,R4
+   \   00000082   0x.... 0x....      BL       uart_dma_tx_config_uartid
+   \   00000086   0xE03C             B.N      ??uart_dma_tx_config_1
+    287          	} else if(uart == UART6) {
+   \                     ??uart_dma_tx_config_0: (+1)
+   \   00000088   0x2802             CMP      R0,#+2
+   \   0000008A   0xD11C             BNE.N    ??uart_dma_tx_config_2
+    288          		uart_inst->TxDMAy = USART6_TX_DMA;
+   \   0000008C   0x.... 0x....      LDR.W    R0,??DataTable18_5  ;; 0x40026400
+   \   00000090   0x62E8             STR      R0,[R5, #+44]
+    289          		uart_inst->TxDMA_ItStatusRegAddr = &USART6_TX_DMA->USART6_TX_DMA_ISR;
+   \   00000092   0x1D01             ADDS     R1,R0,#+4
+   \   00000094   0x6369             STR      R1,[R5, #+52]
+    290          		uart_inst->TxDMA_ClearItStatusRegAddr = &USART6_TX_DMA->USART6_TX_DMA_IFCR;
+   \   00000096   0x300C             ADDS     R0,R0,#+12
+   \   00000098   0x63A8             STR      R0,[R5, #+56]
+    291          		uart_inst->TxDMA_ItTcIf = USART6_TX_DMA_IT_TCIF;
+   \   0000009A   0x.... 0x....      LDR.W    R0,??DataTable18_2  ;; 0x20208000
+   \   0000009E   0x63E8             STR      R0,[R5, #+60]
+    292          		uart_inst->TxDMA_FlagItTcIf = USART6_TX_DMA_FLAG_TCIF;
+   \   000000A0   0x.... 0x....      LDR.W    R0,??DataTable18_3  ;; 0x20200000
+   \   000000A4   0x6428             STR      R0,[R5, #+64]
+    293          		uart_dma_tx_config_uartid(uart, USART6_TX_DMA_CHANNEL, USART6_DMAx_CLK, USART6_TX_DMA_STREAM, USART6_TX_DMA_IRQ_CHANNEL, &DMA_InitStructure, &NVIC_InitStructure);
+   \   000000A6   0xA803             ADD      R0,SP,#+12
+   \   000000A8   0x9002             STR      R0,[SP, #+8]
+   \   000000AA   0xA804             ADD      R0,SP,#+16
+   \   000000AC   0x9001             STR      R0,[SP, #+4]
+   \   000000AE   0x2045             MOVS     R0,#+69
+   \   000000B0   0x9000             STR      R0,[SP, #+0]
+   \   000000B2   0x.... 0x....      LDR.W    R3,??DataTable18_6  ;; 0x400264a0
+   \   000000B6   0xF44F 0x0280      MOV      R2,#+4194304
+   \   000000BA   0xF04F 0x6120      MOV      R1,#+167772160
+   \   000000BE   0x4620             MOV      R0,R4
+   \   000000C0   0x.... 0x....      BL       uart_dma_tx_config_uartid
+   \   000000C4   0xE01D             B.N      ??uart_dma_tx_config_1
+    294          	} else if(uart == UART1) {
+   \                     ??uart_dma_tx_config_2: (+1)
+   \   000000C6   0x2C00             CMP      R4,#+0
+   \   000000C8   0xD11B             BNE.N    ??uart_dma_tx_config_1
+    295          		uart_inst->TxDMAy = USART1_TX_DMA;
+   \   000000CA   0x.... 0x....      LDR.W    R0,??DataTable18_5  ;; 0x40026400
+   \   000000CE   0x62E8             STR      R0,[R5, #+44]
+    296          		uart_inst->TxDMA_ItStatusRegAddr = &USART1_TX_DMA->USART1_TX_DMA_ISR;
+   \   000000D0   0x1D01             ADDS     R1,R0,#+4
+   \   000000D2   0x6369             STR      R1,[R5, #+52]
+    297          		uart_inst->TxDMA_ClearItStatusRegAddr = &USART1_TX_DMA->USART1_TX_DMA_IFCR;
+   \   000000D4   0x300C             ADDS     R0,R0,#+12
+   \   000000D6   0x63A8             STR      R0,[R5, #+56]
+    298          		uart_inst->TxDMA_ItTcIf = USART1_TX_DMA_IT_TCIF;
+   \   000000D8   0x.... 0x....      LDR.W    R0,??DataTable18_7  ;; 0x28008000
+   \   000000DC   0x63E8             STR      R0,[R5, #+60]
+    299          		uart_inst->TxDMA_FlagItTcIf = USART1_TX_DMA_FLAG_TCIF;
+   \   000000DE   0xF04F 0x5020      MOV      R0,#+671088640
+   \   000000E2   0x6428             STR      R0,[R5, #+64]
+    300          		uart_dma_tx_config_uartid(uart, USART1_TX_DMA_CHANNEL, USART1_DMAx_CLK, USART1_TX_DMA_STREAM, USART1_TX_DMA_IRQ_CHANNEL, &DMA_InitStructure, &NVIC_InitStructure);
+   \   000000E4   0xA803             ADD      R0,SP,#+12
+   \   000000E6   0x9002             STR      R0,[SP, #+8]
+   \   000000E8   0xA804             ADD      R0,SP,#+16
+   \   000000EA   0x9001             STR      R0,[SP, #+4]
+   \   000000EC   0x2046             MOVS     R0,#+70
+   \   000000EE   0x9000             STR      R0,[SP, #+0]
+   \   000000F0   0x.... 0x....      LDR.W    R3,??DataTable18_8  ;; 0x400264b8
+   \   000000F4   0xF44F 0x0280      MOV      R2,#+4194304
+   \   000000F8   0xF04F 0x6100      MOV      R1,#+134217728
+   \   000000FC   0x2000             MOVS     R0,#+0
+   \   000000FE   0x.... 0x....      BL       uart_dma_tx_config_uartid
+    301          	}
+    302          
+    303          	RINGBUFFER_CLEAR(&uart_dma_tx_buffers_struct.empty_r_buf);
+   \                     ??uart_dma_tx_config_1: (+1)
+   \   00000102   0x.... 0x....      LDR.W    R0,??DataTable18_9
+   \   00000106   0xF44F 0x4102      MOV      R1,#+33280
+   \   0000010A   0x4401             ADD      R1,R0,R1
+   \   0000010C   0x2200             MOVS     R2,#+0
+   \   0000010E   0x808A             STRH     R2,[R1, #+4]
+   \   00000110   0x80CA             STRH     R2,[R1, #+6]
+    304          	RINGBUFFER_CLEAR(&uart_dma_tx_buffers_struct.ready_r_buf);
+   \   00000112   0xF248 0x6208      MOVW     R2,#+34312
+   \   00000116   0x4402             ADD      R2,R0,R2
+   \   00000118   0x2300             MOVS     R3,#+0
+   \   0000011A   0x8013             STRH     R3,[R2, #+0]
+   \   0000011C   0x8053             STRH     R3,[R2, #+2]
+    305          	for(i=0; i<(sizeof(uart_dma_tx_buffers_struct.buffers)/sizeof(uart_dma_tx_buffers_struct.buffers[0])); i++) {
+   \   0000011E   0x461A             MOV      R2,R3
+   \   00000120   0xF248 0x2408      MOVW     R4,#+33288
+   \   00000124   0xE00D             B.N      ??uart_dma_tx_config_3
+    306          		uart_dma_tx_buffer_t * temp = &uart_dma_tx_buffers_struct.buffers[i];
+    307          		RINGBUFFER_PUSH(&uart_dma_tx_buffers_struct.empty_r_buf, &temp);
+   \                     ??uart_dma_tx_config_4: (+1)
+   \   00000126   0x88CB             LDRH     R3,[R1, #+6]
+   \   00000128   0xF003 0x03FF      AND      R3,R3,#0xFF
+   \   0000012C   0xEB00 0x0383      ADD      R3,R0,R3, LSL #+2
+   \   00000130   0xEB02 0x1582      ADD      R5,R2,R2, LSL #+6
+   \   00000134   0xEB00 0x0545      ADD      R5,R0,R5, LSL #+1
+   \   00000138   0x511D             STR      R5,[R3, R4]
+   \   0000013A   0x88CB             LDRH     R3,[R1, #+6]
+   \   0000013C   0x1C5B             ADDS     R3,R3,#+1
+   \   0000013E   0x80CB             STRH     R3,[R1, #+6]
+    308          	}
+   \   00000140   0x1C52             ADDS     R2,R2,#+1
+   \                     ??uart_dma_tx_config_3: (+1)
+   \   00000142   0x2AFF             CMP      R2,#+255
+   \   00000144   0xD9EF             BLS.N    ??uart_dma_tx_config_4
+    309          	uart_dma_tx_buffers_struct.ongoing = 0;
+   \   00000146   0x2000             MOVS     R0,#+0
+   \   00000148   0x6008             STR      R0,[R1, #+0]
+    310          
+    311          	return 0;
+   \   0000014A   0xB013             ADD      SP,SP,#+76
+   \   0000014C   0xBD30             POP      {R4,R5,PC}       ;; return
+    312          }
+    313          
+
+   \                                 In section .text, align 2, keep-with-next
+    314          static void uart_dma_rx_config_uartid(uart_num_t uart, uint32_t DMA_Channel, uint32_t RCC_AHB1Periph, DMA_Stream_TypeDef* DMAy_Streamx, uint8_t NVIC_IRQChannel, DMA_InitTypeDef * DMA_InitStructure, NVIC_InitTypeDef * NVIC_InitStructure)
+    315          {
+   \                     uart_dma_rx_config_uartid: (+1)
+   \   00000000   0xE92D 0x43F8      PUSH     {R3-R9,LR}
+   \   00000004   0x4689             MOV      R9,R1
+   \   00000006   0x4617             MOV      R7,R2
+   \   00000008   0x461C             MOV      R4,R3
+    316          	uart_struct_t * uart_inst = uart_get_instance(uart);
+   \   0000000A   0x.... 0x....      BL       uart_get_instance
+   \   0000000E   0x4605             MOV      R5,R0
+    317          
+    318          	DMA_InitStructure->DMA_PeripheralBaseAddr =(uint32_t) (&(uart_inst->usartx->DR)) ;
+   \   00000010   0xF105 0x0610      ADD      R6,R5,#+16
+   \   00000014   0xF8DD 0x8024      LDR      R8,[SP, #+36]
+   \   00000018   0x6B70             LDR      R0,[R6, #+52]
+   \   0000001A   0x1D00             ADDS     R0,R0,#+4
+   \   0000001C   0xF8C8 0x0004      STR      R0,[R8, #+4]
+    319          	DMA_InitStructure->DMA_Channel = DMA_Channel;
+   \   00000020   0xF8C8 0x9000      STR      R9,[R8, #+0]
+    320          	DMA_InitStructure->DMA_DIR = DMA_DIR_PeripheralToMemory;
+   \   00000024   0x2000             MOVS     R0,#+0
+   \   00000026   0xF8C8 0x000C      STR      R0,[R8, #+12]
+    321          	// Enable the DMA clock 
+    322          	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph, ENABLE);
+   \   0000002A   0x2101             MOVS     R1,#+1
+   \   0000002C   0x4638             MOV      R0,R7
+   \   0000002E   0x.... 0x....      BL       RCC_AHB1PeriphClockCmd
+    323          	// Configure RX DMA 
+    324          	DMA_Init(DMAy_Streamx, DMA_InitStructure);
+   \   00000032   0x4641             MOV      R1,R8
+   \   00000034   0x4620             MOV      R0,R4
+   \   00000036   0x.... 0x....      BL       DMA_Init
+   \   0000003A   0x990A             LDR      R1,[SP, #+40]
+    325          	// Enable DMA NVIC interrupt 
+    326          	NVIC_InitStructure->NVIC_IRQChannel = NVIC_IRQChannel;
+   \   0000003C   0x9808             LDR      R0,[SP, #+32]
+   \   0000003E   0x7008             STRB     R0,[R1, #+0]
+    327          	NVIC_Init(NVIC_InitStructure);
+   \   00000040   0x4608             MOV      R0,R1
+   \   00000042   0x.... 0x....      BL       NVIC_Init
+    328          	// Enable transfer complete interrupt 
+    329          	DMA_ITConfig(DMAy_Streamx, DMA_IT_TC|DMA_IT_TE, ENABLE);
+   \   00000046   0x2201             MOVS     R2,#+1
+   \   00000048   0x2114             MOVS     R1,#+20
+   \   0000004A   0x4620             MOV      R0,R4
+   \   0000004C   0x.... 0x....      BL       DMA_ITConfig
+    330          
+    331          	uart_inst->RxDMAy_Streamx = DMAy_Streamx;
+   \   00000050   0x6034             STR      R4,[R6, #+0]
+    332          	USART_ITConfig(uart_inst->usartx, USART_IT_ERR, ENABLE);
+   \   00000052   0x2201             MOVS     R2,#+1
+   \   00000054   0x2160             MOVS     R1,#+96
+   \   00000056   0x6B70             LDR      R0,[R6, #+52]
+   \   00000058   0x.... 0x....      BL       USART_ITConfig
+    333          	USART_DMACmd(uart_inst->usartx, USART_DMAReq_Rx, ENABLE);
+   \   0000005C   0x2201             MOVS     R2,#+1
+   \   0000005E   0x2140             MOVS     R1,#+64
+   \   00000060   0x6B70             LDR      R0,[R6, #+52]
+   \   00000062   0x.... 0x....      BL       USART_DMACmd
+    334          
+    335          	uart_inst->state_rx = UART_STATE_IDLE;
+   \   00000066   0x2000             MOVS     R0,#+0
+   \   00000068   0xF885 0x0051      STRB     R0,[R5, #+81]
+    336          }
+   \   0000006C   0xE8BD 0x83F1      POP      {R0,R4-R9,PC}    ;; return
+    337          
+
+   \                                 In section .text, align 2, keep-with-next
+    338          static int uart_dma_rx_config(uart_num_t uart)
+    339          {
+   \                     uart_dma_rx_config: (+1)
+   \   00000000   0xB530             PUSH     {R4,R5,LR}
+   \   00000002   0xB093             SUB      SP,SP,#+76
+   \   00000004   0x4604             MOV      R4,R0
+    340          	unsigned int i;
+    341          	DMA_InitTypeDef DMA_InitStructure;
+    342          	NVIC_InitTypeDef NVIC_InitStructure;
+    343          	uart_struct_t * uart_inst = uart_get_instance(uart);
+   \   00000006   0x.... 0x....      BL       uart_get_instance
+   \   0000000A   0x4605             MOV      R5,R0
+    344          
+    345          	// Configure NVIC DMA Interrupt structure 
+    346          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = irq_channel_premption_priority;
+   \   0000000C   0x.... 0x....      LDR.W    R0,??DataTable17
+   \   00000010   0x6E41             LDR      R1,[R0, #+100]
+   \   00000012   0xF88D 0x100D      STRB     R1,[SP, #+13]
+    347          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = irq_channel_subpriority;
+   \   00000016   0x6E80             LDR      R0,[R0, #+104]
+   \   00000018   0xF88D 0x000E      STRB     R0,[SP, #+14]
+    348          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+   \   0000001C   0x2001             MOVS     R0,#+1
+   \   0000001E   0xF88D 0x000F      STRB     R0,[SP, #+15]
+    349          
+    350          	// Configure DMA Initialization Structure 
+    351          	DMA_StructInit(&DMA_InitStructure);
+   \   00000022   0xA804             ADD      R0,SP,#+16
+   \   00000024   0x.... 0x....      BL       DMA_StructInit
+    352          	DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable ;
+   \   00000028   0x2000             MOVS     R0,#+0
+   \   0000002A   0x900F             STR      R0,[SP, #+60]
+    353          	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_1QuarterFull ;
+   \   0000002C   0x9010             STR      R0,[SP, #+64]
+    354          	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single ;
+   \   0000002E   0x9011             STR      R0,[SP, #+68]
+    355          	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+   \   00000030   0x900C             STR      R0,[SP, #+48]
+    356          	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+   \   00000032   0xF44F 0x6080      MOV      R0,#+1024
+   \   00000036   0x900A             STR      R0,[SP, #+40]
+    357          	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+   \   00000038   0x2000             MOVS     R0,#+0
+   \   0000003A   0x900D             STR      R0,[SP, #+52]
+    358          	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
+   \   0000003C   0x9012             STR      R0,[SP, #+72]
+    359          	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+   \   0000003E   0x900B             STR      R0,[SP, #+44]
+    360          	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+   \   00000040   0x9009             STR      R0,[SP, #+36]
+    361          	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+   \   00000042   0xF44F 0x3000      MOV      R0,#+131072
+   \   00000046   0x900E             STR      R0,[SP, #+56]
+    362          
+    363          	if(uart == UART2) {
+   \   00000048   0x4620             MOV      R0,R4
+   \   0000004A   0x2801             CMP      R0,#+1
+   \   0000004C   0xD122             BNE.N    ??uart_dma_rx_config_0
+    364          		uart_inst->RxDMAy=USART2_RX_DMA;
+   \   0000004E   0x.... 0x....      LDR.W    R0,??DataTable18_1  ;; 0x40026000
+   \   00000052   0x60E8             STR      R0,[R5, #+12]
+    365          		uart_inst->RxDMA_ItStatusRegAddr=&USART2_RX_DMA->USART2_RX_DMA_ISR;
+   \   00000054   0x1D01             ADDS     R1,R0,#+4
+   \   00000056   0x6169             STR      R1,[R5, #+20]
+    366          		uart_inst->RxDMA_ClearItStatusRegAddr=&USART2_RX_DMA->USART2_RX_DMA_IFCR;
+   \   00000058   0x300C             ADDS     R0,R0,#+12
+   \   0000005A   0x61A8             STR      R0,[R5, #+24]
+    367          		uart_inst->RxDMA_ItTcIf=USART2_RX_DMA_IT_TCIF;
+   \   0000005C   0x.... 0x....      LDR.W    R0,??DataTable18_7  ;; 0x28008000
+   \   00000060   0x61E8             STR      R0,[R5, #+28]
+    368          		uart_inst->RxDMA_FlagItTcIf=USART2_RX_DMA_FLAG_TCIF;
+   \   00000062   0xF04F 0x5020      MOV      R0,#+671088640
+   \   00000066   0x6228             STR      R0,[R5, #+32]
+    369          		uart_inst->RxDMA_ItTeIf=USART2_RX_DMA_IT_TEIF;
+   \   00000068   0x.... 0x....      LDR.W    R0,??DataTable18_10  ;; 0x22002000
+   \   0000006C   0x6268             STR      R0,[R5, #+36]
+    370          		uart_inst->RxDMA_FlagItTeIf=USART2_RX_DMA_FLAG_TEIF;
+   \   0000006E   0xF04F 0x5008      MOV      R0,#+570425344
+   \   00000072   0x62A8             STR      R0,[R5, #+40]
+    371          		uart_dma_rx_config_uartid(uart, USART2_RX_DMA_CHANNEL, USART2_DMAx_CLK, USART2_RX_DMA_STREAM, USART2_RX_DMA_IRQ_CHANNEL, &DMA_InitStructure, &NVIC_InitStructure);
+   \   00000074   0xA803             ADD      R0,SP,#+12
+   \   00000076   0x9002             STR      R0,[SP, #+8]
+   \   00000078   0xA804             ADD      R0,SP,#+16
+   \   0000007A   0x9001             STR      R0,[SP, #+4]
+   \   0000007C   0x202F             MOVS     R0,#+47
+   \   0000007E   0x9000             STR      R0,[SP, #+0]
+   \   00000080   0x.... 0x....      LDR.W    R3,??DataTable18_11  ;; 0x400260b8
+   \   00000084   0xF44F 0x1200      MOV      R2,#+2097152
+   \   00000088   0xF04F 0x6140      MOV      R1,#+201326592
+   \   0000008C   0x4620             MOV      R0,R4
+   \   0000008E   0x.... 0x....      BL       uart_dma_rx_config_uartid
+   \   00000092   0xE047             B.N      ??uart_dma_rx_config_1
+    372          	} else if(uart == UART6) {
+   \                     ??uart_dma_rx_config_0: (+1)
+   \   00000094   0x2802             CMP      R0,#+2
+   \   00000096   0xD121             BNE.N    ??uart_dma_rx_config_2
+    373          		uart_inst->RxDMAy=USART6_RX_DMA;
+   \   00000098   0x.... 0x....      LDR.W    R0,??DataTable18_5  ;; 0x40026400
+   \   0000009C   0x60E8             STR      R0,[R5, #+12]
+    374          		uart_inst->RxDMA_ItStatusRegAddr=&USART6_RX_DMA->USART6_RX_DMA_ISR;
+   \   0000009E   0x6168             STR      R0,[R5, #+20]
+    375          		uart_inst->RxDMA_ClearItStatusRegAddr=&USART6_RX_DMA->USART6_RX_DMA_IFCR;
+   \   000000A0   0x3008             ADDS     R0,R0,#+8
+   \   000000A2   0x61A8             STR      R0,[R5, #+24]
+    376          		uart_inst->RxDMA_ItTcIf=USART6_RX_DMA_IT_TCIF;
+   \   000000A4   0x.... 0x....      LDR.W    R0,??DataTable18_12  ;; 0x10208000
+   \   000000A8   0x61E8             STR      R0,[R5, #+28]
+    377          		uart_inst->RxDMA_FlagItTcIf=USART6_RX_DMA_FLAG_TCIF;
+   \   000000AA   0xF04F 0x5081      MOV      R0,#+270532608
+   \   000000AE   0x6228             STR      R0,[R5, #+32]
+    378          		uart_inst->RxDMA_ItTeIf=USART6_RX_DMA_IT_TEIF;
+   \   000000B0   0x.... 0x....      LDR.W    R0,??DataTable18_13  ;; 0x10082000
+   \   000000B4   0x6268             STR      R0,[R5, #+36]
+    379          		uart_inst->RxDMA_FlagItTeIf=USART6_RX_DMA_FLAG_TEIF;
+   \   000000B6   0x.... 0x....      LDR.W    R0,??DataTable18_14  ;; 0x10080000
+   \   000000BA   0x62A8             STR      R0,[R5, #+40]
+    380          		uart_dma_rx_config_uartid(uart, USART6_RX_DMA_CHANNEL, USART6_DMAx_CLK, USART6_RX_DMA_STREAM, USART6_RX_DMA_IRQ_CHANNEL, &DMA_InitStructure, &NVIC_InitStructure);
+   \   000000BC   0xA803             ADD      R0,SP,#+12
+   \   000000BE   0x9002             STR      R0,[SP, #+8]
+   \   000000C0   0xA804             ADD      R0,SP,#+16
+   \   000000C2   0x9001             STR      R0,[SP, #+4]
+   \   000000C4   0x203A             MOVS     R0,#+58
+   \   000000C6   0x9000             STR      R0,[SP, #+0]
+   \   000000C8   0x.... 0x....      LDR.W    R3,??DataTable18_15  ;; 0x40026440
+   \   000000CC   0xF44F 0x0280      MOV      R2,#+4194304
+   \   000000D0   0xF04F 0x6120      MOV      R1,#+167772160
+   \   000000D4   0x4620             MOV      R0,R4
+   \   000000D6   0x.... 0x....      BL       uart_dma_rx_config_uartid
+   \   000000DA   0xE023             B.N      ??uart_dma_rx_config_1
+    381          	} else if(uart == UART1) {
+   \                     ??uart_dma_rx_config_2: (+1)
+   \   000000DC   0x2C00             CMP      R4,#+0
+   \   000000DE   0xD121             BNE.N    ??uart_dma_rx_config_1
+    382          		uart_inst->RxDMAy=USART1_RX_DMA;
+   \   000000E0   0x.... 0x....      LDR.W    R0,??DataTable18_5  ;; 0x40026400
+   \   000000E4   0x60E8             STR      R0,[R5, #+12]
+    383          		uart_inst->RxDMA_ItStatusRegAddr=&USART1_RX_DMA->USART1_RX_DMA_ISR;
+   \   000000E6   0x1D01             ADDS     R1,R0,#+4
+   \   000000E8   0x6169             STR      R1,[R5, #+20]
+    384          		uart_inst->RxDMA_ClearItStatusRegAddr=&USART1_RX_DMA->USART1_RX_DMA_IFCR;
+   \   000000EA   0x300C             ADDS     R0,R0,#+12
+   \   000000EC   0x61A8             STR      R0,[R5, #+24]
+    385          		uart_inst->RxDMA_ItTcIf=USART1_RX_DMA_IT_TCIF;
+   \   000000EE   0x.... 0x....      LDR.W    R0,??DataTable18_16  ;; 0x20008800
+   \   000000F2   0x61E8             STR      R0,[R5, #+28]
+    386          		uart_inst->RxDMA_FlagItTcIf=USART1_RX_DMA_FLAG_TCIF;
+   \   000000F4   0x.... 0x....      LDR.W    R0,??DataTable18_17  ;; 0x20000800
+   \   000000F8   0x6228             STR      R0,[R5, #+32]
+    387          		uart_inst->RxDMA_ItTeIf=USART1_RX_DMA_IT_TEIF;
+   \   000000FA   0x.... 0x....      LDR.W    R0,??DataTable18_18  ;; 0x20002200
+   \   000000FE   0x6268             STR      R0,[R5, #+36]
+    388          		uart_inst->RxDMA_FlagItTeIf=USART1_RX_DMA_FLAG_TEIF;
+   \   00000100   0x.... 0x....      LDR.W    R0,??DataTable18_19  ;; 0x20000200
+   \   00000104   0x62A8             STR      R0,[R5, #+40]
+    389          		uart_dma_rx_config_uartid(uart, USART1_RX_DMA_CHANNEL, USART1_DMAx_CLK, USART1_RX_DMA_STREAM, USART1_RX_DMA_IRQ_CHANNEL, &DMA_InitStructure, &NVIC_InitStructure);
+   \   00000106   0xA803             ADD      R0,SP,#+12
+   \   00000108   0x9002             STR      R0,[SP, #+8]
+   \   0000010A   0xA804             ADD      R0,SP,#+16
+   \   0000010C   0x9001             STR      R0,[SP, #+4]
+   \   0000010E   0x2044             MOVS     R0,#+68
+   \   00000110   0x9000             STR      R0,[SP, #+0]
+   \   00000112   0x.... 0x....      LDR.W    R3,??DataTable18_20  ;; 0x40026488
+   \   00000116   0xF44F 0x0280      MOV      R2,#+4194304
+   \   0000011A   0xF04F 0x6100      MOV      R1,#+134217728
+   \   0000011E   0x2000             MOVS     R0,#+0
+   \   00000120   0x.... 0x....      BL       uart_dma_rx_config_uartid
+    390          	}
+    391          
+    392          	RINGBUFFER_CLEAR(&uart_dma_rx_buffers_struct.empty_r_buf);
+   \                     ??uart_dma_rx_config_1: (+1)
+   \   00000124   0x.... 0x....      LDR.W    R0,??DataTable18_21
+   \   00000128   0xF44F 0x6102      MOV      R1,#+2080
+   \   0000012C   0x4401             ADD      R1,R0,R1
+   \   0000012E   0x2200             MOVS     R2,#+0
+   \   00000130   0x808A             STRH     R2,[R1, #+4]
+   \   00000132   0x80CA             STRH     R2,[R1, #+6]
+    393          	RINGBUFFER_CLEAR(&uart_dma_rx_buffers_struct.ready_r_buf);
+   \   00000134   0xF600 0x0268      ADDW     R2,R0,#+2152
+   \   00000138   0x2300             MOVS     R3,#+0
+   \   0000013A   0x8013             STRH     R3,[R2, #+0]
+   \   0000013C   0x8053             STRH     R3,[R2, #+2]
+    394          	for(i=0; i<(sizeof(uart_dma_rx_buffers_struct.buffers)/sizeof(uart_dma_rx_buffers_struct.buffers[0])); i++) {
+   \   0000013E   0x461A             MOV      R2,R3
+   \   00000140   0xE00E             B.N      ??uart_dma_rx_config_3
+    395          		uart_dma_rx_buffer_t * temp = &uart_dma_rx_buffers_struct.buffers[i];
+    396          		RINGBUFFER_PUSH(&uart_dma_rx_buffers_struct.empty_r_buf, &temp);
+   \                     ??uart_dma_rx_config_4: (+1)
+   \   00000142   0x88CB             LDRH     R3,[R1, #+6]
+   \   00000144   0xF003 0x030F      AND      R3,R3,#0xF
+   \   00000148   0xEB00 0x0383      ADD      R3,R0,R3, LSL #+2
+   \   0000014C   0xEB02 0x1482      ADD      R4,R2,R2, LSL #+6
+   \   00000150   0xEB00 0x0444      ADD      R4,R0,R4, LSL #+1
+   \   00000154   0xF8C3 0x4828      STR      R4,[R3, #+2088]
+   \   00000158   0x88CB             LDRH     R3,[R1, #+6]
+   \   0000015A   0x1C5B             ADDS     R3,R3,#+1
+   \   0000015C   0x80CB             STRH     R3,[R1, #+6]
+    397          	}
+   \   0000015E   0x1C52             ADDS     R2,R2,#+1
+   \                     ??uart_dma_rx_config_3: (+1)
+   \   00000160   0x2A10             CMP      R2,#+16
+   \   00000162   0xD3EE             BCC.N    ??uart_dma_rx_config_4
+    398          	uart_dma_rx_buffers_struct.ongoing = 0;
+   \   00000164   0x2000             MOVS     R0,#+0
+   \   00000166   0x6008             STR      R0,[R1, #+0]
+    399          
+    400          	return 0;
+   \   00000168   0xB013             ADD      SP,SP,#+76
+   \   0000016A   0xBD30             POP      {R4,R5,PC}       ;; return
+    401          }
+    402          
+    403          
+
+   \                                 In section .text, align 2, keep-with-next
+    404          int uart_init(uart_init_struct_t * uart)
+    405          {
+   \                     uart_init: (+1)
+   \   00000000   0xE92D 0x47F0      PUSH     {R4-R10,LR}
+   \   00000004   0xB088             SUB      SP,SP,#+32
+   \   00000006   0x4604             MOV      R4,R0
+    406          	USART_InitTypeDef USART_InitStructure;
+    407          	GPIO_InitTypeDef GPIO_InitStructure;
+    408          	NVIC_InitTypeDef NVIC_InitStructure;
+    409          	uart_struct_t * pInstance = uart_get_instance(uart->uart_num);
+   \   00000008   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \   0000000C   0x.... 0x....      BL       uart_get_instance
+   \   00000010   0x4605             MOV      R5,R0
+    410          	
+    411                  /* interrupt handling needs memory buffer */
+    412                  if ((uart->irqs_on) && ((uart->tx_size == 0) && (uart->rx_size == 0)))
+   \   00000012   0xF994 0x0001      LDRSB    R0,[R4, #+1]
+   \   00000016   0x2800             CMP      R0,#+0
+   \   00000018   0xD005             BEQ.N    ??uart_init_0
+   \   0000001A   0x8A20             LDRH     R0,[R4, #+16]
+   \   0000001C   0x2800             CMP      R0,#+0
+   \   0000001E   0xD102             BNE.N    ??uart_init_0
+   \   00000020   0x8A60             LDRH     R0,[R4, #+18]
+   \   00000022   0x2800             CMP      R0,#+0
+   \   00000024   0xD007             BEQ.N    ??uart_init_1
+    413                          return -1;
+    414          
+    415          	/* current implementation only support :
+    416          		- TX IRQ and RX IRQ
+    417          		- TX DMA and RX IRQ
+    418          		- TX DMA and RX DMA
+    419          	If TX IRQ and RX DMA configuration is to be supported, then UART IRQ handler must be extended
+    420          	and is not for now for a matter of simplicity and footprint */
+    421          	if ((uart->use_dma_for_rx) && !(uart->use_dma_for_tx))
+   \                     ??uart_init_0: (+1)
+   \   00000026   0xF994 0x0004      LDRSB    R0,[R4, #+4]
+   \   0000002A   0x2800             CMP      R0,#+0
+   \   0000002C   0xD006             BEQ.N    ??uart_init_2
+   \   0000002E   0xF994 0x0003      LDRSB    R0,[R4, #+3]
+   \   00000032   0x2800             CMP      R0,#+0
+   \   00000034   0xD102             BNE.N    ??uart_init_2
+    422          		return -1;
+   \                     ??uart_init_1: (+1)
+   \   00000036   0xF04F 0x30FF      MOV      R0,#-1
+   \   0000003A   0xE188             B.N      ??uart_init_3
+    423          	
+    424                  /* Configure USART GPIO as alternate function push-pull */
+    425                  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+   \                     ??uart_init_2: (+1)
+   \   0000003C   0x2002             MOVS     R0,#+2
+   \   0000003E   0xF88D 0x0004      STRB     R0,[SP, #+4]
+    426                  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \   00000042   0xF88D 0x0005      STRB     R0,[SP, #+5]
+    427                  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   \   00000046   0x2000             MOVS     R0,#+0
+   \   00000048   0xF88D 0x0006      STRB     R0,[SP, #+6]
+    428                  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+   \   0000004C   0x2001             MOVS     R0,#+1
+   \   0000004E   0xF88D 0x0007      STRB     R0,[SP, #+7]
+    429          
+    430                  /* Configure USART TX/RX - 8bits - 1Stop - No parity */
+    431                  USART_InitStructure.USART_BaudRate = uart->baudrate;
+   \   00000052   0x6960             LDR      R0,[R4, #+20]
+   \   00000054   0x9003             STR      R0,[SP, #+12]
+    432                  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+   \   00000056   0x2000             MOVS     R0,#+0
+   \   00000058   0x9004             STR      R0,[SP, #+16]
+    433                  USART_InitStructure.USART_StopBits = USART_StopBits_1;
+    434                  USART_InitStructure.USART_Parity = USART_Parity_No;
+   \   0000005A   0xF8AD 0x0014      STRH     R0,[SP, #+20]
+    435                  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+   \   0000005E   0xF8AD 0x0018      STRH     R0,[SP, #+24]
+    436                  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+   \   00000062   0x200C             MOVS     R0,#+12
+   \   00000064   0xF8AD 0x0016      STRH     R0,[SP, #+22]
+    437          
+    438                  /* Configure USART interrupt */
+    439                  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = irq_channel_premption_priority;
+   \   00000068   0x.... 0x....      LDR.W    R6,??DataTable17
+   \   0000006C   0x6E70             LDR      R0,[R6, #+100]
+   \   0000006E   0xF88D 0x0009      STRB     R0,[SP, #+9]
+    440                  NVIC_InitStructure.NVIC_IRQChannelSubPriority = irq_channel_subpriority;
+   \   00000072   0x6EB0             LDR      R0,[R6, #+104]
+   \   00000074   0xF88D 0x000A      STRB     R0,[SP, #+10]
+    441                  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+   \   00000078   0x2001             MOVS     R0,#+1
+   \   0000007A   0xF88D 0x000B      STRB     R0,[SP, #+11]
+    442          
+    443          	/* Initialize fields with same value for any UART nb */
+    444          	if (uart->irqs_on) {
+   \   0000007E   0xF994 0x0001      LDRSB    R0,[R4, #+1]
+   \   00000082   0x2800             CMP      R0,#+0
+   \   00000084   0xD008             BEQ.N    ??uart_init_4
+    445          		pInstance->rx_interrupt_cb = uart->rx_interrupt_cb;
+   \   00000086   0x69A0             LDR      R0,[R4, #+24]
+   \   00000088   0x6568             STR      R0,[R5, #+84]
+    446          		pInstance->tx_interrupt_cb = uart->tx_interrupt_cb;
+   \   0000008A   0x69E0             LDR      R0,[R4, #+28]
+   \   0000008C   0x65A8             STR      R0,[R5, #+88]
+    447          		pInstance->rx_context = uart->rx_context;
+   \   0000008E   0x6A20             LDR      R0,[R4, #+32]
+   \   00000090   0x65E8             STR      R0,[R5, #+92]
+    448          		pInstance->tx_context = uart->tx_context;
+   \   00000092   0x6A60             LDR      R0,[R4, #+36]
+   \   00000094   0x6628             STR      R0,[R5, #+96]
+   \   00000096   0xE004             B.N      ??uart_init_5
+    449          	} else {
+    450          		pInstance->rx_interrupt_cb = NULL;
+   \                     ??uart_init_4: (+1)
+   \   00000098   0x2000             MOVS     R0,#+0
+   \   0000009A   0x6568             STR      R0,[R5, #+84]
+    451          		pInstance->tx_interrupt_cb = NULL;
+   \   0000009C   0x65A8             STR      R0,[R5, #+88]
+    452          		pInstance->rx_context = NULL;
+   \   0000009E   0x65E8             STR      R0,[R5, #+92]
+    453          		pInstance->tx_context = NULL;
+   \   000000A0   0x6628             STR      R0,[R5, #+96]
+    454          	}
+    455          	
+    456          	if(uart->uart_num == UART2) {
+   \                     ??uart_init_5: (+1)
+   \   000000A2   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \   000000A6   0x4601             MOV      R1,R0
+   \   000000A8   0x2901             CMP      R1,#+1
+   \   000000AA   0xD15F             BNE.N    ??uart_init_6
+    457          		/* init structure */
+    458          		UART_2.irqs_on = uart->irqs_on;
+   \   000000AC   0x.... 0x....      LDR.W    R9,??DataTable17_1
+   \   000000B0   0xF994 0x0001      LDRSB    R0,[R4, #+1]
+   \   000000B4   0xF8C9 0x0000      STR      R0,[R9, #+0]
+    459          		UART_2.use_dma_for_rx = uart->use_dma_for_rx;
+   \   000000B8   0x7920             LDRB     R0,[R4, #+4]
+   \   000000BA   0xF889 0x0008      STRB     R0,[R9, #+8]
+    460          		UART_2.usartx = USART2;
+   \   000000BE   0x.... 0x....      LDR.W    R7,??DataTable18_22  ;; 0x40004400
+   \   000000C2   0xF8C9 0x7044      STR      R7,[R9, #+68]
+    461          		UART_2.hw_flowcontrol_on = 0;
+   \   000000C6   0x2000             MOVS     R0,#+0
+   \   000000C8   0xF8C9 0x0004      STR      R0,[R9, #+4]
+    462          		RingByteBuffer_init((RingByteBuffer *)&sUART2BufferRx, uart->rx_buffer, uart->rx_size);
+   \   000000CC   0xF106 0x0888      ADD      R8,R6,#+136
+   \   000000D0   0x8A62             LDRH     R2,[R4, #+18]
+   \   000000D2   0x68E1             LDR      R1,[R4, #+12]
+   \   000000D4   0x4640             MOV      R0,R8
+   \   000000D6   0x.... 0x....      BL       RingByteBuffer_init
+    463          		RingByteBuffer_init((RingByteBuffer *)&sUART2BufferTx, uart->tx_buffer, uart->tx_size);
+   \   000000DA   0xF106 0x0A94      ADD      R10,R6,#+148
+   \   000000DE   0x8A22             LDRH     R2,[R4, #+16]
+   \   000000E0   0x68A1             LDR      R1,[R4, #+8]
+   \   000000E2   0x4650             MOV      R0,R10
+   \   000000E4   0x.... 0x....      BL       RingByteBuffer_init
+    464          		UART_2.ptr_RxBuffer = &sUART2BufferRx;
+   \   000000E8   0xF8C9 0x804C      STR      R8,[R9, #+76]
+    465          		UART_2.ptr_TxBuffer = &sUART2BufferTx;
+   \   000000EC   0xF8C9 0xA048      STR      R10,[R9, #+72]
+    466          
+    467          		/* Peripheral Clock Enable -------------------------------------------------*/
+    468          		/* Enable GPIO clock */
+    469          		RCC_AHB1PeriphClockCmd(USART2_TX_GPIO_CLK | USART2_RX_GPIO_CLK, ENABLE);
+   \   000000F0   0x2101             MOVS     R1,#+1
+   \   000000F2   0x4608             MOV      R0,R1
+   \   000000F4   0x.... 0x....      BL       RCC_AHB1PeriphClockCmd
+    470          
+    471          		/* Enable USART clock */
+    472          		USART2_CLK_INIT(USART2_CLK, ENABLE);
+   \   000000F8   0x2101             MOVS     R1,#+1
+   \   000000FA   0xF44F 0x3000      MOV      R0,#+131072
+   \   000000FE   0x.... 0x....      BL       RCC_APB1PeriphClockCmd
+    473          
+    474          		/* USARTx GPIO configuration -----------------------------------------------*/ 
+    475          		/* Connect USART pins to corresponding AF */
+    476          		GPIO_PinAFConfig(USART2_TX_GPIO_PORT, USART2_TX_SOURCE, USART2_TX_AF);
+   \   00000102   0x.... 0x....      LDR.W    R8,??DataTable18_23  ;; 0x40020000
+   \   00000106   0x2207             MOVS     R2,#+7
+   \   00000108   0x2102             MOVS     R1,#+2
+   \   0000010A   0x4640             MOV      R0,R8
+   \   0000010C   0x.... 0x....      BL       GPIO_PinAFConfig
+    477          		GPIO_PinAFConfig(USART2_RX_GPIO_PORT, USART2_RX_SOURCE, USART2_RX_AF);
+   \   00000110   0x2207             MOVS     R2,#+7
+   \   00000112   0x2103             MOVS     R1,#+3
+   \   00000114   0x4640             MOV      R0,R8
+   \   00000116   0x.... 0x....      BL       GPIO_PinAFConfig
+    478          
+    479          		/* Configure USART Tx and Rx as alternate function push-pull */
+    480          		GPIO_InitStructure.GPIO_Pin = USART2_TX_PIN;
+   \   0000011A   0x2004             MOVS     R0,#+4
+   \   0000011C   0x9000             STR      R0,[SP, #+0]
+    481          		GPIO_Init(USART2_TX_GPIO_PORT, &GPIO_InitStructure);
+   \   0000011E   0x4669             MOV      R1,SP
+   \   00000120   0x4640             MOV      R0,R8
+   \   00000122   0x.... 0x....      BL       GPIO_Init
+    482          		GPIO_InitStructure.GPIO_Pin = USART2_RX_PIN;
+   \   00000126   0x2008             MOVS     R0,#+8
+   \   00000128   0x9000             STR      R0,[SP, #+0]
+    483          		GPIO_Init(USART2_RX_GPIO_PORT, &GPIO_InitStructure);
+   \   0000012A   0x4669             MOV      R1,SP
+   \   0000012C   0x4640             MOV      R0,R8
+   \   0000012E   0x.... 0x....      BL       GPIO_Init
+    484          
+    485          		if(UART_2.irqs_on) {
+   \   00000132   0xF8D9 0x0000      LDR      R0,[R9, #+0]
+   \   00000136   0x2800             CMP      R0,#+0
+   \   00000138   0xD005             BEQ.N    ??uart_init_7
+    486          			/* Enable the USARTx Interrupt */
+    487          			NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+   \   0000013A   0x2026             MOVS     R0,#+38
+   \   0000013C   0xF88D 0x0008      STRB     R0,[SP, #+8]
+    488          			NVIC_Init(&NVIC_InitStructure);
+   \   00000140   0xA802             ADD      R0,SP,#+8
+   \   00000142   0x.... 0x....      BL       NVIC_Init
+    489          		}
+    490          
+    491          		USART_Init(USART2, &USART_InitStructure);
+   \                     ??uart_init_7: (+1)
+   \   00000146   0xA903             ADD      R1,SP,#+12
+   \   00000148   0x4638             MOV      R0,R7
+   \   0000014A   0x.... 0x....      BL       USART_Init
+    492          		// RXNEIE bit must not be set if DMA is used
+    493          		if (!uart->use_dma_for_rx)
+   \   0000014E   0xF994 0x0004      LDRSB    R0,[R4, #+4]
+   \   00000152   0x2800             CMP      R0,#+0
+   \   00000154   0xD105             BNE.N    ??uart_init_8
+    494          			USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
+   \   00000156   0x2201             MOVS     R2,#+1
+   \   00000158   0xF240 0x5125      MOVW     R1,#+1317
+   \   0000015C   0x4638             MOV      R0,R7
+   \   0000015E   0x.... 0x....      BL       USART_ITConfig
+    495          
+    496          		/* Enable USART */
+    497          		USART_Cmd(USART2, ENABLE);
+   \                     ??uart_init_8: (+1)
+   \   00000162   0x2101             MOVS     R1,#+1
+   \   00000164   0x4638             MOV      R0,R7
+   \   00000166   0x.... 0x....      BL       USART_Cmd
+   \   0000016A   0xE0D9             B.N      ??uart_init_9
+    498          
+    499          	} else if(uart->uart_num == UART6) {
+   \                     ??uart_init_6: (+1)
+   \   0000016C   0x2902             CMP      R1,#+2
+   \   0000016E   0xD160             BNE.N    ??uart_init_10
+    500          		/* init structure */
+    501          		UART_6.irqs_on = uart->irqs_on;
+   \   00000170   0x.... 0x....      LDR.W    R9,??DataTable18
+   \   00000174   0xF994 0x0001      LDRSB    R0,[R4, #+1]
+   \   00000178   0xF8C9 0x0000      STR      R0,[R9, #+0]
+    502          		UART_6.use_dma_for_rx = uart->use_dma_for_rx;
+   \   0000017C   0x7920             LDRB     R0,[R4, #+4]
+   \   0000017E   0xF889 0x0008      STRB     R0,[R9, #+8]
+    503          		UART_6.hw_flowcontrol_on = 0;
+   \   00000182   0x2000             MOVS     R0,#+0
+   \   00000184   0xF8C9 0x0004      STR      R0,[R9, #+4]
+    504          		UART_6.usartx = USART6;
+   \   00000188   0x.... 0x....      LDR.W    R7,??DataTable18_24  ;; 0x40011400
+   \   0000018C   0xF8C9 0x7044      STR      R7,[R9, #+68]
+    505          		RingByteBuffer_init((RingByteBuffer *)&sUART6BufferRx, uart->rx_buffer, uart->rx_size);
+   \   00000190   0xF106 0x08AC      ADD      R8,R6,#+172
+   \   00000194   0x8A62             LDRH     R2,[R4, #+18]
+   \   00000196   0x68E1             LDR      R1,[R4, #+12]
+   \   00000198   0x4640             MOV      R0,R8
+   \   0000019A   0x.... 0x....      BL       RingByteBuffer_init
+    506          		RingByteBuffer_init((RingByteBuffer *)&sUART6BufferTx, uart->tx_buffer, uart->tx_size);
+   \   0000019E   0xF106 0x0AA0      ADD      R10,R6,#+160
+   \   000001A2   0x8A22             LDRH     R2,[R4, #+16]
+   \   000001A4   0x68A1             LDR      R1,[R4, #+8]
+   \   000001A6   0x4650             MOV      R0,R10
+   \   000001A8   0x.... 0x....      BL       RingByteBuffer_init
+    507          		UART_6.ptr_RxBuffer = &sUART6BufferRx;
+   \   000001AC   0xF8C9 0x804C      STR      R8,[R9, #+76]
+    508          		UART_6.ptr_TxBuffer = &sUART6BufferTx;
+   \   000001B0   0xF8C9 0xA048      STR      R10,[R9, #+72]
+    509          
+    510          		/* Peripheral Clock Enable -------------------------------------------------*/
+    511          		/* Enable GPIO clock */
+    512          		RCC_AHB1PeriphClockCmd(USART6_TX_GPIO_CLK | USART6_RX_GPIO_CLK, ENABLE);
+   \   000001B4   0x2101             MOVS     R1,#+1
+   \   000001B6   0x4608             MOV      R0,R1
+   \   000001B8   0x.... 0x....      BL       RCC_AHB1PeriphClockCmd
+    513          
+    514          		/* Enable USART clock */
+    515          		USART6_CLK_INIT(USART6_CLK, ENABLE);
+   \   000001BC   0x2101             MOVS     R1,#+1
+   \   000001BE   0x2020             MOVS     R0,#+32
+   \   000001C0   0x.... 0x....      BL       RCC_APB2PeriphClockCmd
+    516          
+    517          		/* USARTx GPIO configuration -----------------------------------------------*/ 
+    518          		/* Connect USART pins to corresponding AF */
+    519          		GPIO_PinAFConfig(USART6_TX_GPIO_PORT, USART6_TX_SOURCE, USART6_TX_AF);
+   \   000001C4   0x.... 0x....      LDR.W    R8,??DataTable18_23  ;; 0x40020000
+   \   000001C8   0x2208             MOVS     R2,#+8
+   \   000001CA   0x210B             MOVS     R1,#+11
+   \   000001CC   0x4640             MOV      R0,R8
+   \   000001CE   0x.... 0x....      BL       GPIO_PinAFConfig
+    520          		GPIO_PinAFConfig(USART6_RX_GPIO_PORT, USART6_RX_SOURCE, USART6_RX_AF);
+   \   000001D2   0x2208             MOVS     R2,#+8
+   \   000001D4   0x210C             MOVS     R1,#+12
+   \   000001D6   0x4640             MOV      R0,R8
+   \   000001D8   0x.... 0x....      BL       GPIO_PinAFConfig
+    521          
+    522          		GPIO_InitStructure.GPIO_Pin = USART6_TX_PIN;
+   \   000001DC   0xF44F 0x6000      MOV      R0,#+2048
+   \   000001E0   0x9000             STR      R0,[SP, #+0]
+    523          		GPIO_Init(USART6_TX_GPIO_PORT, &GPIO_InitStructure);
+   \   000001E2   0x4669             MOV      R1,SP
+   \   000001E4   0x4640             MOV      R0,R8
+   \   000001E6   0x.... 0x....      BL       GPIO_Init
+    524          		GPIO_InitStructure.GPIO_Pin = USART6_RX_PIN;
+   \   000001EA   0xF44F 0x5080      MOV      R0,#+4096
+   \   000001EE   0x9000             STR      R0,[SP, #+0]
+    525          		GPIO_Init(USART6_RX_GPIO_PORT, &GPIO_InitStructure);
+   \   000001F0   0x4669             MOV      R1,SP
+   \   000001F2   0x4640             MOV      R0,R8
+   \   000001F4   0x.... 0x....      BL       GPIO_Init
+    526          
+    527          		if(UART_6.irqs_on) {
+   \   000001F8   0xF8D9 0x0000      LDR      R0,[R9, #+0]
+   \   000001FC   0x2800             CMP      R0,#+0
+   \   000001FE   0xD005             BEQ.N    ??uart_init_11
+    528          			/* Enable the USARTx Interrupt */
+    529          			NVIC_InitStructure.NVIC_IRQChannel = USART6_IRQn;
+   \   00000200   0x2047             MOVS     R0,#+71
+   \   00000202   0xF88D 0x0008      STRB     R0,[SP, #+8]
+    530          			NVIC_Init(&NVIC_InitStructure);
+   \   00000206   0xA802             ADD      R0,SP,#+8
+   \   00000208   0x.... 0x....      BL       NVIC_Init
+    531          		}
+    532          
+    533          		USART_Init(USART6, &USART_InitStructure);
+   \                     ??uart_init_11: (+1)
+   \   0000020C   0xA903             ADD      R1,SP,#+12
+   \   0000020E   0x4638             MOV      R0,R7
+   \   00000210   0x.... 0x....      BL       USART_Init
+    534          		// RXNEIE bit must not be set if DMA is used
+    535          		if (!uart->use_dma_for_rx)
+   \   00000214   0xF994 0x0004      LDRSB    R0,[R4, #+4]
+   \   00000218   0x2800             CMP      R0,#+0
+   \   0000021A   0xD105             BNE.N    ??uart_init_12
+    536          			USART_ITConfig(USART6, USART_IT_RXNE, ENABLE);
+   \   0000021C   0x2201             MOVS     R2,#+1
+   \   0000021E   0xF240 0x5125      MOVW     R1,#+1317
+   \   00000222   0x4638             MOV      R0,R7
+   \   00000224   0x.... 0x....      BL       USART_ITConfig
+    537          
+    538          		/* Enable USART */
+    539          		USART_Cmd(USART6, ENABLE);
+   \                     ??uart_init_12: (+1)
+   \   00000228   0x2101             MOVS     R1,#+1
+   \   0000022A   0x4638             MOV      R0,R7
+   \   0000022C   0x.... 0x....      BL       USART_Cmd
+   \   00000230   0xE076             B.N      ??uart_init_9
+    540          
+    541          	} else if(uart->uart_num == UART1) {
+   \                     ??uart_init_10: (+1)
+   \   00000232   0x2800             CMP      R0,#+0
+   \   00000234   0xD174             BNE.N    ??uart_init_9
+    542          		/* init structure */
+    543          		UART_1.irqs_on = uart->irqs_on;
+   \   00000236   0xF994 0x0001      LDRSB    R0,[R4, #+1]
+   \   0000023A   0x6030             STR      R0,[R6, #+0]
+    544          		UART_1.use_dma_for_rx = uart->use_dma_for_rx;
+   \   0000023C   0x7920             LDRB     R0,[R4, #+4]
+   \   0000023E   0x7230             STRB     R0,[R6, #+8]
+    545          		UART_1.hw_flowcontrol_on = 1;
+   \   00000240   0x2001             MOVS     R0,#+1
+   \   00000242   0x6070             STR      R0,[R6, #+4]
+    546          		UART_1.usartx = USART1;
+   \   00000244   0x.... 0x....      LDR.W    R7,??DataTable18_25  ;; 0x40011000
+   \   00000248   0x6477             STR      R7,[R6, #+68]
+    547          		RingByteBuffer_init((RingByteBuffer *)&sUART1BufferRx, uart->rx_buffer, uart->rx_size);
+   \   0000024A   0x8A62             LDRH     R2,[R4, #+18]
+   \   0000024C   0x68E1             LDR      R1,[R4, #+12]
+   \   0000024E   0xF106 0x007C      ADD      R0,R6,#+124
+   \   00000252   0x.... 0x....      BL       RingByteBuffer_init
+    548          		RingByteBuffer_init((RingByteBuffer *)&sUART1BufferTx, uart->tx_buffer, uart->tx_size);
+   \   00000256   0x8A22             LDRH     R2,[R4, #+16]
+   \   00000258   0x68A1             LDR      R1,[R4, #+8]
+   \   0000025A   0xF106 0x0070      ADD      R0,R6,#+112
+   \   0000025E   0x.... 0x....      BL       RingByteBuffer_init
+    549          		UART_1.ptr_RxBuffer = &sUART1BufferRx;
+   \   00000262   0xF106 0x007C      ADD      R0,R6,#+124
+   \   00000266   0x64F0             STR      R0,[R6, #+76]
+    550          		UART_1.ptr_TxBuffer = &sUART1BufferTx;
+   \   00000268   0xF106 0x0070      ADD      R0,R6,#+112
+   \   0000026C   0x64B0             STR      R0,[R6, #+72]
+    551          
+    552          		/* Peripheral Clock Enable -------------------------------------------------*/
+    553          		/* Enable GPIO clock */
+    554          		RCC_AHB1PeriphClockCmd(USART1_TX_GPIO_CLK | USART1_RX_GPIO_CLK 
+    555          				| USART1_CTS_GPIO_CLK | USART1_RTS_GPIO_CLK, ENABLE);
+   \   0000026E   0x2101             MOVS     R1,#+1
+   \   00000270   0x4608             MOV      R0,R1
+   \   00000272   0x.... 0x....      BL       RCC_AHB1PeriphClockCmd
+    556          
+    557          		/* Enable USART clock */
+    558          		USART1_CLK_INIT(USART1_CLK, ENABLE);
+   \   00000276   0x2101             MOVS     R1,#+1
+   \   00000278   0x2010             MOVS     R0,#+16
+   \   0000027A   0x.... 0x....      BL       RCC_APB2PeriphClockCmd
+    559          
+    560          		/* USARTx GPIO configuration -----------------------------------------------*/ 
+    561          		/* Connect USART pins to corresponding AF */
+    562          		GPIO_PinAFConfig(USART1_TX_GPIO_PORT, USART1_TX_SOURCE, USART1_TX_AF);
+   \   0000027E   0x.... 0x....      LDR.W    R8,??DataTable18_23  ;; 0x40020000
+   \   00000282   0x2207             MOVS     R2,#+7
+   \   00000284   0x2109             MOVS     R1,#+9
+   \   00000286   0x4640             MOV      R0,R8
+   \   00000288   0x.... 0x....      BL       GPIO_PinAFConfig
+    563          		GPIO_PinAFConfig(USART1_RX_GPIO_PORT, USART1_RX_SOURCE, USART1_RX_AF);
+   \   0000028C   0x2207             MOVS     R2,#+7
+   \   0000028E   0x210A             MOVS     R1,#+10
+   \   00000290   0x4640             MOV      R0,R8
+   \   00000292   0x.... 0x....      BL       GPIO_PinAFConfig
+    564          		GPIO_PinAFConfig(USART1_CTS_GPIO_PORT, USART1_CTS_SOURCE, USART1_RX_AF);
+   \   00000296   0x2207             MOVS     R2,#+7
+   \   00000298   0x210B             MOVS     R1,#+11
+   \   0000029A   0x4640             MOV      R0,R8
+   \   0000029C   0x.... 0x....      BL       GPIO_PinAFConfig
+    565          		GPIO_PinAFConfig(USART1_RTS_GPIO_PORT, USART1_RTS_SOURCE, USART1_RX_AF);
+   \   000002A0   0x2207             MOVS     R2,#+7
+   \   000002A2   0x210C             MOVS     R1,#+12
+   \   000002A4   0x4640             MOV      R0,R8
+   \   000002A6   0x.... 0x....      BL       GPIO_PinAFConfig
+    566          
+    567          		GPIO_InitStructure.GPIO_Pin = USART1_TX_PIN;
+   \   000002AA   0xF44F 0x7000      MOV      R0,#+512
+   \   000002AE   0x9000             STR      R0,[SP, #+0]
+    568          		GPIO_Init(USART1_TX_GPIO_PORT, &GPIO_InitStructure);
+   \   000002B0   0x4669             MOV      R1,SP
+   \   000002B2   0x4640             MOV      R0,R8
+   \   000002B4   0x.... 0x....      BL       GPIO_Init
+    569          		GPIO_InitStructure.GPIO_Pin = USART1_RX_PIN;
+   \   000002B8   0xF44F 0x6080      MOV      R0,#+1024
+   \   000002BC   0x9000             STR      R0,[SP, #+0]
+    570          		GPIO_Init(USART1_RX_GPIO_PORT, &GPIO_InitStructure);
+   \   000002BE   0x4669             MOV      R1,SP
+   \   000002C0   0x4640             MOV      R0,R8
+   \   000002C2   0x.... 0x....      BL       GPIO_Init
+    571          		GPIO_InitStructure.GPIO_Pin = USART1_CTS_PIN;
+   \   000002C6   0xF44F 0x6000      MOV      R0,#+2048
+   \   000002CA   0x9000             STR      R0,[SP, #+0]
+    572          		GPIO_Init(USART1_CTS_GPIO_PORT, &GPIO_InitStructure);
+   \   000002CC   0x4669             MOV      R1,SP
+   \   000002CE   0x4640             MOV      R0,R8
+   \   000002D0   0x.... 0x....      BL       GPIO_Init
+    573          		GPIO_InitStructure.GPIO_Pin = USART1_RTS_PIN;
+   \   000002D4   0xF44F 0x5080      MOV      R0,#+4096
+   \   000002D8   0x9000             STR      R0,[SP, #+0]
+    574          		GPIO_Init(USART1_RTS_GPIO_PORT, &GPIO_InitStructure);
+   \   000002DA   0x4669             MOV      R1,SP
+   \   000002DC   0x4640             MOV      R0,R8
+   \   000002DE   0x.... 0x....      BL       GPIO_Init
+    575          
+    576          		if(UART_1.irqs_on) {
+   \   000002E2   0x6830             LDR      R0,[R6, #+0]
+   \   000002E4   0x2800             CMP      R0,#+0
+   \   000002E6   0xD005             BEQ.N    ??uart_init_13
+    577          			/* Enable the USARTx Interrupt */
+    578          			NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+   \   000002E8   0x2025             MOVS     R0,#+37
+   \   000002EA   0xF88D 0x0008      STRB     R0,[SP, #+8]
+    579          			NVIC_Init(&NVIC_InitStructure);
+   \   000002EE   0xA802             ADD      R0,SP,#+8
+   \   000002F0   0x.... 0x....      BL       NVIC_Init
+    580          		}
+    581          
+    582          		/* Enable Hardware Flow Control */
+    583          		USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_RTS_CTS;
+   \                     ??uart_init_13: (+1)
+   \   000002F4   0xF44F 0x7040      MOV      R0,#+768
+   \   000002F8   0xF8AD 0x0018      STRH     R0,[SP, #+24]
+    584          
+    585          		USART_Init(USART1, &USART_InitStructure);
+   \   000002FC   0xA903             ADD      R1,SP,#+12
+   \   000002FE   0x4638             MOV      R0,R7
+   \   00000300   0x.... 0x....      BL       USART_Init
+    586          		
+    587          		// RXNEIE bit must not be set if DMA is used
+    588          		if (!uart->use_dma_for_rx)
+   \   00000304   0xF994 0x0004      LDRSB    R0,[R4, #+4]
+   \   00000308   0x2800             CMP      R0,#+0
+   \   0000030A   0xD105             BNE.N    ??uart_init_14
+    589          			USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+   \   0000030C   0x2201             MOVS     R2,#+1
+   \   0000030E   0xF240 0x5125      MOVW     R1,#+1317
+   \   00000312   0x4638             MOV      R0,R7
+   \   00000314   0x.... 0x....      BL       USART_ITConfig
+    590          
+    591          		/* Enable USART */
+    592          		USART_Cmd(USART1, ENABLE);
+   \                     ??uart_init_14: (+1)
+   \   00000318   0x2101             MOVS     R1,#+1
+   \   0000031A   0x4638             MOV      R0,R7
+   \   0000031C   0x.... 0x....      BL       USART_Cmd
+    593          	}
+    594          	
+    595          	if(uart->use_for_printf)
+   \                     ??uart_init_9: (+1)
+   \   00000320   0xF994 0x0002      LDRSB    R0,[R4, #+2]
+   \   00000324   0x2800             CMP      R0,#+0
+   \   00000326   0xD001             BEQ.N    ??uart_init_15
+    596          		usart_for_printf = pInstance->usartx;
+   \   00000328   0x6C68             LDR      R0,[R5, #+68]
+   \   0000032A   0x66F0             STR      R0,[R6, #+108]
+    597          	
+    598          	if (uart->use_dma_for_tx)
+   \                     ??uart_init_15: (+1)
+   \   0000032C   0xF994 0x0003      LDRSB    R0,[R4, #+3]
+   \   00000330   0x2800             CMP      R0,#+0
+   \   00000332   0xD003             BEQ.N    ??uart_init_16
+    599          		uart_dma_tx_config(uart->uart_num);
+   \   00000334   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \   00000338   0x.... 0x....      BL       uart_dma_tx_config
+    600          	
+    601          	if (uart->use_dma_for_rx)
+   \                     ??uart_init_16: (+1)
+   \   0000033C   0xF994 0x0004      LDRSB    R0,[R4, #+4]
+   \   00000340   0x2800             CMP      R0,#+0
+   \   00000342   0xD003             BEQ.N    ??uart_init_17
+    602          		uart_dma_rx_config(uart->uart_num);
+   \   00000344   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \   00000348   0x.... 0x....      BL       uart_dma_rx_config
+    603          
+    604          	return 0;
+   \                     ??uart_init_17: (+1)
+   \   0000034C   0x2000             MOVS     R0,#+0
+   \                     ??uart_init_3: (+1)
+   \   0000034E   0xB008             ADD      SP,SP,#+32
+   \   00000350   0xE8BD 0x87F0      POP      {R4-R10,PC}      ;; return
+    605          }
+    606          
+
+   \                                 In section .text, align 2, keep-with-next
+    607          int uart_putc(uart_num_t uart, int ch)
+    608          {
+   \                     uart_putc: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x460C             MOV      R4,R1
+    609          	uart_struct_t * pInstance = uart_get_instance(uart);
+   \   00000004   0x.... 0x....      BL       uart_get_instance
+   \   00000008   0x4605             MOV      R5,R0
+    610          
+    611          	if(pInstance->irqs_on) {
+   \   0000000A   0x6828             LDR      R0,[R5, #+0]
+   \   0000000C   0x2800             CMP      R0,#+0
+   \   0000000E   0xD01F             BEQ.N    ??uart_putc_0
+    612          		disable_irq();
+   \   00000010   0x.... 0x....      BL       disable_irq
+    613          		if(!RingByteBuffer_isFull((RingByteBuffer *)pInstance->ptr_TxBuffer))
+   \   00000014   0x6CA8             LDR      R0,[R5, #+72]
+   \   00000016   0x.... 0x....      BL       RingByteBuffer_isFull
+   \   0000001A   0x2800             CMP      R0,#+0
+   \   0000001C   0xD113             BNE.N    ??uart_putc_1
+    614          		{
+    615          			RingByteBuffer_pushByte((RingByteBuffer *)pInstance->ptr_TxBuffer, (uint8_t) ch);
+   \   0000001E   0x4620             MOV      R0,R4
+   \   00000020   0x4601             MOV      R1,R0
+   \   00000022   0xB2C9             UXTB     R1,R1
+   \   00000024   0x6CA8             LDR      R0,[R5, #+72]
+   \   00000026   0x.... 0x....      BL       RingByteBuffer_pushByte
+    616          			
+    617          			if(USART_GetITStatus(pInstance->usartx, USART_IT_TXE) == RESET)
+   \   0000002A   0xF240 0x7627      MOVW     R6,#+1831
+   \   0000002E   0x4631             MOV      R1,R6
+   \   00000030   0x6C68             LDR      R0,[R5, #+68]
+   \   00000032   0x.... 0x....      BL       USART_GetITStatus
+   \   00000036   0x2800             CMP      R0,#+0
+   \   00000038   0xD107             BNE.N    ??uart_putc_2
+    618          				USART_ITConfig(pInstance->usartx, USART_IT_TXE, ENABLE);
+   \   0000003A   0x2201             MOVS     R2,#+1
+   \   0000003C   0x4631             MOV      R1,R6
+   \   0000003E   0x6C68             LDR      R0,[R5, #+68]
+   \   00000040   0x.... 0x....      BL       USART_ITConfig
+   \   00000044   0xE001             B.N      ??uart_putc_2
+    619          		}
+    620          		else
+    621          		{
+    622          			//return error code or you will push incomplete packets into the buffer
+    623          			ch = EOF;
+   \                     ??uart_putc_1: (+1)
+   \   00000046   0xF04F 0x34FF      MOV      R4,#-1
+    624          		}
+    625          		enable_irq();
+   \                     ??uart_putc_2: (+1)
+   \   0000004A   0x.... 0x....      BL       enable_irq
+   \   0000004E   0xE00A             B.N      ??uart_putc_3
+    626          	} else {
+    627          		USART_SendData(pInstance->usartx, (uint8_t) ch);
+   \                     ??uart_putc_0: (+1)
+   \   00000050   0x4621             MOV      R1,R4
+   \   00000052   0xB2C9             UXTB     R1,R1
+   \   00000054   0x6C68             LDR      R0,[R5, #+68]
+   \   00000056   0x.... 0x....      BL       USART_SendData
+    628          
+    629          		// Loop until the end of transmission 
+    630          		while (USART_GetFlagStatus(pInstance->usartx, USART_FLAG_TC) == RESET)
+   \                     ??uart_putc_4: (+1)
+   \   0000005A   0x2140             MOVS     R1,#+64
+   \   0000005C   0x6C68             LDR      R0,[R5, #+68]
+   \   0000005E   0x.... 0x....      BL       USART_GetFlagStatus
+   \   00000062   0x2800             CMP      R0,#+0
+   \   00000064   0xD0F9             BEQ.N    ??uart_putc_4
+    631          		{}
+    632          	}
+    633          	return ch;
+   \                     ??uart_putc_3: (+1)
+   \   00000066   0x4620             MOV      R0,R4
+   \   00000068   0xBD70             POP      {R4-R6,PC}       ;; return
+    634          }
+    635          
+
+   \                                 In section .text, align 2, keep-with-next
+    636          int uart_getc(uart_num_t uart)
+    637          {
+   \                     uart_getc: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+    638          	uart_struct_t * pInstance = uart_get_instance(uart);
+   \   00000002   0x.... 0x....      BL       uart_get_instance
+   \   00000006   0x4604             MOV      R4,R0
+    639          
+    640          	if(pInstance->irqs_on) {
+   \   00000008   0x6820             LDR      R0,[R4, #+0]
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD010             BEQ.N    ??uart_getc_0
+    641          		int data = EOF;
+   \   0000000E   0xF04F 0x35FF      MOV      R5,#-1
+    642          		disable_irq();
+   \   00000012   0x.... 0x....      BL       disable_irq
+    643          		if(!RingByteBuffer_isEmpty((RingByteBuffer *)pInstance->ptr_RxBuffer))
+   \   00000016   0x6CE0             LDR      R0,[R4, #+76]
+   \   00000018   0x.... 0x....      BL       RingByteBuffer_isEmpty
+   \   0000001C   0x2800             CMP      R0,#+0
+   \   0000001E   0xD103             BNE.N    ??uart_getc_1
+    644          		{
+    645          			data = RingByteBuffer_popByte((RingByteBuffer *)pInstance->ptr_RxBuffer);
+   \   00000020   0x6CE0             LDR      R0,[R4, #+76]
+   \   00000022   0x.... 0x....      BL       RingByteBuffer_popByte
+   \   00000026   0x4605             MOV      R5,R0
+    646          		}
+    647          		enable_irq();
+   \                     ??uart_getc_1: (+1)
+   \   00000028   0x.... 0x....      BL       enable_irq
+    648          		return data;
+   \   0000002C   0x4628             MOV      R0,R5
+   \   0000002E   0xBD32             POP      {R1,R4,R5,PC}
+    649          	} else {
+    650          		if (USART_GetFlagStatus(pInstance->usartx, USART_FLAG_RXNE) == SET)
+   \                     ??uart_getc_0: (+1)
+   \   00000030   0x2120             MOVS     R1,#+32
+   \   00000032   0x6C60             LDR      R0,[R4, #+68]
+   \   00000034   0x.... 0x....      BL       USART_GetFlagStatus
+   \   00000038   0x2801             CMP      R0,#+1
+   \   0000003A   0xD104             BNE.N    ??uart_getc_2
+    651          			return USART_ReceiveData(pInstance->usartx);
+   \   0000003C   0x6C60             LDR      R0,[R4, #+68]
+   \   0000003E   0xE8BD 0x4032      POP      {R1,R4,R5,LR}
+   \   00000042   0x.... 0x....      B.W      USART_ReceiveData
+    652          	}
+    653          	return EOF;
+   \                     ??uart_getc_2: (+1)
+   \   00000046   0xF04F 0x30FF      MOV      R0,#-1
+   \   0000004A   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    654          }
+    655          
+
+   \                                 In section .text, align 2, keep-with-next
+    656          uint8_t uart_available(uart_num_t uart)
+    657          {
+   \                     uart_available: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+    658          	uart_struct_t * pInstance = uart_get_instance(uart);
+   \   00000002   0x.... 0x....      BL       uart_get_instance
+   \   00000006   0x4604             MOV      R4,R0
+    659          
+    660          	if(pInstance->irqs_on) {
+   \   00000008   0x6820             LDR      R0,[R4, #+0]
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD00A             BEQ.N    ??uart_available_0
+    661          		uint8_t size;
+    662          		disable_irq();
+   \   0000000E   0x.... 0x....      BL       disable_irq
+    663          		size = RingByteBuffer_size((RingByteBuffer *)pInstance->ptr_RxBuffer);
+   \   00000012   0x6CE0             LDR      R0,[R4, #+76]
+   \   00000014   0x.... 0x....      BL       RingByteBuffer_size
+   \   00000018   0x4604             MOV      R4,R0
+    664          		enable_irq();
+   \   0000001A   0x.... 0x....      BL       enable_irq
+    665          		return size;
+   \   0000001E   0x4620             MOV      R0,R4
+   \   00000020   0xB2C0             UXTB     R0,R0
+   \   00000022   0xBD10             POP      {R4,PC}
+    666          	} else
+    667          		return 0;
+   \                     ??uart_available_0: (+1)
+   \   00000024   0x2000             MOVS     R0,#+0
+   \   00000026   0xBD10             POP      {R4,PC}          ;; return
+    668          }
+    669          
+
+   \                                 In section .text, align 2, keep-with-next
+    670          int uart_puts(uart_num_t uart, const char * s)
+    671          {
+   \                     uart_puts: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+    672          	int n = 0;
+   \   00000006   0x2600             MOVS     R6,#+0
+    673          	const char * pc = s;
+   \   00000008   0xE005             B.N      ??uart_puts_0
+    674              
+    675              while(*pc != '\0')
+    676              {
+    677              	uart_putc(uart, *pc);
+   \                     ??uart_puts_1: (+1)
+   \   0000000A   0xF915 0x1B01      LDRSB    R1,[R5], #+1
+   \   0000000E   0x4620             MOV      R0,R4
+   \   00000010   0x.... 0x....      BL       uart_putc
+    678          		++pc;
+    679          		++n;
+   \   00000014   0x1C76             ADDS     R6,R6,#+1
+    680          	}
+   \                     ??uart_puts_0: (+1)
+   \   00000016   0xF995 0x0000      LDRSB    R0,[R5, #+0]
+   \   0000001A   0x2800             CMP      R0,#+0
+   \   0000001C   0xD1F5             BNE.N    ??uart_puts_1
+    681          
+    682          	return n;
+   \   0000001E   0x4630             MOV      R0,R6
+   \   00000020   0xBD70             POP      {R4-R6,PC}       ;; return
+    683          }
+    684          
+
+   \                                 In section .text, align 2, keep-with-next
+    685          int uart_get_hw_flow_control_configuration(uart_num_t uart)
+    686          {
+   \                     uart_get_hw_flow_control_configuration: (+1)
+   \   00000000   0xB580             PUSH     {R7,LR}
+    687          	uart_struct_t * pInstance = uart_get_instance(uart);
+   \   00000002   0x.... 0x....      BL       uart_get_instance
+    688          
+    689          	return pInstance->hw_flowcontrol_on;
+   \   00000006   0x6840             LDR      R0,[R0, #+4]
+   \   00000008   0xBD02             POP      {R1,PC}          ;; return
+    690          }
+    691          
+    692          
+
+   \                                 In section .text, align 2, keep-with-next
+    693          void uart_config_irq_priority(int ch_premption_prio, int ch_subprio)
+    694          {
+    695          	irq_channel_premption_priority = ch_premption_prio;
+   \                     uart_config_irq_priority: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R2,??DataTable17
+   \   00000004   0x6650             STR      R0,[R2, #+100]
+    696          	irq_channel_subpriority = ch_subprio;
+   \   00000006   0x6691             STR      R1,[R2, #+104]
+    697          }
+   \   00000008   0x4770             BX       LR               ;; return
+    698          
+
+   \                                 In section .text, align 2, keep-with-next
+    699          int uart_dma_tx_take_buffer(uart_dma_tx_buffer_t ** buffer)
+    700          {
+   \                     uart_dma_tx_take_buffer: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    701          	int rc;
+    702          	uint16_t head, tail;
+    703          
+    704          	disable_irq();
+   \   00000004   0x.... 0x....      BL       disable_irq
+    705          	// Check if the ringbuffer is empty 
+    706          	head = uart_dma_tx_buffers_struct.empty_r_buf.read;
+   \   00000008   0x.... 0x....      LDR.W    R0,??DataTable18_9
+   \   0000000C   0xF248 0x2104      MOVW     R1,#+33284
+   \   00000010   0x4401             ADD      R1,R0,R1
+   \   00000012   0x880A             LDRH     R2,[R1, #+0]
+    707          	tail = uart_dma_tx_buffers_struct.empty_r_buf.write;
+   \   00000014   0x884B             LDRH     R3,[R1, #+2]
+    708          	if(head == tail) {
+   \   00000016   0x429A             CMP      R2,R3
+   \   00000018   0xD102             BNE.N    ??uart_dma_tx_take_buffer_0
+    709          		rc = -1;
+   \   0000001A   0xF04F 0x34FF      MOV      R4,#-1
+   \   0000001E   0xE00C             B.N      ??uart_dma_tx_take_buffer_1
+    710          	} else {
+    711          		RINGBUFFER_POP(&uart_dma_tx_buffers_struct.empty_r_buf, buffer);
+   \                     ??uart_dma_tx_take_buffer_0: (+1)
+   \   00000020   0x880A             LDRH     R2,[R1, #+0]
+   \   00000022   0xF002 0x02FF      AND      R2,R2,#0xFF
+   \   00000026   0xEB00 0x0082      ADD      R0,R0,R2, LSL #+2
+   \   0000002A   0xF248 0x2208      MOVW     R2,#+33288
+   \   0000002E   0x5880             LDR      R0,[R0, R2]
+   \   00000030   0x6020             STR      R0,[R4, #+0]
+   \   00000032   0x8808             LDRH     R0,[R1, #+0]
+   \   00000034   0x1C40             ADDS     R0,R0,#+1
+   \   00000036   0x8008             STRH     R0,[R1, #+0]
+    712          		rc = 0;
+   \   00000038   0x2400             MOVS     R4,#+0
+    713          	}
+    714          	enable_irq();
+   \                     ??uart_dma_tx_take_buffer_1: (+1)
+   \   0000003A   0x.... 0x....      BL       enable_irq
+    715          
+    716          	return rc;
+   \   0000003E   0x4620             MOV      R0,R4
+   \   00000040   0xBD10             POP      {R4,PC}          ;; return
+    717          }
+    718          
+
+   \                                 In section .text, align 2, keep-with-next
+    719          int uart_dma_tx_release_buffer(uart_dma_tx_buffer_t ** buffer)
+    720          {
+   \                     uart_dma_tx_release_buffer: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    721          	int rc;
+    722          	uint16_t head, tail, size;
+    723          
+    724          	disable_irq();
+   \   00000004   0x.... 0x....      BL       disable_irq
+    725          	// Check if the ringbuffer is full
+    726          	head = uart_dma_tx_buffers_struct.empty_r_buf.read;
+   \   00000008   0x.... 0x....      LDR.W    R0,??DataTable18_9
+   \   0000000C   0xF248 0x2104      MOVW     R1,#+33284
+   \   00000010   0x4401             ADD      R1,R0,R1
+   \   00000012   0x880A             LDRH     R2,[R1, #+0]
+    727          	tail = uart_dma_tx_buffers_struct.empty_r_buf.write;
+   \   00000014   0x884B             LDRH     R3,[R1, #+2]
+    728          	size = tail - head;
+    729          	if(size == RINGBUFFER_MAXSIZE(&uart_dma_tx_buffers_struct.empty_r_buf)) {
+   \   00000016   0x1A9A             SUBS     R2,R3,R2
+   \   00000018   0xB292             UXTH     R2,R2
+   \   0000001A   0xF5B2 0x7F80      CMP      R2,#+256
+   \   0000001E   0xD102             BNE.N    ??uart_dma_tx_release_buffer_0
+    730          		rc = -1;
+   \   00000020   0xF04F 0x34FF      MOV      R4,#-1
+   \   00000024   0xE00C             B.N      ??uart_dma_tx_release_buffer_1
+    731          	} else {
+    732          		RINGBUFFER_PUSH(&uart_dma_tx_buffers_struct.empty_r_buf, buffer);
+   \                     ??uart_dma_tx_release_buffer_0: (+1)
+   \   00000026   0x884A             LDRH     R2,[R1, #+2]
+   \   00000028   0xF002 0x02FF      AND      R2,R2,#0xFF
+   \   0000002C   0xEB00 0x0082      ADD      R0,R0,R2, LSL #+2
+   \   00000030   0xF248 0x2208      MOVW     R2,#+33288
+   \   00000034   0x6823             LDR      R3,[R4, #+0]
+   \   00000036   0x5083             STR      R3,[R0, R2]
+   \   00000038   0x8848             LDRH     R0,[R1, #+2]
+   \   0000003A   0x1C40             ADDS     R0,R0,#+1
+   \   0000003C   0x8048             STRH     R0,[R1, #+2]
+    733          		rc = 0;
+   \   0000003E   0x2400             MOVS     R4,#+0
+    734          	}
+    735          	enable_irq();
+   \                     ??uart_dma_tx_release_buffer_1: (+1)
+   \   00000040   0x.... 0x....      BL       enable_irq
+    736          
+    737          	return rc;
+   \   00000044   0x4620             MOV      R0,R4
+   \   00000046   0xBD10             POP      {R4,PC}          ;; return
+    738          }
+    739          
+
+   \                                 In section .text, align 2, keep-with-next
+    740          int uart_dma_rx_transfer_buffer(uart_dma_rx_buffer_t ** buffer)
+    741          {
+   \                     uart_dma_rx_transfer_buffer: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    742          	int rc;
+    743          	uint16_t head, tail, size_ready;
+    744          
+    745          	disable_irq();
+   \   00000004   0x.... 0x....      BL       disable_irq
+    746          	
+    747          	// Check if the ringbuffers are full
+    748          	head = uart_dma_rx_buffers_struct.ready_r_buf.read;
+   \   00000008   0x.... 0x....      LDR.W    R0,??DataTable18_21
+   \   0000000C   0xF600 0x0168      ADDW     R1,R0,#+2152
+   \   00000010   0x880A             LDRH     R2,[R1, #+0]
+    749          	tail = uart_dma_rx_buffers_struct.ready_r_buf.write;
+   \   00000012   0x884B             LDRH     R3,[R1, #+2]
+    750          	size_ready = tail - head;
+    751          	
+    752          	if(size_ready == RINGBUFFER_MAXSIZE(&uart_dma_rx_buffers_struct.ready_r_buf)) {
+   \   00000014   0x1A9A             SUBS     R2,R3,R2
+   \   00000016   0xB292             UXTH     R2,R2
+   \   00000018   0x2A10             CMP      R2,#+16
+   \   0000001A   0xD102             BNE.N    ??uart_dma_rx_transfer_buffer_0
+    753          		rc = -1;
+   \   0000001C   0xF04F 0x34FF      MOV      R4,#-1
+   \   00000020   0xE00B             B.N      ??uart_dma_rx_transfer_buffer_1
+    754          	} else {
+    755          		// Add current buffer to the list of buffers ready to be processed
+    756          		RINGBUFFER_PUSH(&uart_dma_rx_buffers_struct.ready_r_buf, buffer);;
+   \                     ??uart_dma_rx_transfer_buffer_0: (+1)
+   \   00000022   0x884A             LDRH     R2,[R1, #+2]
+   \   00000024   0xF002 0x020F      AND      R2,R2,#0xF
+   \   00000028   0xEB00 0x0082      ADD      R0,R0,R2, LSL #+2
+   \   0000002C   0x6822             LDR      R2,[R4, #+0]
+   \   0000002E   0xF8C0 0x286C      STR      R2,[R0, #+2156]
+   \   00000032   0x8848             LDRH     R0,[R1, #+2]
+   \   00000034   0x1C40             ADDS     R0,R0,#+1
+   \   00000036   0x8048             STRH     R0,[R1, #+2]
+    757          		rc = 0;
+   \   00000038   0x2400             MOVS     R4,#+0
+    758          	}
+    759          	enable_irq();
+   \                     ??uart_dma_rx_transfer_buffer_1: (+1)
+   \   0000003A   0x.... 0x....      BL       enable_irq
+    760          
+    761          	return rc;
+   \   0000003E   0x4620             MOV      R0,R4
+   \   00000040   0xBD10             POP      {R4,PC}          ;; return
+    762          }
+    763          
+
+   \                                 In section .text, align 2, keep-with-next
+    764          int uart_dma_rx_release_buffer(uart_dma_rx_buffer_t ** buffer)
+    765          {
+   \                     uart_dma_rx_release_buffer: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    766          	int rc;
+    767          	uint16_t head, tail, size_ready, size_empty;
+    768          
+    769          	disable_irq();
+   \   00000004   0x.... 0x....      BL       disable_irq
+    770          	
+    771          	// Check if the 'ready' ringbuffer is empty
+    772          	head = uart_dma_rx_buffers_struct.ready_r_buf.read;
+   \   00000008   0x.... 0x....      LDR.W    R0,??DataTable18_21
+   \   0000000C   0xF600 0x0168      ADDW     R1,R0,#+2152
+   \   00000010   0x880A             LDRH     R2,[R1, #+0]
+    773          	tail = uart_dma_rx_buffers_struct.ready_r_buf.write;
+   \   00000012   0x884B             LDRH     R3,[R1, #+2]
+    774          	size_ready = tail - head;
+   \   00000014   0x1A9B             SUBS     R3,R3,R2
+    775          	
+    776          	//Check if the 'empty' ringbuffer is full
+    777          	head = uart_dma_rx_buffers_struct.empty_r_buf.read;
+   \   00000016   0xF600 0x0224      ADDW     R2,R0,#+2084
+   \   0000001A   0x8815             LDRH     R5,[R2, #+0]
+    778          	tail = uart_dma_rx_buffers_struct.empty_r_buf.write;
+   \   0000001C   0x8856             LDRH     R6,[R2, #+2]
+    779          	size_empty = tail - head;
+   \   0000001E   0x1B75             SUBS     R5,R6,R5
+    780          	
+    781          	if((size_ready == 0) || (size_empty == RINGBUFFER_MAXSIZE(&uart_dma_tx_buffers_struct.empty_r_buf))) {
+   \   00000020   0xB29B             UXTH     R3,R3
+   \   00000022   0x2B00             CMP      R3,#+0
+   \   00000024   0xD003             BEQ.N    ??uart_dma_rx_release_buffer_0
+   \   00000026   0xB2AD             UXTH     R5,R5
+   \   00000028   0xF5B5 0x7F80      CMP      R5,#+256
+   \   0000002C   0xD102             BNE.N    ??uart_dma_rx_release_buffer_1
+    782          		rc = -1;
+   \                     ??uart_dma_rx_release_buffer_0: (+1)
+   \   0000002E   0xF04F 0x34FF      MOV      R4,#-1
+   \   00000032   0xE016             B.N      ??uart_dma_rx_release_buffer_2
+    783          	} else {
+    784          		// Remove current buffer from list of buffers ready to be processed
+    785          		RINGBUFFER_POP(&uart_dma_rx_buffers_struct.ready_r_buf, buffer);
+   \                     ??uart_dma_rx_release_buffer_1: (+1)
+   \   00000034   0x880B             LDRH     R3,[R1, #+0]
+   \   00000036   0xF003 0x030F      AND      R3,R3,#0xF
+   \   0000003A   0xEB00 0x0383      ADD      R3,R0,R3, LSL #+2
+   \   0000003E   0xF8D3 0x386C      LDR      R3,[R3, #+2156]
+   \   00000042   0x6023             STR      R3,[R4, #+0]
+   \   00000044   0x880B             LDRH     R3,[R1, #+0]
+   \   00000046   0x1C5B             ADDS     R3,R3,#+1
+   \   00000048   0x800B             STRH     R3,[R1, #+0]
+    786          		// Add back current buffer to the list of buffers DMA can take to fill in 
+    787          		RINGBUFFER_PUSH(&uart_dma_rx_buffers_struct.empty_r_buf, buffer);
+   \   0000004A   0x8851             LDRH     R1,[R2, #+2]
+   \   0000004C   0xF001 0x010F      AND      R1,R1,#0xF
+   \   00000050   0xEB00 0x0081      ADD      R0,R0,R1, LSL #+2
+   \   00000054   0x6821             LDR      R1,[R4, #+0]
+   \   00000056   0xF8C0 0x1828      STR      R1,[R0, #+2088]
+   \   0000005A   0x8850             LDRH     R0,[R2, #+2]
+   \   0000005C   0x1C40             ADDS     R0,R0,#+1
+   \   0000005E   0x8050             STRH     R0,[R2, #+2]
+    788          		rc = 0;
+   \   00000060   0x2400             MOVS     R4,#+0
+    789          	}
+    790          	enable_irq();
+   \                     ??uart_dma_rx_release_buffer_2: (+1)
+   \   00000062   0x.... 0x....      BL       enable_irq
+    791          
+    792          	return rc;
+   \   00000066   0x4620             MOV      R0,R4
+   \   00000068   0xBD70             POP      {R4-R6,PC}       ;; return
+    793          }
+    794          
+
+   \                                 In section .text, align 2, keep-with-next
+    795          static int uart_dma_do_tx(uart_num_t uart, uart_dma_tx_buffer_t * buffer)
+    796          {
+   \                     uart_dma_do_tx: (+1)
+   \   00000000   0xB532             PUSH     {R1,R4,R5,LR}
+    797          	int timeout = 1000;
+   \   00000002   0xF44F 0x747A      MOV      R4,#+1000
+    798          	uart_struct_t * uart_inst = uart_get_instance(uart);
+   \   00000006   0x.... 0x....      BL       uart_get_instance
+   \   0000000A   0x4605             MOV      R5,R0
+    799          
+    800          	// Set the number of data units to be transfered 
+    801          	uart_inst->TxDMAy_Streamx->NDTR = buffer->len;
+   \   0000000C   0xF105 0x0030      ADD      R0,R5,#+48
+   \   00000010   0x9900             LDR      R1,[SP, #+0]
+   \   00000012   0xF8B1 0x1080      LDRH     R1,[R1, #+128]
+   \   00000016   0x6802             LDR      R2,[R0, #+0]
+   \   00000018   0x6051             STR      R1,[R2, #+4]
+    802          	// Set the source address of the transfer 
+    803          	uart_inst->TxDMAy_Streamx->M0AR = (uint32_t)buffer->data;
+   \   0000001A   0x9900             LDR      R1,[SP, #+0]
+   \   0000001C   0x6802             LDR      R2,[R0, #+0]
+   \   0000001E   0x60D1             STR      R1,[R2, #+12]
+    804          
+    805          	// Enable DMA transfer
+    806          	uart_inst->TxDMAy_Streamx->CR |= DMA_SxCR_EN;
+   \   00000020   0x6801             LDR      R1,[R0, #+0]
+   \   00000022   0x680A             LDR      R2,[R1, #+0]
+   \   00000024   0xF042 0x0201      ORR      R2,R2,#0x1
+   \   00000028   0x600A             STR      R2,[R1, #+0]
+    807          	// Enable USART DMA transmit request
+    808          	uart_inst->usartx->CR3 |= USART_DMAReq_Tx;
+   \   0000002A   0x6941             LDR      R1,[R0, #+20]
+   \   0000002C   0x8A8A             LDRH     R2,[R1, #+20]
+   \   0000002E   0xF042 0x0280      ORR      R2,R2,#0x80
+   \   00000032   0x828A             STRH     R2,[R1, #+20]
+    809          
+    810          	// Wait for the stream to be enabled 
+    811          	while (((uart_inst->TxDMAy_Streamx->CR & DMA_SxCR_EN) == 0) && (timeout-- > 0));
+   \                     ??uart_dma_do_tx_0: (+1)
+   \   00000034   0x6801             LDR      R1,[R0, #+0]
+   \   00000036   0x6809             LDR      R1,[R1, #+0]
+   \   00000038   0x07C9             LSLS     R1,R1,#+31
+   \   0000003A   0xD402             BMI.N    ??uart_dma_do_tx_1
+   \   0000003C   0x4621             MOV      R1,R4
+   \   0000003E   0x1E4C             SUBS     R4,R1,#+1
+   \   00000040   0xDAF8             BGE.N    ??uart_dma_do_tx_0
+    812          	if (timeout == 0) {
+   \                     ??uart_dma_do_tx_1: (+1)
+   \   00000042   0x2C00             CMP      R4,#+0
+   \   00000044   0xD108             BNE.N    ??uart_dma_do_tx_2
+    813          		uart_dma_tx_release_buffer(&buffer);
+   \   00000046   0x4668             MOV      R0,SP
+   \   00000048   0x.... 0x....      BL       uart_dma_tx_release_buffer
+    814          		uart_inst->state_tx = UART_STATE_IDLE;
+   \   0000004C   0x2000             MOVS     R0,#+0
+   \   0000004E   0xF885 0x0050      STRB     R0,[R5, #+80]
+    815          		return -1;
+   \   00000052   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000056   0xBD32             POP      {R1,R4,R5,PC}
+    816          	}
+    817          	uart_dma_tx_buffers_struct.ongoing = buffer;
+   \                     ??uart_dma_do_tx_2: (+1)
+   \   00000058   0x9800             LDR      R0,[SP, #+0]
+   \   0000005A   0x.... 0x....      LDR.W    R1,??DataTable18_26
+   \   0000005E   0x6008             STR      R0,[R1, #+0]
+    818          
+    819          	return 0;
+   \   00000060   0x2000             MOVS     R0,#+0
+   \   00000062   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    820          }
+    821          
+
+   \                                 In section .text, align 2, keep-with-next
+    822          int uart_dma_tx(uart_num_t uart, uart_dma_tx_buffer_t * buffer)
+    823          {
+   \                     uart_dma_tx: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4606             MOV      R6,R0
+   \   00000004   0x460C             MOV      R4,R1
+    824          	int rc = 0;
+   \   00000006   0x2500             MOVS     R5,#+0
+    825          	uart_struct_t * uartx = uart_get_instance(uart);
+   \   00000008   0x.... 0x....      BL       uart_get_instance
+   \   0000000C   0x4607             MOV      R7,R0
+    826          	
+    827          	disable_irq();
+   \   0000000E   0x.... 0x....      BL       disable_irq
+    828          	if(uartx) {
+   \   00000012   0x2F00             CMP      R7,#+0
+   \   00000014   0xD020             BEQ.N    ??uart_dma_tx_0
+    829          		if(uartx->state_tx == UART_STATE_IDLE) {
+   \   00000016   0xF997 0x0050      LDRSB    R0,[R7, #+80]
+   \   0000001A   0x2800             CMP      R0,#+0
+   \   0000001C   0xD108             BNE.N    ??uart_dma_tx_1
+    830          			uartx->state_tx = UART_STATE_BUSY_TX;
+   \   0000001E   0x2001             MOVS     R0,#+1
+   \   00000020   0xF887 0x0050      STRB     R0,[R7, #+80]
+    831          			// Start the DMA transfer 
+    832          			rc = uart_dma_do_tx(uart, buffer);
+   \   00000024   0x4621             MOV      R1,R4
+   \   00000026   0x4630             MOV      R0,R6
+   \   00000028   0x.... 0x....      BL       uart_dma_do_tx
+   \   0000002C   0x4605             MOV      R5,R0
+   \   0000002E   0xE015             B.N      ??uart_dma_tx_2
+    833          		} else if(uartx->state_tx == UART_STATE_BUSY_TX) {
+   \                     ??uart_dma_tx_1: (+1)
+   \   00000030   0xF997 0x0050      LDRSB    R0,[R7, #+80]
+   \   00000034   0x2801             CMP      R0,#+1
+   \   00000036   0xD111             BNE.N    ??uart_dma_tx_2
+    834          			RINGBUFFER_PUSH(&uart_dma_tx_buffers_struct.ready_r_buf, &buffer);
+   \   00000038   0xF248 0x600A      MOVW     R0,#+34314
+   \   0000003C   0x.... 0x....      LDR.W    R1,??DataTable18_9
+   \   00000040   0x5A0A             LDRH     R2,[R1, R0]
+   \   00000042   0xF002 0x02FF      AND      R2,R2,#0xFF
+   \   00000046   0xEB01 0x0282      ADD      R2,R1,R2, LSL #+2
+   \   0000004A   0xF248 0x630C      MOVW     R3,#+34316
+   \   0000004E   0x50D4             STR      R4,[R2, R3]
+   \   00000050   0x5A0A             LDRH     R2,[R1, R0]
+   \   00000052   0x1C52             ADDS     R2,R2,#+1
+   \   00000054   0x520A             STRH     R2,[R1, R0]
+   \   00000056   0xE001             B.N      ??uart_dma_tx_2
+    835          		}
+    836          	} else {
+    837          		rc = -1;
+   \                     ??uart_dma_tx_0: (+1)
+   \   00000058   0xF04F 0x35FF      MOV      R5,#-1
+    838          	}
+    839          	enable_irq();
+   \                     ??uart_dma_tx_2: (+1)
+   \   0000005C   0x.... 0x....      BL       enable_irq
+    840          
+    841          	return rc;
+   \   00000060   0x4628             MOV      R0,R5
+   \   00000062   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+    842          }
+    843          
+
+   \                                 In section .text, align 2, keep-with-next
+    844          int uart_dma_do_rx(uart_num_t uart, uart_dma_tx_buffer_t * buffer, uint16_t expected_bytes)
+    845          {
+   \                     uart_dma_do_rx: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x460E             MOV      R6,R1
+   \   00000004   0x4617             MOV      R7,R2
+    846          	int timeout = 1000;
+   \   00000006   0xF44F 0x747A      MOV      R4,#+1000
+   \   0000000A   0x4625             MOV      R5,R4
+    847          	uart_struct_t * uart_inst = uart_get_instance(uart);
+   \   0000000C   0x.... 0x....      BL       uart_get_instance
+   \   00000010   0x6901             LDR      R1,[R0, #+16]
+    848          
+    849          	// Wait for the stream to be disabled first before reprogrammming DMA
+    850          	while (((uart_inst->RxDMAy_Streamx->CR & DMA_SxCR_EN) != 0) && (timeout-- > 0));
+   \                     ??uart_dma_do_rx_0: (+1)
+   \   00000012   0x680A             LDR      R2,[R1, #+0]
+   \   00000014   0x07D2             LSLS     R2,R2,#+31
+   \   00000016   0xD502             BPL.N    ??uart_dma_do_rx_1
+   \   00000018   0x462A             MOV      R2,R5
+   \   0000001A   0x1E55             SUBS     R5,R2,#+1
+   \   0000001C   0xDAF9             BGE.N    ??uart_dma_do_rx_0
+    851          	if (timeout == 0)
+   \                     ??uart_dma_do_rx_1: (+1)
+   \   0000001E   0x2D00             CMP      R5,#+0
+   \   00000020   0xD102             BNE.N    ??uart_dma_do_rx_2
+    852          		return -1;
+   \   00000022   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000026   0xBDF2             POP      {R1,R4-R7,PC}
+    853          	
+    854          	// Set the number of data units to be transfered 
+    855          	uart_inst->RxDMAy_Streamx->NDTR = expected_bytes;
+   \                     ??uart_dma_do_rx_2: (+1)
+   \   00000028   0x604F             STR      R7,[R1, #+4]
+    856          	// Set the destination address of the transfer 
+    857          	uart_inst->RxDMAy_Streamx->M0AR = (uint32_t)(buffer->data + buffer->len);
+   \   0000002A   0xF8B6 0x1080      LDRH     R1,[R6, #+128]
+   \   0000002E   0x4431             ADD      R1,R6,R1
+   \   00000030   0x6902             LDR      R2,[R0, #+16]
+   \   00000032   0x60D1             STR      R1,[R2, #+12]
+    858          	// Increment buffer length
+    859          	buffer->len += expected_bytes;
+   \   00000034   0xF8B6 0x1080      LDRH     R1,[R6, #+128]
+   \   00000038   0x1879             ADDS     R1,R7,R1
+   \   0000003A   0xF8A6 0x1080      STRH     R1,[R6, #+128]
+    860          
+    861          	uart_inst->state_rx = UART_STATE_BUSY_RX;
+   \   0000003E   0x2102             MOVS     R1,#+2
+   \   00000040   0xF880 0x1051      STRB     R1,[R0, #+81]
+    862          	
+    863          	// Buffer we are working on is now current buffer manipulated by DMA
+    864          	uart_dma_rx_buffers_struct.ongoing = buffer;
+   \   00000044   0x.... 0x....      LDR.W    R1,??DataTable18_21
+   \   00000048   0xF8C1 0x6820      STR      R6,[R1, #+2080]
+    865          	
+    866          	// Enable DMA transfer
+    867          	uart_inst->RxDMAy_Streamx->CR |= (uint32_t)DMA_SxCR_EN;
+   \   0000004C   0x6901             LDR      R1,[R0, #+16]
+   \   0000004E   0x680A             LDR      R2,[R1, #+0]
+   \   00000050   0xF042 0x0201      ORR      R2,R2,#0x1
+   \   00000054   0x600A             STR      R2,[R1, #+0]
+    868          
+    869          	// Wait for the stream to be actually enabled 
+    870          	timeout = 1000;
+   \   00000056   0x4625             MOV      R5,R4
+    871          	while (((uart_inst->RxDMAy_Streamx->CR & DMA_SxCR_EN) == 0) && (timeout-- > 0));
+   \                     ??uart_dma_do_rx_3: (+1)
+   \   00000058   0x6901             LDR      R1,[R0, #+16]
+   \   0000005A   0x6809             LDR      R1,[R1, #+0]
+   \   0000005C   0x07C9             LSLS     R1,R1,#+31
+   \   0000005E   0xD402             BMI.N    ??uart_dma_do_rx_4
+   \   00000060   0x4629             MOV      R1,R5
+   \   00000062   0x1E4D             SUBS     R5,R1,#+1
+   \   00000064   0xDAF8             BGE.N    ??uart_dma_do_rx_3
+    872          	if (timeout == 0) {
+   \                     ??uart_dma_do_rx_4: (+1)
+   \   00000066   0x2D00             CMP      R5,#+0
+   \   00000068   0xD105             BNE.N    ??uart_dma_do_rx_5
+    873          		uart_inst->state_rx = UART_STATE_IDLE;
+   \   0000006A   0x2100             MOVS     R1,#+0
+   \   0000006C   0xF880 0x1051      STRB     R1,[R0, #+81]
+    874          		return -1;
+   \   00000070   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000074   0xBDF2             POP      {R1,R4-R7,PC}
+    875          	}
+    876          
+    877          	return 0;
+   \                     ??uart_dma_do_rx_5: (+1)
+   \   00000076   0x2000             MOVS     R0,#+0
+   \   00000078   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+    878          }
+    879          
+
+   \                                 In section .text, align 2, keep-with-next
+    880          int uart_dma_rx(uart_num_t uart)
+    881          {
+   \                     uart_dma_rx: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    882          	int rc = 0;
+    883          	uart_dma_tx_buffer_t * buffer;
+    884          	uint16_t head, tail;
+    885          	uart_struct_t * uartx = uart_get_instance(uart);
+   \   00000004   0x.... 0x....      BL       uart_get_instance
+   \   00000008   0x4605             MOV      R5,R0
+    886          	
+    887          	disable_irq();
+   \   0000000A   0x.... 0x....      BL       disable_irq
+    888          	if(uartx) {
+   \   0000000E   0x2D00             CMP      R5,#+0
+   \   00000010   0xD020             BEQ.N    ??uart_dma_rx_0
+    889          		if(uartx->state_rx == UART_STATE_IDLE) {
+   \   00000012   0xF995 0x0051      LDRSB    R0,[R5, #+81]
+   \   00000016   0x2800             CMP      R0,#+0
+   \   00000018   0xD119             BNE.N    ??uart_dma_rx_1
+    890          			// Start the DMA transfer for 1 byte if we have at least 1 empty buffer available for DMA
+    891          			head = uart_dma_rx_buffers_struct.empty_r_buf.read;
+   \   0000001A   0x....             LDR.N    R0,??DataTable18_21
+   \   0000001C   0xF600 0x0224      ADDW     R2,R0,#+2084
+   \   00000020   0x8811             LDRH     R1,[R2, #+0]
+    892          			tail = uart_dma_rx_buffers_struct.empty_r_buf.write;
+   \   00000022   0x8853             LDRH     R3,[R2, #+2]
+    893          			if(head != tail) {
+   \   00000024   0x4299             CMP      R1,R3
+   \   00000026   0xD00F             BEQ.N    ??uart_dma_rx_2
+    894          				RINGBUFFER_POP(&uart_dma_rx_buffers_struct.empty_r_buf, &buffer);
+   \   00000028   0x8811             LDRH     R1,[R2, #+0]
+   \   0000002A   0xF001 0x010F      AND      R1,R1,#0xF
+   \   0000002E   0xEB00 0x0081      ADD      R0,R0,R1, LSL #+2
+   \   00000032   0xF8D0 0x1828      LDR      R1,[R0, #+2088]
+   \   00000036   0x8810             LDRH     R0,[R2, #+0]
+   \   00000038   0x1C40             ADDS     R0,R0,#+1
+   \   0000003A   0x8010             STRH     R0,[R2, #+0]
+    895          				rc = uart_dma_do_rx(uart, buffer, 1);
+   \   0000003C   0x2201             MOVS     R2,#+1
+   \   0000003E   0x4620             MOV      R0,R4
+   \   00000040   0x.... 0x....      BL       uart_dma_do_rx
+   \   00000044   0x4604             MOV      R4,R0
+   \   00000046   0xE007             B.N      ??uart_dma_rx_3
+    896          			} else {
+    897          				rc = -1;
+   \                     ??uart_dma_rx_2: (+1)
+   \   00000048   0xF04F 0x34FF      MOV      R4,#-1
+   \   0000004C   0xE004             B.N      ??uart_dma_rx_3
+    898          			}
+    899          		} else {
+    900          			rc = -1;
+   \                     ??uart_dma_rx_1: (+1)
+   \   0000004E   0xF04F 0x34FF      MOV      R4,#-1
+   \   00000052   0xE001             B.N      ??uart_dma_rx_3
+    901          		}
+    902          	} else {
+    903          		rc = -1;
+   \                     ??uart_dma_rx_0: (+1)
+   \   00000054   0xF04F 0x34FF      MOV      R4,#-1
+    904          	}
+    905          	enable_irq();
+   \                     ??uart_dma_rx_3: (+1)
+   \   00000058   0x.... 0x....      BL       enable_irq
+    906          
+    907          	return rc;
+   \   0000005C   0x4620             MOV      R0,R4
+   \   0000005E   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    908          }
+    909          
+
+   \                                 In section .text, align 2, keep-with-next
+    910          int uart_dma_rx_abort(uart_num_t uart)
+    911          {
+   \                     uart_dma_rx_abort: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    912          	uart_struct_t * UART_x = uart_get_instance(uart);
+   \   00000004   0x.... 0x....      BL       uart_get_instance
+   \   00000008   0x4605             MOV      R5,R0
+    913          	int timeout = 1000;	
+   \   0000000A   0xF44F 0x767A      MOV      R6,#+1000
+    914          	int rc = 0;
+    915          	
+    916          	disable_irq();
+   \   0000000E   0x.... 0x....      BL       disable_irq
+    917          
+    918          	// First disable DMA
+    919          	// There is no particular action to do, except to clear the EN bit in the
+    920          	// DMA_SxCR register to disable the stream. The stream may take time to be disabled
+    921          	DMA_Cmd(UART_x->RxDMAy_Streamx,DISABLE);
+   \   00000012   0x2100             MOVS     R1,#+0
+   \   00000014   0x6928             LDR      R0,[R5, #+16]
+   \   00000016   0x.... 0x....      BL       DMA_Cmd
+    922          
+    923          	// Wait for the stream to be disabled 
+    924          	while ((DMA_GetCmdStatus(UART_x->RxDMAy_Streamx) != DISABLE) && (timeout-- > 0));
+   \                     ??uart_dma_rx_abort_0: (+1)
+   \   0000001A   0x6928             LDR      R0,[R5, #+16]
+   \   0000001C   0x.... 0x....      BL       DMA_GetCmdStatus
+   \   00000020   0x2800             CMP      R0,#+0
+   \   00000022   0xD002             BEQ.N    ??uart_dma_rx_abort_1
+   \   00000024   0x4630             MOV      R0,R6
+   \   00000026   0x1E46             SUBS     R6,R0,#+1
+   \   00000028   0xDAF7             BGE.N    ??uart_dma_rx_abort_0
+    925          	if (timeout == 0)
+   \                     ??uart_dma_rx_abort_1: (+1)
+   \   0000002A   0x2E00             CMP      R6,#+0
+   \   0000002C   0xD102             BNE.N    ??uart_dma_rx_abort_2
+    926          		return -1;
+   \   0000002E   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000032   0xBD70             POP      {R4-R6,PC}
+    927          	
+    928          	// The transfer complete interrupt flag (TCIF in the
+    929          	// DMA_LISR or DMA_HISR register) is set in order to indicate the end of transfer. 
+    930          	while ((DMA_GetITStatus(UART_x->RxDMAy_Streamx, UART_x->RxDMA_ItTcIf) == RESET) && (timeout-- > 0));
+   \                     ??uart_dma_rx_abort_2: (+1)
+   \   00000034   0x69E9             LDR      R1,[R5, #+28]
+   \   00000036   0x6928             LDR      R0,[R5, #+16]
+   \   00000038   0x.... 0x....      BL       DMA_GetITStatus
+   \   0000003C   0x2800             CMP      R0,#+0
+   \   0000003E   0xD102             BNE.N    ??uart_dma_rx_abort_3
+   \   00000040   0x4630             MOV      R0,R6
+   \   00000042   0x1E46             SUBS     R6,R0,#+1
+   \   00000044   0xDAF6             BGE.N    ??uart_dma_rx_abort_2
+    931          	
+    932          	// IRQ are disabled at that point, we must clear flags and interrupt pending bits right now
+    933          	// to not end up in DMA IRQ handler once IRQ are unmasked
+    934          	DMA_ClearFlag(UART_x->RxDMAy_Streamx, UART_x->RxDMA_FlagItTcIf);
+   \                     ??uart_dma_rx_abort_3: (+1)
+   \   00000046   0x6A29             LDR      R1,[R5, #+32]
+   \   00000048   0x6928             LDR      R0,[R5, #+16]
+   \   0000004A   0x.... 0x....      BL       DMA_ClearFlag
+    935          	DMA_ClearITPendingBit(UART_x->RxDMAy_Streamx, DMA_IT_TC);
+   \   0000004E   0x2110             MOVS     R1,#+16
+   \   00000050   0x6928             LDR      R0,[R5, #+16]
+   \   00000052   0x.... 0x....      BL       DMA_ClearITPendingBit
+    936          
+    937          	// Reset number of bytes received so far in current buffer
+    938          	uart_dma_rx_buffers_struct.ongoing->len = 0;
+   \   00000056   0x....             LDR.N    R0,??DataTable18_21
+   \   00000058   0x2100             MOVS     R1,#+0
+   \   0000005A   0xF8D0 0x2820      LDR      R2,[R0, #+2080]
+   \   0000005E   0xF8A2 0x1080      STRH     R1,[R2, #+128]
+    939          	
+    940          	// Start the DMA transfer for 1 byte again
+    941          	rc = uart_dma_do_rx(uart, (uart_dma_tx_buffer_t *)uart_dma_rx_buffers_struct.ongoing, 1);
+   \   00000062   0x2201             MOVS     R2,#+1
+   \   00000064   0xF8D0 0x1820      LDR      R1,[R0, #+2080]
+   \   00000068   0x4620             MOV      R0,R4
+   \   0000006A   0x.... 0x....      BL       uart_dma_do_rx
+   \   0000006E   0x4604             MOV      R4,R0
+    942          		
+    943          	enable_irq();
+   \   00000070   0x.... 0x....      BL       enable_irq
+    944          
+    945          	return rc;
+   \   00000074   0x4620             MOV      R0,R4
+   \   00000076   0xBD70             POP      {R4-R6,PC}       ;; return
+    946          }
+    947          
+    948          
+    949          /* Interrupt management ------------------------------------------------------*/
+
+   \                                 In section .text, align 2, keep-with-next
+    950          static void commonUSARTx_read_data_IRQHandler(uart_struct_t * UART_x)
+    951          {
+   \                     commonUSARTx_read_data_IRQHandler: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    952          	if(!RingByteBuffer_isFull((RingByteBuffer *)UART_x->ptr_RxBuffer))
+   \   00000004   0x6CE0             LDR      R0,[R4, #+76]
+   \   00000006   0x.... 0x....      BL       RingByteBuffer_isFull
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD107             BNE.N    ??commonUSARTx_read_data_IRQHandler_0
+    953          	{
+    954          		uint8_t lRxByte = USART_ReceiveData(UART_x->usartx);
+   \   0000000E   0x6C60             LDR      R0,[R4, #+68]
+   \   00000010   0x.... 0x....      BL       USART_ReceiveData
+    955          		RingByteBuffer_pushByte((RingByteBuffer *)UART_x->ptr_RxBuffer, lRxByte);
+   \   00000014   0x4601             MOV      R1,R0
+   \   00000016   0xB2C9             UXTB     R1,R1
+   \   00000018   0x6CE0             LDR      R0,[R4, #+76]
+   \   0000001A   0x.... 0x....      BL       RingByteBuffer_pushByte
+    956          	}
+    957          	if(UART_x->rx_interrupt_cb)
+   \                     ??commonUSARTx_read_data_IRQHandler_0: (+1)
+   \   0000001E   0x6D61             LDR      R1,[R4, #+84]
+   \   00000020   0x0008             MOVS     R0,R1
+   \   00000022   0xD003             BEQ.N    ??commonUSARTx_read_data_IRQHandler_1
+    958          		UART_x->rx_interrupt_cb(UART_x->rx_context);
+   \   00000024   0x6DE0             LDR      R0,[R4, #+92]
+   \   00000026   0xE8BD 0x4010      POP      {R4,LR}
+   \   0000002A   0x4708             BX       R1
+    959          }
+   \                     ??commonUSARTx_read_data_IRQHandler_1: (+1)
+   \   0000002C   0xBD10             POP      {R4,PC}          ;; return
+    960          
+    961          /**
+    962            * @brief  Checks as quickly as possible whether the specified USART interrupt has occurred or not.
+    963            * No additionall check is done, can be called from an IRQ handler to improve timing and ensure all
+    964            * types of build will behave fine.
+    965            * @param  USARTx: where x can be 1, 2, or 6 to select the USART or 
+    966            *         UART peripheral.
+    967            * @param  USART_IT: specifies the USART interrupt source to check.
+    968            *          This parameter can be one of the following values:
+    969            *            @arg USART_IT_TXE:  Transmit Data Register empty interrupt
+    970            *            @arg USART_IT_RXNE: Receive Data register not empty interrupt
+    971            *            @arg USART_IT_ORE_RX : OverRun Error interrupt if the RXNEIE bit is set
+    972            * @warning There is no check done on any parameter, this must stick to description above
+    973            * @retval The new state of USART_IT (SET or RESET).
+    974            */
+
+   \                                 In section .text, align 2, keep-with-next
+    975          static ITStatus commonUSARTx_GetITStatus_IRQHandler(USART_TypeDef* USARTx, uint16_t USART_IT)
+    976          {
+   \                     commonUSARTx_GetITStatus_IRQHandler: (+1)
+   \   00000000   0xB410             PUSH     {R4}
+    977          	uint32_t itmask = USARTx->CR1;
+   \   00000002   0x8982             LDRH     R2,[R0, #+12]
+    978          	uint32_t bitpos = USARTx->SR;
+   \   00000004   0x8800             LDRH     R0,[R0, #+0]
+    979            
+    980          	if( (USART_IT == USART_IT_RXNE) || (USART_IT == USART_IT_ORE_RX) )
+   \   00000006   0xF240 0x3325      MOVW     R3,#+805
+   \   0000000A   0xF240 0x5425      MOVW     R4,#+1317
+   \   0000000E   0x42A1             CMP      R1,R4
+   \   00000010   0xD001             BEQ.N    ??commonUSARTx_GetITStatus_IRQHandler_0
+   \   00000012   0x4299             CMP      R1,R3
+   \   00000014   0xD109             BNE.N    ??commonUSARTx_GetITStatus_IRQHandler_1
+    981          	{
+    982          		itmask &= USART_FLAG_RXNE;
+   \                     ??commonUSARTx_GetITStatus_IRQHandler_0: (+1)
+   \   00000016   0xF002 0x0220      AND      R2,R2,#0x20
+    983          		if (USART_IT == USART_IT_ORE_RX)
+   \   0000001A   0x4299             CMP      R1,R3
+   \   0000001C   0xD102             BNE.N    ??commonUSARTx_GetITStatus_IRQHandler_2
+    984          			bitpos &= USART_FLAG_ORE;
+   \   0000001E   0xF000 0x0008      AND      R0,R0,#0x8
+   \   00000022   0xE006             B.N      ??commonUSARTx_GetITStatus_IRQHandler_3
+    985          		else
+    986          			bitpos &= USART_FLAG_RXNE;
+   \                     ??commonUSARTx_GetITStatus_IRQHandler_2: (+1)
+   \   00000024   0xF000 0x0020      AND      R0,R0,#0x20
+   \   00000028   0xE003             B.N      ??commonUSARTx_GetITStatus_IRQHandler_3
+    987          	} else
+    988          	{
+    989          		itmask &= USART_FLAG_TXE;
+   \                     ??commonUSARTx_GetITStatus_IRQHandler_1: (+1)
+   \   0000002A   0xF002 0x0280      AND      R2,R2,#0x80
+    990          		bitpos &= USART_FLAG_TXE;
+   \   0000002E   0xF000 0x0080      AND      R0,R0,#0x80
+    991          	}
+    992            
+    993            
+    994            if ((itmask != (uint16_t)RESET)&&(bitpos != (uint16_t)RESET))
+   \                     ??commonUSARTx_GetITStatus_IRQHandler_3: (+1)
+   \   00000032   0x2A00             CMP      R2,#+0
+   \   00000034   0xD003             BEQ.N    ??commonUSARTx_GetITStatus_IRQHandler_4
+   \   00000036   0x2800             CMP      R0,#+0
+   \   00000038   0xD001             BEQ.N    ??commonUSARTx_GetITStatus_IRQHandler_4
+    995            {
+    996              return SET;
+   \   0000003A   0x2001             MOVS     R0,#+1
+   \   0000003C   0xE000             B.N      ??commonUSARTx_GetITStatus_IRQHandler_5
+    997            }
+    998            else
+    999            {
+   1000              return RESET;
+   \                     ??commonUSARTx_GetITStatus_IRQHandler_4: (+1)
+   \   0000003E   0x2000             MOVS     R0,#+0
+   \                     ??commonUSARTx_GetITStatus_IRQHandler_5: (+1)
+   \   00000040   0xBC10             POP      {R4}
+   \   00000042   0x4770             BX       LR               ;; return
+   1001            }
+   1002          }
+   1003          
+
+   \                                 In section .text, align 2, keep-with-next
+   1004          static void commonUSARTx_IRQHandler(uart_num_t uart)
+   1005          {
+   \                     commonUSARTx_IRQHandler: (+1)
+   \   00000000   0xE92D 0x41FC      PUSH     {R2-R8,LR}
+   \   00000004   0x4605             MOV      R5,R0
+   1006          	uart_struct_t * UART_x = uart_get_instance(uart);
+   \   00000006   0x.... 0x....      BL       uart_get_instance
+   \   0000000A   0x4604             MOV      R4,R0
+   1007          	// If we use DMA for RX then only case for which we might end up there is for error management of ORE
+   1008          	// since TX without DMA while RX uses DMA is forbidden for now
+   1009          	if (UART_x->use_dma_for_rx) {
+   \   0000000C   0xF240 0x3625      MOVW     R6,#+805
+   \   00000010   0xF994 0x0008      LDRSB    R0,[R4, #+8]
+   \   00000014   0x2800             CMP      R0,#+0
+   \   00000016   0xD015             BEQ.N    ??commonUSARTx_IRQHandler_0
+   1010          		// read SR and then DR to reset ORE bit
+   1011          		(void)commonUSARTx_GetITStatus_IRQHandler(UART_x->usartx, USART_IT_ORE_RX);
+   \   00000018   0x4631             MOV      R1,R6
+   \   0000001A   0x6C60             LDR      R0,[R4, #+68]
+   \   0000001C   0x.... 0x....      BL       commonUSARTx_GetITStatus_IRQHandler
+   1012          		(void)USART_ReceiveData(UART_x->usartx);
+   \   00000020   0x6C60             LDR      R0,[R4, #+68]
+   \   00000022   0x.... 0x....      BL       USART_ReceiveData
+   1013          		// and then abort current DMA transfer 
+   1014          		if( uart_dma_rx_abort(uart) ) {
+   \   00000026   0x4628             MOV      R0,R5
+   \   00000028   0x.... 0x....      BL       uart_dma_rx_abort
+   \   0000002C   0x2800             CMP      R0,#+0
+   \   0000002E   0xD04D             BEQ.N    ??commonUSARTx_IRQHandler_1
+   1015          			// Give hand to the application with special buffer pointer value
+   1016          			// so that it decides what to do upon such an unrecoverable error
+   1017          			uart_rx_context_t context;
+   1018          			context.uart = uart;
+   \   00000030   0xF88D 0x5000      STRB     R5,[SP, #+0]
+   1019          			context.buf = 0;
+   \   00000034   0x2000             MOVS     R0,#+0
+   \   00000036   0x9001             STR      R0,[SP, #+4]
+   1020          			if(UART_x->rx_interrupt_cb)
+   \   00000038   0x6D61             LDR      R1,[R4, #+84]
+   \   0000003A   0x0008             MOVS     R0,R1
+   \   0000003C   0xD046             BEQ.N    ??commonUSARTx_IRQHandler_1
+   1021          				UART_x->rx_interrupt_cb(&context);
+   \   0000003E   0x4668             MOV      R0,SP
+   \   00000040   0x4788             BLX      R1
+   \   00000042   0xE043             B.N      ??commonUSARTx_IRQHandler_1
+   1022          		}
+   1023          		
+   1024          	// Otherwise this is where we are notified of
+   1025          	// - new data available for RX
+   1026          	// - byte transmission on TX is done
+   1027          	// - any kind of error
+   1028          	} else {
+   1029          		uint8_t overrun_error = 0;
+   \                     ??commonUSARTx_IRQHandler_0: (+1)
+   \   00000044   0x2700             MOVS     R7,#+0
+   1030          		uint8_t rxne_detected = 0;
+   \   00000046   0x46B8             MOV      R8,R7
+   1031          		uint8_t txe_detected = 0;
+   \   00000048   0x463D             MOV      R5,R7
+   1032          		// UART IRQ handling must absolutely be done with sequence :
+   1033          		// 1. overrun detection, because it must be quickly fixed
+   1034          		// 2. reception buffer, so that we do not stuck next byte to be received
+   1035          		// 3. new byte transmission
+   1036          		// 4. corner case detection of any remaining data to be read in case none of [1-3] is encountered
+   1037          		
+   1038          		// Reason for IRQ to be triggered is to be checked and analyzed very quickly,
+   1039          		// so use speed optimized driver functions when looking at IT status
+   1040          		
+   1041          		// Disable IRQ so that we are sure we are not preempted since timing is very important
+   1042          		disable_irq();
+   \   0000004A   0x.... 0x....      BL       disable_irq
+   1043          		
+   1044          		// Handle case of overrun, need to quickly flush RX buffer to not lose any byte
+   1045          		if(commonUSARTx_GetITStatus_IRQHandler(UART_x->usartx, USART_IT_ORE_RX) != RESET)
+   \   0000004E   0x4631             MOV      R1,R6
+   \   00000050   0x6C60             LDR      R0,[R4, #+68]
+   \   00000052   0x.... 0x....      BL       commonUSARTx_GetITStatus_IRQHandler
+   \   00000056   0x2800             CMP      R0,#+0
+   \   00000058   0xD003             BEQ.N    ??commonUSARTx_IRQHandler_2
+   1046          		{
+   1047          			overrun_error = 1;
+   \   0000005A   0x2701             MOVS     R7,#+1
+   1048          			commonUSARTx_read_data_IRQHandler(UART_x);
+   \   0000005C   0x4620             MOV      R0,R4
+   \   0000005E   0x.... 0x....      BL       commonUSARTx_read_data_IRQHandler
+   1049          		}
+   1050          		// Handle case of RX buffer not empty, need to flush it
+   1051          		if(commonUSARTx_GetITStatus_IRQHandler(UART_x->usartx, USART_IT_RXNE) != RESET)
+   \                     ??commonUSARTx_IRQHandler_2: (+1)
+   \   00000062   0xF240 0x5125      MOVW     R1,#+1317
+   \   00000066   0x6C60             LDR      R0,[R4, #+68]
+   \   00000068   0x.... 0x....      BL       commonUSARTx_GetITStatus_IRQHandler
+   \   0000006C   0x2800             CMP      R0,#+0
+   \   0000006E   0xD004             BEQ.N    ??commonUSARTx_IRQHandler_3
+   1052          		{
+   1053          			rxne_detected = 1;
+   \   00000070   0xF04F 0x0801      MOV      R8,#+1
+   1054          			commonUSARTx_read_data_IRQHandler(UART_x);
+   \   00000074   0x4620             MOV      R0,R4
+   \   00000076   0x.... 0x....      BL       commonUSARTx_read_data_IRQHandler
+   1055          		}
+   1056          		// Handle case of TX buffer empty, ready to send a new data
+   1057          		if(commonUSARTx_GetITStatus_IRQHandler(UART_x->usartx, USART_IT_TXE) != RESET)
+   \                     ??commonUSARTx_IRQHandler_3: (+1)
+   \   0000007A   0xF240 0x7627      MOVW     R6,#+1831
+   \   0000007E   0x4631             MOV      R1,R6
+   \   00000080   0x6C60             LDR      R0,[R4, #+68]
+   \   00000082   0x.... 0x....      BL       commonUSARTx_GetITStatus_IRQHandler
+   \   00000086   0x2800             CMP      R0,#+0
+   \   00000088   0xD017             BEQ.N    ??commonUSARTx_IRQHandler_4
+   1058          		{
+   1059          			txe_detected = 1;
+   \   0000008A   0x2501             MOVS     R5,#+1
+   1060          			if(!RingByteBuffer_isEmpty((RingByteBuffer *)UART_x->ptr_TxBuffer))
+   \   0000008C   0x6CA0             LDR      R0,[R4, #+72]
+   \   0000008E   0x.... 0x....      BL       RingByteBuffer_isEmpty
+   \   00000092   0x2800             CMP      R0,#+0
+   \   00000094   0xD107             BNE.N    ??commonUSARTx_IRQHandler_5
+   1061          			{
+   1062          				uint8_t lTxByte = RingByteBuffer_popByte((RingByteBuffer *)UART_x->ptr_TxBuffer);
+   \   00000096   0x6CA0             LDR      R0,[R4, #+72]
+   \   00000098   0x.... 0x....      BL       RingByteBuffer_popByte
+   1063          				USART_SendData(UART_x->usartx, lTxByte);
+   \   0000009C   0x4601             MOV      R1,R0
+   \   0000009E   0x6C60             LDR      R0,[R4, #+68]
+   \   000000A0   0x.... 0x....      BL       USART_SendData
+   \   000000A4   0xE004             B.N      ??commonUSARTx_IRQHandler_6
+   1064          			} 
+   1065          			else
+   1066          				USART_ITConfig(UART_x->usartx, USART_IT_TXE, DISABLE);
+   \                     ??commonUSARTx_IRQHandler_5: (+1)
+   \   000000A6   0x2200             MOVS     R2,#+0
+   \   000000A8   0x4631             MOV      R1,R6
+   \   000000AA   0x6C60             LDR      R0,[R4, #+68]
+   \   000000AC   0x.... 0x....      BL       USART_ITConfig
+   1067          			
+   1068          			if(UART_x->tx_interrupt_cb)
+   \                     ??commonUSARTx_IRQHandler_6: (+1)
+   \   000000B0   0x6DA1             LDR      R1,[R4, #+88]
+   \   000000B2   0x0008             MOVS     R0,R1
+   \   000000B4   0xD001             BEQ.N    ??commonUSARTx_IRQHandler_4
+   1069          				UART_x->tx_interrupt_cb(UART_x->tx_context);
+   \   000000B6   0x6E20             LDR      R0,[R4, #+96]
+   \   000000B8   0x4788             BLX      R1
+   1070          		}
+   1071          		// IRQ was triggered but not reason for IRQ was actually detected so we are in very special case
+   1072          		// when the last valid data is read in the RDR at the same time as the new (and lost) data is received.
+   1073          		// It may also occur when the new data is received during the reading sequence
+   1074          		// (between the USART_SR register read access and the USART_DR read access).
+   1075          		// In any case, there is something to be read from DR register even if SR does not say so...
+   1076          		if (!overrun_error && !rxne_detected && !txe_detected) {
+   \                     ??commonUSARTx_IRQHandler_4: (+1)
+   \   000000BA   0xEA48 0x0007      ORR      R0,R8,R7
+   \   000000BE   0x4328             ORRS     R0,R5,R0
+   \   000000C0   0xD102             BNE.N    ??commonUSARTx_IRQHandler_7
+   1077          			commonUSARTx_read_data_IRQHandler(UART_x);
+   \   000000C2   0x4620             MOV      R0,R4
+   \   000000C4   0x.... 0x....      BL       commonUSARTx_read_data_IRQHandler
+   1078          		}
+   1079          		
+   1080          		enable_irq();
+   \                     ??commonUSARTx_IRQHandler_7: (+1)
+   \   000000C8   0x.... 0x....      BL       enable_irq
+   1081          	}
+   1082          }
+   \                     ??commonUSARTx_IRQHandler_1: (+1)
+   \   000000CC   0xE8BD 0x81F3      POP      {R0,R1,R4-R8,PC}  ;; return
+   1083          
+
+   \                                 In section .text, align 2, keep-with-next
+   1084          void USART1_IRQHandler(void)
+   1085          {
+   1086          	commonUSARTx_IRQHandler(UART1);
+   \                     USART1_IRQHandler: (+1)
+   \   00000000   0x2000             MOVS     R0,#+0
+   \   00000002   0x....             B.N      commonUSARTx_IRQHandler
+   1087          }
+   1088          
+
+   \                                 In section .text, align 2, keep-with-next
+   1089          void USART2_IRQHandler(void)
+   1090          {
+   1091          	commonUSARTx_IRQHandler(UART2);
+   \                     USART2_IRQHandler: (+1)
+   \   00000000   0x2001             MOVS     R0,#+1
+   \   00000002   0x....             B.N      commonUSARTx_IRQHandler
+   1092          }
+   1093          
+
+   \                                 In section .text, align 2, keep-with-next
+   1094          void USART6_IRQHandler(void)
+   1095          {
+   1096          	commonUSARTx_IRQHandler(UART6);
+   \                     USART6_IRQHandler: (+1)
+   \   00000000   0x2002             MOVS     R0,#+2
+   \   00000002   0x....             B.N      commonUSARTx_IRQHandler
+   1097          }
+   1098          
+
+   \                                 In section .text, align 2, keep-with-next
+   1099          static void commonUSARTx_TX_DMA_IRQ_HANDLER(uart_num_t uart)
+   1100          {
+   \                     commonUSARTx_TX_DMA_IRQ_HANDLER: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   1101          	uart_dma_tx_buffer_t * buffer;
+   1102          	uint16_t head, tail;
+   1103          	uart_struct_t * uart_inst = uart_get_instance(uart);
+   \   00000004   0x.... 0x....      BL       uart_get_instance
+   1104          
+   1105          	if((*uart_inst->TxDMA_ItStatusRegAddr & uart_inst->TxDMA_FlagItTcIf) != 0)
+   \   00000008   0x3034             ADDS     R0,R0,#+52
+   \   0000000A   0x6801             LDR      R1,[R0, #+0]
+   \   0000000C   0x6809             LDR      R1,[R1, #+0]
+   \   0000000E   0x68C2             LDR      R2,[R0, #+12]
+   \   00000010   0x4211             TST      R1,R2
+   \   00000012   0xD032             BEQ.N    ??commonUSARTx_TX_DMA_IRQ_HANDLER_0
+   1106          	{
+   1107          		// Clear flags and interrupt pending bits 
+   1108          		*uart_inst->TxDMA_ClearItStatusRegAddr |= uart_inst->TxDMA_ItTcIf;
+   \   00000014   0x6841             LDR      R1,[R0, #+4]
+   \   00000016   0x680A             LDR      R2,[R1, #+0]
+   \   00000018   0x6883             LDR      R3,[R0, #+8]
+   \   0000001A   0x431A             ORRS     R2,R3,R2
+   \   0000001C   0x600A             STR      R2,[R1, #+0]
+   1109          
+   1110          		// We are done with transmission of current buffer, it can be made available again for any next transfer
+   1111          		// So we can repopulate empty_r_buf with the current buffer pointer 
+   1112          		if(uart_dma_tx_buffers_struct.ongoing) {
+   \   0000001E   0x....             LDR.N    R1,??DataTable18_9
+   \   00000020   0xF44F 0x4202      MOV      R2,#+33280
+   \   00000024   0x440A             ADD      R2,R1,R2
+   \   00000026   0x6813             LDR      R3,[R2, #+0]
+   \   00000028   0x2B00             CMP      R3,#+0
+   \   0000002A   0xD00B             BEQ.N    ??commonUSARTx_TX_DMA_IRQ_HANDLER_1
+   1113          			RINGBUFFER_PUSH(&uart_dma_tx_buffers_struct.empty_r_buf, (uart_dma_tx_buffer_t **)&uart_dma_tx_buffers_struct.ongoing);
+   \   0000002C   0x88D3             LDRH     R3,[R2, #+6]
+   \   0000002E   0xF003 0x03FF      AND      R3,R3,#0xFF
+   \   00000032   0xEB01 0x0383      ADD      R3,R1,R3, LSL #+2
+   \   00000036   0xF248 0x2508      MOVW     R5,#+33288
+   \   0000003A   0x6816             LDR      R6,[R2, #+0]
+   \   0000003C   0x515E             STR      R6,[R3, R5]
+   \   0000003E   0x88D3             LDRH     R3,[R2, #+6]
+   \   00000040   0x1C5B             ADDS     R3,R3,#+1
+   \   00000042   0x80D3             STRH     R3,[R2, #+6]
+   1114          		}		
+   1115          
+   1116          		// Check if ringbuffer is empty 
+   1117          		head = uart_dma_tx_buffers_struct.ready_r_buf.read;
+   \                     ??commonUSARTx_TX_DMA_IRQ_HANDLER_1: (+1)
+   \   00000044   0xF248 0x6308      MOVW     R3,#+34312
+   \   00000048   0x440B             ADD      R3,R1,R3
+   \   0000004A   0x881D             LDRH     R5,[R3, #+0]
+   1118          		tail = uart_dma_tx_buffers_struct.ready_r_buf.write;
+   \   0000004C   0x885E             LDRH     R6,[R3, #+2]
+   1119          		if(head == tail) {
+   \   0000004E   0x42B5             CMP      R5,R6
+   \   00000050   0xD104             BNE.N    ??commonUSARTx_TX_DMA_IRQ_HANDLER_2
+   1120          			// Nothing else to transmist so update state variable 
+   1121          			uart_inst->state_tx = UART_STATE_IDLE;
+   \   00000052   0x2100             MOVS     R1,#+0
+   \   00000054   0x7701             STRB     R1,[R0, #+28]
+   1122          			uart_dma_tx_buffers_struct.ongoing = 0;
+   \   00000056   0x4608             MOV      R0,R1
+   \   00000058   0x6010             STR      R0,[R2, #+0]
+   \   0000005A   0xBD70             POP      {R4-R6,PC}
+   1123          		} else {
+   1124          			// Transmit next buffer
+   1125          			RINGBUFFER_POP(&uart_dma_tx_buffers_struct.ready_r_buf, &buffer);
+   \                     ??commonUSARTx_TX_DMA_IRQ_HANDLER_2: (+1)
+   \   0000005C   0x8818             LDRH     R0,[R3, #+0]
+   \   0000005E   0xF000 0x00FF      AND      R0,R0,#0xFF
+   \   00000062   0xEB01 0x0080      ADD      R0,R1,R0, LSL #+2
+   \   00000066   0xF248 0x610C      MOVW     R1,#+34316
+   \   0000006A   0x5841             LDR      R1,[R0, R1]
+   \   0000006C   0x8818             LDRH     R0,[R3, #+0]
+   \   0000006E   0x1C40             ADDS     R0,R0,#+1
+   \   00000070   0x8018             STRH     R0,[R3, #+0]
+   1126          			uart_dma_do_tx(uart, buffer);
+   \   00000072   0x4620             MOV      R0,R4
+   \   00000074   0xE8BD 0x4070      POP      {R4-R6,LR}
+   \   00000078   0x....             B.N      uart_dma_do_tx
+   1127          		}
+   1128          	}
+   1129          }
+   \                     ??commonUSARTx_TX_DMA_IRQ_HANDLER_0: (+1)
+   \   0000007A   0xBD70             POP      {R4-R6,PC}       ;; return
+   1130          
+
+   \                                 In section .text, align 2, keep-with-next
+   1131          void USART2_TX_DMA_IRQ_HANDLER(void)
+   1132          {
+   1133          	commonUSARTx_TX_DMA_IRQ_HANDLER(UART2);
+   \                     DMA1_Stream6_IRQHandler: (+1)
+   \   00000000   0x2001             MOVS     R0,#+1
+   \   00000002   0x....             B.N      commonUSARTx_TX_DMA_IRQ_HANDLER
+   1134          }
+   1135          
+
+   \                                 In section .text, align 2, keep-with-next
+   1136          void USART6_TX_DMA_IRQ_HANDLER(void)
+   1137          {
+   1138          	commonUSARTx_TX_DMA_IRQ_HANDLER(UART6);
+   \                     DMA2_Stream6_IRQHandler: (+1)
+   \   00000000   0x2002             MOVS     R0,#+2
+   \   00000002   0x....             B.N      commonUSARTx_TX_DMA_IRQ_HANDLER
+   1139          }
+   1140          
+
+   \                                 In section .text, align 2, keep-with-next
+   1141          void USART1_TX_DMA_IRQ_HANDLER(void)
+   1142          {
+   1143          	commonUSARTx_TX_DMA_IRQ_HANDLER(UART1);
+   \                     DMA2_Stream7_IRQHandler: (+1)
+   \   00000000   0x2000             MOVS     R0,#+0
+   \   00000002   0x....             B.N      commonUSARTx_TX_DMA_IRQ_HANDLER
+   1144          }
+   1145          
+
+   \                                 In section .text, align 2, keep-with-next
+   1146          static void commonUSARTx_RX_DMA_IRQ_HANDLER(uart_num_t uart)
+   1147          {
+   \                     commonUSARTx_RX_DMA_IRQ_HANDLER: (+1)
+   \   00000000   0xB530             PUSH     {R4,R5,LR}
+   \   00000002   0xB083             SUB      SP,SP,#+12
+   \   00000004   0x4604             MOV      R4,R0
+   1148          	uart_rx_context_t context;
+   1149          	uart_struct_t * uart_inst = uart_get_instance(uart);
+   \   00000006   0x.... 0x....      BL       uart_get_instance
+   1150          
+   1151          	// UART DMA full RX transfer is done
+   1152          	if((*uart_inst->RxDMA_ItStatusRegAddr & uart_inst->RxDMA_FlagItTcIf) != 0)
+   \   0000000A   0xF100 0x0514      ADD      R5,R0,#+20
+   \   0000000E   0x6829             LDR      R1,[R5, #+0]
+   \   00000010   0x6809             LDR      R1,[R1, #+0]
+   \   00000012   0x68EA             LDR      R2,[R5, #+12]
+   \   00000014   0x4211             TST      R1,R2
+   \   00000016   0xD012             BEQ.N    ??commonUSARTx_RX_DMA_IRQ_HANDLER_0
+   1153          	{
+   1154          		// Clear flags and interrupt pending bits 
+   1155          		*uart_inst->RxDMA_ClearItStatusRegAddr |= uart_inst->RxDMA_ItTcIf;
+   \   00000018   0x6869             LDR      R1,[R5, #+4]
+   \   0000001A   0x680A             LDR      R2,[R1, #+0]
+   \   0000001C   0x68AB             LDR      R3,[R5, #+8]
+   \   0000001E   0x431A             ORRS     R2,R3,R2
+   \   00000020   0x600A             STR      R2,[R1, #+0]
+   1156          		
+   1157          		// we are done with current DMA transfer, reset its state
+   1158          		uart_inst->state_rx = UART_STATE_IDLE;
+   \   00000022   0x2100             MOVS     R1,#+0
+   \   00000024   0xF880 0x1051      STRB     R1,[R0, #+81]
+   1159          		
+   1160          		// Give hand to the application with the information about bytes we received
+   1161          		context.uart = uart;
+   \   00000028   0xF88D 0x4000      STRB     R4,[SP, #+0]
+   1162          		context.buf = uart_dma_rx_buffers_struct.ongoing;
+   \   0000002C   0x....             LDR.N    R1,??DataTable18_21
+   \   0000002E   0xF8D1 0x1820      LDR      R1,[R1, #+2080]
+   \   00000032   0x9101             STR      R1,[SP, #+4]
+   1163          		if(uart_inst->rx_interrupt_cb)
+   \   00000034   0x6D41             LDR      R1,[R0, #+84]
+   \   00000036   0x0008             MOVS     R0,R1
+   \   00000038   0xD001             BEQ.N    ??commonUSARTx_RX_DMA_IRQ_HANDLER_0
+   1164          			uart_inst->rx_interrupt_cb(&context);
+   \   0000003A   0x4668             MOV      R0,SP
+   \   0000003C   0x4788             BLX      R1
+   1165          	}
+   1166          	
+   1167          	// UART DMA RX transfer error happened
+   1168          	if((*uart_inst->RxDMA_ItStatusRegAddr & uart_inst->RxDMA_FlagItTeIf) != 0)
+   \                     ??commonUSARTx_RX_DMA_IRQ_HANDLER_0: (+1)
+   \   0000003E   0x6828             LDR      R0,[R5, #+0]
+   \   00000040   0x6800             LDR      R0,[R0, #+0]
+   \   00000042   0x6969             LDR      R1,[R5, #+20]
+   \   00000044   0x4208             TST      R0,R1
+   \   00000046   0xD015             BEQ.N    ??commonUSARTx_RX_DMA_IRQ_HANDLER_1
+   1169          	{
+   1170          		// Clear flags and interrupt pending bits 
+   1171          		*uart_inst->RxDMA_ClearItStatusRegAddr |= uart_inst->RxDMA_ItTeIf;
+   \   00000048   0x6868             LDR      R0,[R5, #+4]
+   \   0000004A   0x6801             LDR      R1,[R0, #+0]
+   \   0000004C   0x692A             LDR      R2,[R5, #+16]
+   \   0000004E   0x4311             ORRS     R1,R2,R1
+   \   00000050   0x6001             STR      R1,[R0, #+0]
+   1172          		
+   1173          		// Give hand to the application with special buffer pointer value
+   1174          		// so that it decides what to do upon such an error
+   1175          		context.uart = uart;
+   \   00000052   0xF88D 0x4000      STRB     R4,[SP, #+0]
+   1176          		context.buf = 0;
+   \   00000056   0x2000             MOVS     R0,#+0
+   \   00000058   0x9001             STR      R0,[SP, #+4]
+   1177          		if(uart_get_instance(uart)->rx_interrupt_cb)
+   \   0000005A   0x4620             MOV      R0,R4
+   \   0000005C   0x.... 0x....      BL       uart_get_instance
+   \   00000060   0x6D40             LDR      R0,[R0, #+84]
+   \   00000062   0x2800             CMP      R0,#+0
+   \   00000064   0xD006             BEQ.N    ??commonUSARTx_RX_DMA_IRQ_HANDLER_1
+   1178          			uart_get_instance(uart)->rx_interrupt_cb(&context);
+   \   00000066   0x4620             MOV      R0,R4
+   \   00000068   0x.... 0x....      BL       uart_get_instance
+   \   0000006C   0x4601             MOV      R1,R0
+   \   0000006E   0x4668             MOV      R0,SP
+   \   00000070   0x6D49             LDR      R1,[R1, #+84]
+   \   00000072   0x4788             BLX      R1
+   1179          	}
+   1180          }
+   \                     ??commonUSARTx_RX_DMA_IRQ_HANDLER_1: (+1)
+   \   00000074   0xBD37             POP      {R0-R2,R4,R5,PC}  ;; return
+   1181          
+
+   \                                 In section .text, align 2, keep-with-next
+   1182          void USART2_RX_DMA_IRQ_HANDLER(void)
+   1183          {
+   1184          	commonUSARTx_RX_DMA_IRQ_HANDLER(UART2);
+   \                     DMA1_Stream7_IRQHandler: (+1)
+   \   00000000   0x2001             MOVS     R0,#+1
+   \   00000002   0x....             B.N      commonUSARTx_RX_DMA_IRQ_HANDLER
+   1185          }
+   1186          
+
+   \                                 In section .text, align 2, keep-with-next
+   1187          void USART6_RX_DMA_IRQ_HANDLER(void)
+   1188          {
+   1189          	commonUSARTx_RX_DMA_IRQ_HANDLER(UART6);
+   \                     DMA2_Stream2_IRQHandler: (+1)
+   \   00000000   0x2002             MOVS     R0,#+2
+   \   00000002   0x....             B.N      commonUSARTx_RX_DMA_IRQ_HANDLER
+   1190          }
+   1191          
+
+   \                                 In section .text, align 2, keep-with-next
+   1192          void USART1_RX_DMA_IRQ_HANDLER(void)
+   1193          {
+   1194          	commonUSARTx_RX_DMA_IRQ_HANDLER(UART1);
+   \                     DMA2_Stream5_IRQHandler: (+1)
+   \   00000000   0x2000             MOVS     R0,#+0
+   \   00000002   0x....             B.N      commonUSARTx_RX_DMA_IRQ_HANDLER
+   1195          }
+   1196          
+   1197          /* Embedded Utils hook implmentation ------------------------------------------*/
+   1198          
+   1199          // needed for RingByteBuffer embedded utils
+
+   \                                 In section .text, align 2, keep-with-next
+   1200          void InvAssert(const char *predicate, const char *file, unsigned line) 
+   1201          {
+   1202          	(void)predicate;
+   1203          	(void)line;
+   1204          	(void)file;
+   1205          }
+   \                     InvAssert: (+1)
+   \   00000000   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_1:
+   \   00000000   0x43 0x3A          DC8 43H, 3AH, 5CH, 55H, 73H, 65H, 72H, 73H
+   \              0x5C 0x55    
+   \              0x73 0x65    
+   \              0x72 0x73    
+   \   00000008   0x5C 0x70          DC8 5CH, 70H, 72H, 61H, 73H, 61H, 5CH, 44H
+   \              0x72 0x61    
+   \              0x73 0x61    
+   \              0x5C 0x44    
+   \   00000010   0x6F 0x63          DC8 6FH, 63H, 75H, 6DH, 65H, 6EH, 74H, 73H
+   \              0x75 0x6D    
+   \              0x65 0x6E    
+   \              0x74 0x73    
+   \   00000018   0x5C 0x31          DC8 5CH, 31H, 2EH, 30H, 2EH, 30H, 5CH, 73H
+   \              0x2E 0x30    
+   \              0x2E 0x30    
+   \              0x5C 0x73    
+   \   00000020   0x6F 0x75          DC8 6FH, 75H, 72H, 63H, 65H, 73H, 5CH, 65H
+   \              0x72 0x63    
+   \              0x65 0x73    
+   \              0x5C 0x65    
+   \   00000028   0x78 0x61          DC8 78H, 61H, 6DH, 70H, 6CH, 65H, 73H, 5CH
+   \              0x6D 0x70    
+   \              0x6C 0x65    
+   \              0x73 0x5C    
+   \   00000030   0x65 0x78          DC8 65H, 78H, 61H, 6DH, 70H, 6CH, 65H, 2DH
+   \              0x61 0x6D    
+   \              0x70 0x6C    
+   \              0x65 0x2D    
+   \   00000038   0x69 0x63          DC8 69H, 63H, 6DH, 32H, 30H, 39H, 34H, 38H
+   \              0x6D 0x32    
+   \              0x30 0x39    
+   \              0x34 0x38    
+   \   00000040   0x2F 0x2E          DC8 2FH, 2EH, 2EH, 2FH, 2EH, 2EH, 5CH, 49H
+   \              0x2E 0x2F    
+   \              0x2E 0x2E    
+   \              0x5C 0x49    
+   \   00000048   0x6E 0x76          DC8 6EH, 76H, 6EH, 2FH, 45H, 6DH, 62H, 55H
+   \              0x6E 0x2F    
+   \              0x45 0x6D    
+   \              0x62 0x55    
+   \   00000050   0x74 0x69          DC8 74H, 69H, 6CH, 73H, 2FH, 52H, 69H, 6EH
+   \              0x6C 0x73    
+   \              0x2F 0x52    
+   \              0x69 0x6E    
+   \   00000058   0x67 0x42          DC8 67H, 42H, 79H, 74H, 65H, 42H, 75H, 66H
+   \              0x79 0x74    
+   \              0x65 0x42    
+   \              0x75 0x66    
+   \   00000060   0x66 0x65          DC8 66H, 65H, 72H, 2EH, 68H, 0
+   \              0x72 0x2E    
+   \              0x68 0x00    
+   \   00000066   0x00 0x00          DC8 0, 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_0:
+   \   00000000   0x73 0x65          DC8 "self"
+   \              0x6C 0x66    
+   \              0x00         
+   \   00000005   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17:
+   \   00000000   0x........         DC32     UART_1
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_1:
+   \   00000000   0x........         DC32     UART_2
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18:
+   \   00000000   0x........         DC32     UART_6
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_1:
+   \   00000000   0x40026000         DC32     0x40026000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_2:
+   \   00000000   0x20208000         DC32     0x20208000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_3:
+   \   00000000   0x20200000         DC32     0x20200000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_4:
+   \   00000000   0x400260A0         DC32     0x400260a0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_5:
+   \   00000000   0x40026400         DC32     0x40026400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_6:
+   \   00000000   0x400264A0         DC32     0x400264a0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_7:
+   \   00000000   0x28008000         DC32     0x28008000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_8:
+   \   00000000   0x400264B8         DC32     0x400264b8
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_9:
+   \   00000000   0x........         DC32     uart_dma_tx_buffers_struct
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_10:
+   \   00000000   0x22002000         DC32     0x22002000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_11:
+   \   00000000   0x400260B8         DC32     0x400260b8
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_12:
+   \   00000000   0x10208000         DC32     0x10208000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_13:
+   \   00000000   0x10082000         DC32     0x10082000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_14:
+   \   00000000   0x10080000         DC32     0x10080000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_15:
+   \   00000000   0x40026440         DC32     0x40026440
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_16:
+   \   00000000   0x20008800         DC32     0x20008800
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_17:
+   \   00000000   0x20000800         DC32     0x20000800
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_18:
+   \   00000000   0x20002200         DC32     0x20002200
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_19:
+   \   00000000   0x20000200         DC32     0x20000200
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_20:
+   \   00000000   0x40026488         DC32     0x40026488
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_21:
+   \   00000000   0x........         DC32     uart_dma_rx_buffers_struct
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_22:
+   \   00000000   0x40004400         DC32     0x40004400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_23:
+   \   00000000   0x40020000         DC32     0x40020000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_24:
+   \   00000000   0x40011400         DC32     0x40011400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_25:
+   \   00000000   0x40011000         DC32     0x40011000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_26:
+   \   00000000   0x........         DC32     uart_dma_tx_buffers_struct+0x8200
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   DMA1_Stream6_IRQHandler
+         0   -> commonUSARTx_TX_DMA_IRQ_HANDLER
+       0   DMA1_Stream7_IRQHandler
+         0   -> commonUSARTx_RX_DMA_IRQ_HANDLER
+       0   DMA2_Stream2_IRQHandler
+         0   -> commonUSARTx_RX_DMA_IRQ_HANDLER
+       0   DMA2_Stream5_IRQHandler
+         0   -> commonUSARTx_RX_DMA_IRQ_HANDLER
+       0   DMA2_Stream6_IRQHandler
+         0   -> commonUSARTx_TX_DMA_IRQ_HANDLER
+       0   DMA2_Stream7_IRQHandler
+         0   -> commonUSARTx_TX_DMA_IRQ_HANDLER
+       0   InvAssert
+       8   RingByteBuffer_isEmpty
+         8   -> InvAssert
+       8   RingByteBuffer_isFull
+         8   -> InvAssert
+       0   USART1_IRQHandler
+         0   -> commonUSARTx_IRQHandler
+       0   USART2_IRQHandler
+         0   -> commonUSARTx_IRQHandler
+       0   USART6_IRQHandler
+         0   -> commonUSARTx_IRQHandler
+       4   commonUSARTx_GetITStatus_IRQHandler
+      32   commonUSARTx_IRQHandler
+        32   -- Indirect call
+        32   -> RingByteBuffer_isEmpty
+        32   -> RingByteBuffer_popByte
+        32   -> USART_ITConfig
+        32   -> USART_ReceiveData
+        32   -> USART_SendData
+        32   -> commonUSARTx_GetITStatus_IRQHandler
+        32   -> commonUSARTx_read_data_IRQHandler
+        32   -> disable_irq
+        32   -> enable_irq
+        32   -> uart_dma_rx_abort
+        32   -> uart_get_instance
+      24   commonUSARTx_RX_DMA_IRQ_HANDLER
+        24   -- Indirect call
+        24   -> uart_get_instance
+      16   commonUSARTx_TX_DMA_IRQ_HANDLER
+         0   -> uart_dma_do_tx
+        16   -> uart_get_instance
+       8   commonUSARTx_read_data_IRQHandler
+         0   -- Indirect call
+         8   -> RingByteBuffer_isFull
+         8   -> RingByteBuffer_pushByte
+         8   -> USART_ReceiveData
+       8   uart_available
+         8   -> RingByteBuffer_size
+         8   -> disable_irq
+         8   -> enable_irq
+         8   -> uart_get_instance
+       0   uart_config_irq_priority
+      24   uart_dma_do_rx
+        24   -> uart_get_instance
+      16   uart_dma_do_tx
+        16   -> uart_dma_tx_release_buffer
+        16   -> uart_get_instance
+      16   uart_dma_rx
+        16   -> disable_irq
+        16   -> enable_irq
+        16   -> uart_dma_do_rx
+        16   -> uart_get_instance
+      16   uart_dma_rx_abort
+        16   -> DMA_ClearFlag
+        16   -> DMA_ClearITPendingBit
+        16   -> DMA_Cmd
+        16   -> DMA_GetCmdStatus
+        16   -> DMA_GetITStatus
+        16   -> disable_irq
+        16   -> enable_irq
+        16   -> uart_dma_do_rx
+        16   -> uart_get_instance
+      88   uart_dma_rx_config
+        88   -> DMA_StructInit
+        88   -> uart_dma_rx_config_uartid
+        88   -> uart_get_instance
+      32   uart_dma_rx_config_uartid
+        32   -> DMA_ITConfig
+        32   -> DMA_Init
+        32   -> NVIC_Init
+        32   -> RCC_AHB1PeriphClockCmd
+        32   -> USART_DMACmd
+        32   -> USART_ITConfig
+        32   -> uart_get_instance
+      16   uart_dma_rx_release_buffer
+        16   -> disable_irq
+        16   -> enable_irq
+       8   uart_dma_rx_transfer_buffer
+         8   -> disable_irq
+         8   -> enable_irq
+      24   uart_dma_tx
+        24   -> disable_irq
+        24   -> enable_irq
+        24   -> uart_dma_do_tx
+        24   -> uart_get_instance
+      88   uart_dma_tx_config
+        88   -> DMA_StructInit
+        88   -> uart_dma_tx_config_uartid
+        88   -> uart_get_instance
+      24   uart_dma_tx_config_uartid
+        24   -> DMA_ITConfig
+        24   -> DMA_Init
+        24   -> NVIC_Init
+        24   -> RCC_AHB1PeriphClockCmd
+        24   -> uart_get_instance
+       8   uart_dma_tx_release_buffer
+         8   -> disable_irq
+         8   -> enable_irq
+       8   uart_dma_tx_take_buffer
+         8   -> disable_irq
+         8   -> enable_irq
+       8   uart_get_hw_flow_control_configuration
+         8   -> uart_get_instance
+       0   uart_get_instance
+       0   uart_get_uart_for_printf
+      16   uart_getc
+        16   -> RingByteBuffer_isEmpty
+        16   -> RingByteBuffer_popByte
+        16   -> USART_GetFlagStatus
+         0   -> USART_ReceiveData
+        16   -> disable_irq
+        16   -> enable_irq
+        16   -> uart_get_instance
+      64   uart_init
+        64   -> GPIO_Init
+        64   -> GPIO_PinAFConfig
+        64   -> NVIC_Init
+        64   -> RCC_AHB1PeriphClockCmd
+        64   -> RCC_APB1PeriphClockCmd
+        64   -> RCC_APB2PeriphClockCmd
+        64   -> RingByteBuffer_init
+        64   -> USART_Cmd
+        64   -> USART_ITConfig
+        64   -> USART_Init
+        64   -> uart_dma_rx_config
+        64   -> uart_dma_tx_config
+        64   -> uart_get_instance
+      16   uart_putc
+        16   -> RingByteBuffer_isFull
+        16   -> RingByteBuffer_pushByte
+        16   -> USART_GetFlagStatus
+        16   -> USART_GetITStatus
+        16   -> USART_ITConfig
+        16   -> USART_SendData
+        16   -> disable_irq
+        16   -> enable_irq
+        16   -> uart_get_instance
+      16   uart_puts
+        16   -> uart_putc
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable17
+       4  ??DataTable17_1
+       4  ??DataTable18
+       4  ??DataTable18_1
+       4  ??DataTable18_10
+       4  ??DataTable18_11
+       4  ??DataTable18_12
+       4  ??DataTable18_13
+       4  ??DataTable18_14
+       4  ??DataTable18_15
+       4  ??DataTable18_16
+       4  ??DataTable18_17
+       4  ??DataTable18_18
+       4  ??DataTable18_19
+       4  ??DataTable18_2
+       4  ??DataTable18_20
+       4  ??DataTable18_21
+       4  ??DataTable18_22
+       4  ??DataTable18_23
+       4  ??DataTable18_24
+       4  ??DataTable18_25
+       4  ??DataTable18_26
+       4  ??DataTable18_3
+       4  ??DataTable18_4
+       4  ??DataTable18_5
+       4  ??DataTable18_6
+       4  ??DataTable18_7
+       4  ??DataTable18_8
+       4  ??DataTable18_9
+       8  ?_0
+     104  ?_1
+       4  DMA1_Stream6_IRQHandler
+       4  DMA1_Stream7_IRQHandler
+       4  DMA2_Stream2_IRQHandler
+       4  DMA2_Stream5_IRQHandler
+       4  DMA2_Stream6_IRQHandler
+       4  DMA2_Stream7_IRQHandler
+       2  InvAssert
+      44  RingByteBuffer_isEmpty
+      44  RingByteBuffer_isFull
+     184  UART_1
+          irq_channel_premption_priority
+          irq_channel_subpriority
+          usart_for_printf
+          sUART1BufferTx
+          sUART1BufferRx
+          sUART2BufferRx
+          sUART2BufferTx
+          sUART6BufferTx
+          sUART6BufferRx
+     100  UART_2
+     100  UART_6
+       4  USART1_IRQHandler
+       4  USART2_IRQHandler
+       4  USART6_IRQHandler
+      68  commonUSARTx_GetITStatus_IRQHandler
+     208  commonUSARTx_IRQHandler
+     118  commonUSARTx_RX_DMA_IRQ_HANDLER
+     124  commonUSARTx_TX_DMA_IRQ_HANDLER
+      46  commonUSARTx_read_data_IRQHandler
+      40  uart_available
+      10  uart_config_irq_priority
+     122  uart_dma_do_rx
+     100  uart_dma_do_tx
+      96  uart_dma_rx
+     120  uart_dma_rx_abort
+    2220  uart_dma_rx_buffers_struct
+     364  uart_dma_rx_config
+     112  uart_dma_rx_config_uartid
+     106  uart_dma_rx_release_buffer
+      66  uart_dma_rx_transfer_buffer
+     100  uart_dma_tx
+   35340  uart_dma_tx_buffers_struct
+     334  uart_dma_tx_config
+     100  uart_dma_tx_config_uartid
+      72  uart_dma_tx_release_buffer
+      66  uart_dma_tx_take_buffer
+      10  uart_get_hw_flow_control_configuration
+      34  uart_get_instance
+       8  uart_get_uart_for_printf
+      76  uart_getc
+     852  uart_init
+     106  uart_putc
+      34  uart_puts
+
+ 
+ 37 760 bytes in section .bss
+    184 bytes in section .data
+  3 846 bytes in section .text
+ 
+  3 846 bytes of CODE memory
+ 37 944 bytes of DATA memory
+
+Errors: none
+Warnings: none

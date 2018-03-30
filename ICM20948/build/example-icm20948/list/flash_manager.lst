@@ -1,0 +1,478 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:26
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\flash_manager.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\flash_manager.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\flash_manager.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\flash_manager.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\flash_manager.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2016-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "flash_manager.h"
+     25          
+     26          #include "stm32f4xx.h"
+     27          #include "stm32f4xx_flash.h"
+     28          
+     29          #define FLASH_SECTOR		FLASH_Sector_1
+     30          #define FLASH_DATA_SIZE		84
+     31          #define FLASH_HEADER_SIZE	4
+     32          #define FLASH_HEADER		0x0A0B0B0A
+     33          
+
+   \                                 In section .bss, align 4
+     34          static uint32_t* start_sector_address;
+   \                     start_sector_address:
+   \   00000000                      DS8 4
+   \   00000004                      DS8 4
+     35          static uint32_t* end_sector_address;
+     36          
+     37          typedef enum flash_manager_status
+     38          {
+     39          	FLASH_MANAGER_STATUS_NOERROR = 0,
+     40          	FLASH_MANAGER_STATUS_EMPTY,
+     41          	FLASH_MANAGER_STATUS_FULL,
+     42          	FLASH_MANAGER_STATUS_ERASE_ERROR,
+     43          	FLASH_MANAGER_STATUS_WRITE_ERROR
+     44          } flash_manager_status;
+     45          
+
+   \                                 In section .text, align 2, keep-with-next
+     46          static flash_manager_status flash_manager_getEmptySlotAddr(uint32_t * pAddress)
+     47          {
+     48          	uint32_t addr = (uint32_t)(start_sector_address);
+   \                     flash_manager_getEmptySlotAddr: (+1)
+   \   00000000   0x....             LDR.N    R1,??DataTable5
+   \   00000002   0x680A             LDR      R2,[R1, #+0]
+   \   00000004   0xE000             B.N      ??flash_manager_getEmptySlotAddr_0
+     49          	
+     50          	/* Check page address starting from begining */
+     51          	while (addr <= (uint32_t)(end_sector_address) - (FLASH_DATA_SIZE + FLASH_HEADER_SIZE))
+     52          	{
+     53          		/* Verify if address contents are 0xFFFFFFFF */
+     54          		if ((*(volatile uint32_t*)addr) == 0xFFFFFFFF)
+     55          		{
+     56          			*pAddress = addr;
+     57          			return FLASH_MANAGER_STATUS_NOERROR;
+     58          		}
+     59          		else
+     60          		{
+     61          			/* Next block address location */
+     62          			addr = addr + FLASH_DATA_SIZE + FLASH_HEADER_SIZE;
+   \                     ??flash_manager_getEmptySlotAddr_1: (+1)
+   \   00000006   0x3258             ADDS     R2,R2,#+88
+     63          		}
+   \                     ??flash_manager_getEmptySlotAddr_0: (+1)
+   \   00000008   0x684B             LDR      R3,[R1, #+4]
+   \   0000000A   0x3B58             SUBS     R3,R3,#+88
+   \   0000000C   0x4293             CMP      R3,R2
+   \   0000000E   0xD306             BCC.N    ??flash_manager_getEmptySlotAddr_2
+   \   00000010   0x6813             LDR      R3,[R2, #+0]
+   \   00000012   0xF113 0x0F01      CMN      R3,#+1
+   \   00000016   0xD1F6             BNE.N    ??flash_manager_getEmptySlotAddr_1
+   \   00000018   0x6002             STR      R2,[R0, #+0]
+   \   0000001A   0x2000             MOVS     R0,#+0
+   \   0000001C   0x4770             BX       LR
+     64          	}
+     65          	return FLASH_MANAGER_STATUS_FULL;
+   \                     ??flash_manager_getEmptySlotAddr_2: (+1)
+   \   0000001E   0x2002             MOVS     R0,#+2
+   \   00000020   0x4770             BX       LR               ;; return
+     66          }
+     67          
+
+   \                                 In section .text, align 2, keep-with-next
+     68          static flash_manager_status flash_manager_eraseUnsafe(void)
+     69          {
+   \                     flash_manager_eraseUnsafe: (+1)
+   \   00000000   0xB580             PUSH     {R7,LR}
+     70          	/* Clear pending flags (if any) */  
+     71          	FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | 
+     72          			  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR); 
+   \   00000002   0x20F3             MOVS     R0,#+243
+   \   00000004   0x.... 0x....      BL       FLASH_ClearFlag
+     73          
+     74          	/* Device voltage range supposed to be [1.8V to 2.1V], the operation will
+     75          	   be done by byte */ 
+     76          	if (FLASH_EraseSector(FLASH_SECTOR, VoltageRange_1) != FLASH_COMPLETE)
+   \   00000008   0x2100             MOVS     R1,#+0
+   \   0000000A   0x2008             MOVS     R0,#+8
+   \   0000000C   0x.... 0x....      BL       FLASH_EraseSector
+   \   00000010   0x2809             CMP      R0,#+9
+   \   00000012   0xD001             BEQ.N    ??flash_manager_eraseUnsafe_0
+     77          	{
+     78          		/* Erase sector error */
+     79          		return FLASH_MANAGER_STATUS_ERASE_ERROR;
+   \   00000014   0x2003             MOVS     R0,#+3
+   \   00000016   0xBD02             POP      {R1,PC}
+     80          	}
+     81          	return FLASH_MANAGER_STATUS_NOERROR;
+   \                     ??flash_manager_eraseUnsafe_0: (+1)
+   \   00000018   0x2000             MOVS     R0,#+0
+   \   0000001A   0xBD02             POP      {R1,PC}          ;; return
+     82          }
+     83          
+     84          /** Public functions **/
+     85          
+
+   \                                 In section .text, align 2, keep-with-next
+     86          int flash_manager_eraseData(void)
+     87          {
+   \                     flash_manager_eraseData: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+     88          	flash_manager_status status;
+     89          	
+     90          	/* Unlock the Flash */
+     91          	/* Enable the flash control register access */
+     92          	FLASH_Unlock();
+   \   00000002   0x.... 0x....      BL       FLASH_Unlock
+     93          	
+     94          	status = flash_manager_eraseUnsafe();
+   \   00000006   0x.... 0x....      BL       flash_manager_eraseUnsafe
+   \   0000000A   0x4604             MOV      R4,R0
+     95          	
+     96          	/* Lock the Flash to disable the flash control register access (recommended
+     97          	to protect the FLASH memory against possible unwanted operation) */
+     98          	FLASH_Lock();
+   \   0000000C   0x.... 0x....      BL       FLASH_Lock
+     99          
+    100          	return status;
+   \   00000010   0x4620             MOV      R0,R4
+   \   00000012   0xBD10             POP      {R4,PC}          ;; return
+    101          }
+    102          
+
+   \                                 In section .text, align 2, keep-with-next
+    103          int flash_manager_readData(uint8_t* pData)
+    104          {
+   \                     flash_manager_readData: (+1)
+   \   00000000   0xB430             PUSH     {R4,R5}
+    105          	uint8_t i;
+    106          	uint32_t address;
+    107          	uint32_t header;
+    108          	uint8_t readStatus = 0;
+   \   00000002   0x2100             MOVS     R1,#+0
+    109          	
+    110          	/* Get the valid Page end address */
+    111          	address = (uint32_t)(end_sector_address);
+   \   00000004   0x....             LDR.N    R2,??DataTable5
+   \   00000006   0x6853             LDR      R3,[R2, #+4]
+   \   00000008   0x....             LDR.N    R5,??DataTable5_1  ;; 0xa0b0b0a
+   \   0000000A   0xE000             B.N      ??flash_manager_readData_0
+    112          	
+    113          	/* Check each active page address starting from end */
+    114          	while (address > (uint32_t)(start_sector_address))
+    115          	{
+    116          		/* Get the header to delimitate context data */
+    117          		header = (*(volatile uint32_t*)address);
+    118          		
+    119          		/* Compare the read header */
+    120          		if (header == FLASH_HEADER)
+    121          		{
+    122          			address = address - FLASH_DATA_SIZE;
+    123          			/* Get content of data in the correct order */
+    124          			for(i = 0; i < FLASH_DATA_SIZE; i++)
+    125          			{
+    126          				pData[i] = (*(volatile uint8_t*)(address));
+    127          				address ++;
+    128          			}
+    129          			readStatus = 1;
+    130          			break;
+    131          		}
+    132          		else
+    133          		{
+    134          			address = address - sizeof(uint8_t);
+   \                     ??flash_manager_readData_1: (+1)
+   \   0000000C   0x1E5B             SUBS     R3,R3,#+1
+    135          		}
+   \                     ??flash_manager_readData_0: (+1)
+   \   0000000E   0x6814             LDR      R4,[R2, #+0]
+   \   00000010   0x429C             CMP      R4,R3
+   \   00000012   0xD20D             BCS.N    ??flash_manager_readData_2
+   \   00000014   0x681C             LDR      R4,[R3, #+0]
+   \   00000016   0x42AC             CMP      R4,R5
+   \   00000018   0xD1F8             BNE.N    ??flash_manager_readData_1
+   \   0000001A   0x3B54             SUBS     R3,R3,#+84
+   \   0000001C   0xE003             B.N      ??flash_manager_readData_3
+   \                     ??flash_manager_readData_4: (+1)
+   \   0000001E   0x781C             LDRB     R4,[R3, #+0]
+   \   00000020   0x5484             STRB     R4,[R0, R2]
+   \   00000022   0x1C5B             ADDS     R3,R3,#+1
+   \   00000024   0x1C49             ADDS     R1,R1,#+1
+   \                     ??flash_manager_readData_3: (+1)
+   \   00000026   0xB2C9             UXTB     R1,R1
+   \   00000028   0x460A             MOV      R2,R1
+   \   0000002A   0x2A54             CMP      R2,#+84
+   \   0000002C   0xDBF7             BLT.N    ??flash_manager_readData_4
+   \   0000002E   0x2101             MOVS     R1,#+1
+    136          	}
+    137          	if(readStatus)
+   \                     ??flash_manager_readData_2: (+1)
+   \   00000030   0x4608             MOV      R0,R1
+   \   00000032   0x1E40             SUBS     R0,R0,#+1
+   \   00000034   0x4180             SBCS     R0,R0,R0
+   \   00000036   0x0FC0             LSRS     R0,R0,#+31
+    138          		return FLASH_MANAGER_STATUS_NOERROR;
+    139          	else
+    140          		return FLASH_MANAGER_STATUS_EMPTY;
+   \   00000038   0xBC30             POP      {R4,R5}
+   \   0000003A   0x4770             BX       LR               ;; return
+    141          }
+    142          
+
+   \                                 In section .text, align 2, keep-with-next
+    143          int flash_manager_writeData(const uint8_t* pData)
+    144          {
+   \                     flash_manager_writeData: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    145          	uint32_t i;
+    146          	FLASH_Status FlashStatus;
+    147          	uint32_t address = (uint32_t)(start_sector_address);
+   \   00000004   0x....             LDR.N    R5,??DataTable5
+   \   00000006   0x6828             LDR      R0,[R5, #+0]
+   \   00000008   0x9000             STR      R0,[SP, #+0]
+    148          	static const uint8_t cFlashHeader[4] = {0xA, 0xB, 0xB, 0xA};
+    149          
+    150          	/* Unlock the Flash *********************************************************/
+    151          	/* Enable the flash control register access */
+    152          	FLASH_Unlock();
+   \   0000000A   0x.... 0x....      BL       FLASH_Unlock
+    153          
+    154          	 /* Get the next empty address to write data */
+    155          	if(flash_manager_getEmptySlotAddr(&address) == FLASH_MANAGER_STATUS_FULL)
+   \   0000000E   0x4668             MOV      R0,SP
+   \   00000010   0x.... 0x....      BL       flash_manager_getEmptySlotAddr
+   \   00000014   0x2802             CMP      R0,#+2
+   \   00000016   0xD103             BNE.N    ??flash_manager_writeData_0
+    156          	{
+    157          		/* Erase the Flash area */
+    158          		flash_manager_eraseUnsafe();
+   \   00000018   0x.... 0x....      BL       flash_manager_eraseUnsafe
+    159          
+    160          		/* Get the start Address */
+    161          		address = (uint32_t)(start_sector_address);
+   \   0000001C   0x6828             LDR      R0,[R5, #+0]
+   \   0000001E   0x9000             STR      R0,[SP, #+0]
+    162          	}
+    163          	
+    164          	/* Program the Flash area byte by byte */
+    165          	for(i = 0; i < FLASH_DATA_SIZE; i++)
+   \                     ??flash_manager_writeData_0: (+1)
+   \   00000020   0x2500             MOVS     R5,#+0
+   \   00000022   0xE009             B.N      ??flash_manager_writeData_1
+    166          	{
+    167          		FlashStatus = FLASH_ProgramByte(address, pData[i]);
+    168          		/* If program operation was failed, a Flash error code is returned */
+    169          		if (FlashStatus != FLASH_COMPLETE)
+   \                     ??flash_manager_writeData_2: (+1)
+   \   00000024   0x5D61             LDRB     R1,[R4, R5]
+   \   00000026   0x9800             LDR      R0,[SP, #+0]
+   \   00000028   0x.... 0x....      BL       FLASH_ProgramByte
+   \   0000002C   0x2809             CMP      R0,#+9
+   \   0000002E   0xD115             BNE.N    ??flash_manager_writeData_3
+    170          		{
+    171          			/* Flash write operation error */
+    172          			FLASH_Lock();
+    173          			return FLASH_MANAGER_STATUS_WRITE_ERROR;
+    174          		}
+    175          		address++;
+   \   00000030   0x9800             LDR      R0,[SP, #+0]
+   \   00000032   0x1C40             ADDS     R0,R0,#+1
+   \   00000034   0x9000             STR      R0,[SP, #+0]
+    176          	}
+   \   00000036   0x1C6D             ADDS     R5,R5,#+1
+   \                     ??flash_manager_writeData_1: (+1)
+   \   00000038   0x2D54             CMP      R5,#+84
+   \   0000003A   0xD3F3             BCC.N    ??flash_manager_writeData_2
+    177          	
+    178          	/* Program the header */
+    179          	for(i = 0; i < FLASH_HEADER_SIZE; i++)
+   \   0000003C   0x2500             MOVS     R5,#+0
+   \   0000003E   0xE003             B.N      ??flash_manager_writeData_4
+    180          	{
+    181          		FlashStatus = FLASH_ProgramByte(address, cFlashHeader[i]);
+    182          		/* If program operation was failed, a Flash error code is returned */
+    183          		if (FlashStatus != FLASH_COMPLETE)
+    184          		{
+    185          			/* Flash write operation error */
+    186          			FLASH_Lock();
+    187          			return FLASH_MANAGER_STATUS_WRITE_ERROR;
+    188          		}
+    189          		address++;
+   \                     ??flash_manager_writeData_5: (+1)
+   \   00000040   0x9800             LDR      R0,[SP, #+0]
+   \   00000042   0x1C40             ADDS     R0,R0,#+1
+   \   00000044   0x9000             STR      R0,[SP, #+0]
+   \   00000046   0x1C6D             ADDS     R5,R5,#+1
+   \                     ??flash_manager_writeData_4: (+1)
+   \   00000048   0x2D04             CMP      R5,#+4
+   \   0000004A   0xD20B             BCS.N    ??flash_manager_writeData_6
+   \   0000004C   0x.... 0x....      ADR.W    R0,`flash_manager_writeData::cFlashHeader`
+   \   00000050   0x5D41             LDRB     R1,[R0, R5]
+   \   00000052   0x9800             LDR      R0,[SP, #+0]
+   \   00000054   0x.... 0x....      BL       FLASH_ProgramByte
+   \   00000058   0x2809             CMP      R0,#+9
+   \   0000005A   0xD0F1             BEQ.N    ??flash_manager_writeData_5
+   \                     ??flash_manager_writeData_3: (+1)
+   \   0000005C   0x.... 0x....      BL       FLASH_Lock
+   \   00000060   0x2004             MOVS     R0,#+4
+   \   00000062   0xBD32             POP      {R1,R4,R5,PC}
+    190          	}
+    191          	
+    192          	/* Lock the Flash to disable the flash control register access (recommended
+    193          	to protect the FLASH memory against possible unwanted operation) ****************/
+    194          	FLASH_Lock(); 
+   \                     ??flash_manager_writeData_6: (+1)
+   \   00000064   0x.... 0x....      BL       FLASH_Lock
+    195          	
+    196          	return FLASH_MANAGER_STATUS_NOERROR;
+   \   00000068   0x2000             MOVS     R0,#+0
+   \   0000006A   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    197          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     `flash_manager_writeData::cFlashHeader`:
+   \   00000000   0x0A 0x0B          DC8 10, 11, 11, 10
+   \              0x0B 0x0A    
+    198          
+
+   \                                 In section .text, align 2, keep-with-next
+    199          uint32_t** flash_manager_get_start_sector_address(void)
+    200          {
+    201          	return &start_sector_address;
+   \                     flash_manager_get_start_sector_address: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable5
+   \   00000002   0x4770             BX       LR               ;; return
+    202          }
+    203          
+
+   \                                 In section .text, align 2, keep-with-next
+    204          uint32_t** flash_manager_get_end_sector_address(void)
+    205          {
+    206          	return &end_sector_address;
+   \                     flash_manager_get_end_sector_address: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable5_2
+   \   00000002   0x4770             BX       LR               ;; return
+    207          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5:
+   \   00000000   0x........         DC32     start_sector_address
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_1:
+   \   00000000   0x0A0B0B0A         DC32     0xa0b0b0a
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_2:
+   \   00000000   0x........         DC32     start_sector_address+0x4
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   flash_manager_eraseData
+         8   -> FLASH_Lock
+         8   -> FLASH_Unlock
+         8   -> flash_manager_eraseUnsafe
+       8   flash_manager_eraseUnsafe
+         8   -> FLASH_ClearFlag
+         8   -> FLASH_EraseSector
+       0   flash_manager_getEmptySlotAddr
+       0   flash_manager_get_end_sector_address
+       0   flash_manager_get_start_sector_address
+       8   flash_manager_readData
+      16   flash_manager_writeData
+        16   -> FLASH_Lock
+        16   -> FLASH_ProgramByte
+        16   -> FLASH_Unlock
+        16   -> flash_manager_eraseUnsafe
+        16   -> flash_manager_getEmptySlotAddr
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable5_2
+       4  cFlashHeader
+      20  flash_manager_eraseData
+      28  flash_manager_eraseUnsafe
+      34  flash_manager_getEmptySlotAddr
+       4  flash_manager_get_end_sector_address
+       4  flash_manager_get_start_sector_address
+      60  flash_manager_readData
+     108  flash_manager_writeData
+       8  start_sector_address
+          end_sector_address
+
+ 
+   8 bytes in section .bss
+ 274 bytes in section .text
+ 
+ 274 bytes of CODE memory
+   8 bytes of DATA memory
+
+Errors: none
+Warnings: none

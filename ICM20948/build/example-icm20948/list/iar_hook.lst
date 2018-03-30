@@ -1,0 +1,162 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:27
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\iar_hook.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\iar_hook.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\iar_hook.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\iar_hook.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\iar_hook.c
+      1          /*
+      2           * Hook implemetation for low-level routine called from IAR C library
+      3           */
+      4          
+      5          /*
+      6           * Only for IAR compiler
+      7           */ 
+      8          #ifdef __IAR_SYSTEMS_ICC__ 
+      9          
+     10          #include <stddef.h>
+     11          
+     12          #include "stm32f4xx.h"
+     13          
+     14          #ifndef INVN_DRIVERS_DEVICE_NUCLEO_REMOVE_UART
+     15          #include "uart.h"
+     16          #endif
+     17          /*
+     18           * Write char to debug UART (USART6 on Nucleo F411-RE)
+     19           */
+     20          #pragma weak __write
+
+   \                                 In section .text, align 2
+     21          size_t __write(int handle, const unsigned char * ptr, size_t len)
+     22          {
+   \                     __write: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x460C             MOV      R4,R1
+   \   00000004   0x4615             MOV      R5,R2
+     23          #ifndef INVN_DRIVERS_DEVICE_NUCLEO_REMOVE_UART
+     24          	size_t n;
+     25          
+     26          	/* Check for stdout and stderr
+     27          	 * (only necessary if file descriptors are enabled.)
+     28          	 */
+     29          	if (handle != 1 && handle != 2) {
+   \   00000006   0x2801             CMP      R0,#+1
+   \   00000008   0xD004             BEQ.N    ??__write_0
+   \   0000000A   0x2802             CMP      R0,#+2
+   \   0000000C   0xD002             BEQ.N    ??__write_0
+     30          		return -1;
+   \   0000000E   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000012   0xBDF2             POP      {R1,R4-R7,PC}
+     31          	}
+     32          	
+     33          	for (n = 0; n < len; n++) {
+   \                     ??__write_0: (+1)
+   \   00000014   0x2600             MOVS     R6,#+0
+   \   00000016   0xE006             B.N      ??__write_1
+     34          		int timeout = 0xFFFF;
+     35          
+     36          		/*
+     37          		 * Wait for char to be sent
+     38          		 */
+     39          		while (USART_GetFlagStatus(uart_get_uart_for_printf(), USART_FLAG_TXE) == RESET) {
+     40          			if(--timeout <= 0) {
+     41          				return n;
+     42          			}
+     43          		}
+     44          
+     45          		USART_SendData(uart_get_uart_for_printf(), *(ptr++));
+   \                     ??__write_2: (+1)
+   \   00000018   0x.... 0x....      BL       uart_get_uart_for_printf
+   \   0000001C   0xF814 0x1B01      LDRB     R1,[R4], #+1
+   \   00000020   0x.... 0x....      BL       USART_SendData
+   \   00000024   0x1C76             ADDS     R6,R6,#+1
+   \                     ??__write_1: (+1)
+   \   00000026   0x42AE             CMP      R6,R5
+   \   00000028   0xD20D             BCS.N    ??__write_3
+   \   0000002A   0xF64F 0x77FF      MOVW     R7,#+65535
+   \                     ??__write_4: (+1)
+   \   0000002E   0x.... 0x....      BL       uart_get_uart_for_printf
+   \   00000032   0x2180             MOVS     R1,#+128
+   \   00000034   0x.... 0x....      BL       USART_GetFlagStatus
+   \   00000038   0x2800             CMP      R0,#+0
+   \   0000003A   0xD1ED             BNE.N    ??__write_2
+   \   0000003C   0x1E7F             SUBS     R7,R7,#+1
+   \   0000003E   0x2F01             CMP      R7,#+1
+   \   00000040   0xDAF5             BGE.N    ??__write_4
+   \   00000042   0x4630             MOV      R0,R6
+   \   00000044   0xBDF2             POP      {R1,R4-R7,PC}
+     46          	}
+     47          #else
+     48          	(void)handle;
+     49          	(void)ptr;
+     50          #endif
+     51          	return len;
+   \                     ??__write_3: (+1)
+   \   00000046   0x4628             MOV      R0,R5
+   \   00000048   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+     52          }
+     53          
+     54          #endif /* defined(__IAR_SYSTEMS_ICC__) */
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      24   __write
+        24   -> USART_GetFlagStatus
+        24   -> USART_SendData
+        24   -> uart_get_uart_for_printf
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      74  __write
+
+ 
+ 74 bytes in section .text
+ 
+ 0 bytes of CODE memory (+ 74 bytes shared)
+
+Errors: none
+Warnings: none

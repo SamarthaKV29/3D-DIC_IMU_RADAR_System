@@ -1,0 +1,645 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:31
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvQueue.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvQueue.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\InvQueue.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvQueue.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvQueue.c
+      1          /*
+      2           * Queue.c
+      3           */
+      4          #include	"InvQueue.h"
+      5          
+      6          //	code looks good with tab stops of 4 characters !!!
+      7          
+      8          /******************************************************************************/
+      9          /* types */
+     10          /******************************************************************************/
+     11          
+     12          /******************************************************************************/
+     13          /* consts */
+     14          /******************************************************************************/
+     15          
+     16          /******************************************************************************/
+     17          /* statics */
+     18          /******************************************************************************/
+     19          
+     20          /******************************************************************************/
+     21          /* externs */
+     22          /******************************************************************************/
+     23          
+     24          /******************************************************************************/
+     25          /* code follows */
+     26          /******************************************************************************/
+     27          
+     28          /******************************************************************************/
+     29          /* service routines */
+     30          /******************************************************************************/
+     31          
+     32          /******************************************************************************/
+     33          //	initializes a queue - required prior to use
+
+   \                                 In section .text, align 2, keep-with-next
+     34          void		QueueInit			(QueueT	*	Queue)//,	QueueCallbackT		RemovalCallback)
+     35          {
+     36          	QueueItemT	*	Q	=	(QueueItemT *)	Queue;
+     37          
+     38          	//	show Queue to be empty
+     39          	Queue->Next	=	Q;
+   \                     QueueInit: (+1)
+   \   00000000   0x6000             STR      R0,[R0, #+0]
+     40          	Queue->Prev	=	Q;
+   \   00000002   0x6040             STR      R0,[R0, #+4]
+     41          //	Queue->RemovalCallback	=	RemovalCallback;
+     42          }	//	end of QueueInit()
+   \   00000004   0x4770             BX       LR               ;; return
+     43          
+     44          /******************************************************************************/
+     45          //	initializes a queue item - required prior to use
+
+   \                                 In section .text, align 2, keep-with-next
+     46          void		QueueItemInit		(void	*	Item)
+     47          {
+     48          	QueueItemT	*	I	=	Item;
+     49          
+     50          	//	show Item to be unqueued
+     51          	I->Next		=	I;
+   \                     QueueItemInit: (+1)
+   \   00000000   0x6000             STR      R0,[R0, #+0]
+     52          	I->Prev		=	I;
+   \   00000002   0x6040             STR      R0,[R0, #+4]
+     53          	I->Queue	=	0;
+   \   00000004   0x2100             MOVS     R1,#+0
+   \   00000006   0x6081             STR      R1,[R0, #+8]
+     54          }	//	end of QueueItemInit()
+   \   00000008   0x4770             BX       LR               ;; return
+     55          
+     56          /******************************************************************************/
+     57          //	inserts Item into Queue as the headward neighbor of NextItem
+
+   \                                 In section .text, align 2, keep-with-next
+     58          void		QueueInsertBefore	(QueueT	*	Queue,	void	*	NextItem,	void	*	Item)
+     59          {
+     60          	QueueItemT	*	Q		=	(QueueItemT *)Queue;
+     61          	QueueItemT	*	NextI	=	NextItem;
+     62          	QueueItemT	*	I		=	Item;
+     63          
+     64          	if	(!	Q)											return;	// can't put item onto a null queue
+   \                     QueueInsertBefore: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD013             BEQ.N    ??QueueInsertBefore_0
+     65          	if	(!	I)											return;	// can't put a null item
+   \   00000004   0x2A00             CMP      R2,#+0
+   \   00000006   0xD011             BEQ.N    ??QueueInsertBefore_0
+     66          	if	(I->Queue)										return;	// can't put item if already enqueued
+   \   00000008   0x6893             LDR      R3,[R2, #+8]
+   \   0000000A   0x2B00             CMP      R3,#+0
+   \   0000000C   0xD10E             BNE.N    ??QueueInsertBefore_0
+     67          
+     68          	if		(NextI == QueueSelectHead)	NextI	=	Q->Next;
+   \   0000000E   0x2900             CMP      R1,#+0
+   \   00000010   0xD101             BNE.N    ??QueueInsertBefore_1
+   \   00000012   0x6801             LDR      R1,[R0, #+0]
+   \   00000014   0xE003             B.N      ??QueueInsertBefore_2
+     69          	else if	(NextI == QueueSelectTail)	NextI	=	Q->Prev;
+   \                     ??QueueInsertBefore_1: (+1)
+   \   00000016   0xF111 0x0F01      CMN      R1,#+1
+   \   0000001A   0xD100             BNE.N    ??QueueInsertBefore_2
+   \   0000001C   0x6841             LDR      R1,[R0, #+4]
+     70          
+     71          
+     72          //	link being made:					prev item	Item	NextItem
+     73          	I->Prev			=	NextI->Prev;//	<-----------|
+   \                     ??QueueInsertBefore_2: (+1)
+   \   0000001E   0x684B             LDR      R3,[R1, #+4]
+   \   00000020   0x6053             STR      R3,[R2, #+4]
+     74          	I->Next			=	NextI;		//				|------>
+   \   00000022   0x6011             STR      R1,[R2, #+0]
+     75          	NextI->Prev		=	I;			//				<-------|
+   \   00000024   0x604A             STR      R2,[R1, #+4]
+     76          	I->Prev->Next	=	I;			//	|---------->
+   \   00000026   0x6851             LDR      R1,[R2, #+4]
+   \   00000028   0x600A             STR      R2,[R1, #+0]
+     77          	I->Queue		=	Queue;
+   \   0000002A   0x6090             STR      R0,[R2, #+8]
+     78          }	//	end of QueueInsertBefore()
+   \                     ??QueueInsertBefore_0: (+1)
+   \   0000002C   0x4770             BX       LR               ;; return
+     79          
+     80          /******************************************************************************/
+     81          //	inserts Item into Queue as the tailward neighbor of PrevItem
+
+   \                                 In section .text, align 2, keep-with-next
+     82          void		QueueInsertAfter	(QueueT	*	Queue,	void	*	PrevItem,	void	*	Item)
+     83          {
+     84          	QueueItemT	*	Q		=	(QueueItemT *)Queue;
+     85          	QueueItemT	*	PrevI	=	PrevItem;
+     86          	QueueItemT	*	I		=	Item;
+     87          
+     88          	if	(!	Q)											return;	// can't put item onto a null queue
+   \                     QueueInsertAfter: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD013             BEQ.N    ??QueueInsertAfter_0
+     89          	if	(!	I)											return;	// can't put a null item
+   \   00000004   0x2A00             CMP      R2,#+0
+   \   00000006   0xD011             BEQ.N    ??QueueInsertAfter_0
+     90          	if	(I->Queue)										return;	// can't put item if already enqueued
+   \   00000008   0x6893             LDR      R3,[R2, #+8]
+   \   0000000A   0x2B00             CMP      R3,#+0
+   \   0000000C   0xD10E             BNE.N    ??QueueInsertAfter_0
+     91          
+     92          	if		(PrevI == QueueSelectHead)	PrevI	=	Q->Next;
+   \   0000000E   0x2900             CMP      R1,#+0
+   \   00000010   0xD101             BNE.N    ??QueueInsertAfter_1
+   \   00000012   0x6801             LDR      R1,[R0, #+0]
+   \   00000014   0xE003             B.N      ??QueueInsertAfter_2
+     93          	else if	(PrevI == QueueSelectTail)	PrevI	=	Q->Prev;
+   \                     ??QueueInsertAfter_1: (+1)
+   \   00000016   0xF111 0x0F01      CMN      R1,#+1
+   \   0000001A   0xD100             BNE.N    ??QueueInsertAfter_2
+   \   0000001C   0x6841             LDR      R1,[R0, #+4]
+     94          
+     95          //	link being made:					PrevItem	Item	next item
+     96          	I->Next			=	PrevI->Next;//				|------>
+   \                     ??QueueInsertAfter_2: (+1)
+   \   0000001E   0x680B             LDR      R3,[R1, #+0]
+   \   00000020   0x6013             STR      R3,[R2, #+0]
+     97          	I->Prev			=	PrevI;		//	<-----------|
+   \   00000022   0x6051             STR      R1,[R2, #+4]
+     98          	PrevI->Next		=	I;			//	|---------->
+   \   00000024   0x600A             STR      R2,[R1, #+0]
+     99          	I->Next->Prev	=	I;			//				<-------|
+   \   00000026   0x6811             LDR      R1,[R2, #+0]
+   \   00000028   0x604A             STR      R2,[R1, #+4]
+    100          	I->Queue		=	Queue;
+   \   0000002A   0x6090             STR      R0,[R2, #+8]
+    101          }	//	end of QueueInsertAfter()
+   \                     ??QueueInsertAfter_0: (+1)
+   \   0000002C   0x4770             BX       LR               ;; return
+    102          
+    103          /******************************************************************************/
+    104          //	remove Item from whatever queue, if any, it is presently in
+    105          //	returns Item regardless of whether it's null or not enqueued.
+
+   \                                 In section .text, align 2, keep-with-next
+    106          void	*	QueueRemove			(void	*	Item)
+    107          {
+    108          	QueueItemT	*	I		=	Item;
+    109          
+    110          	if	(!	I)				return	I;	//	null item
+   \                     QueueRemove: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD009             BEQ.N    ??QueueRemove_0
+    111          //	to optimize typical usage, skip next check, as function has null effect for the guarded case
+    112          //	if	(!	I->Next == I)	return	I;	//	unqueued item
+    113          
+    114          //	link being made:					prev item	Item	next item
+    115          	I->Prev->Next	=	I->Next;	//	|------------------>
+   \   00000004   0x6801             LDR      R1,[R0, #+0]
+   \   00000006   0x6842             LDR      R2,[R0, #+4]
+   \   00000008   0x6011             STR      R1,[R2, #+0]
+    116          	I->Next->Prev	=	I->Prev;	//	<-------------------|					
+   \   0000000A   0x6841             LDR      R1,[R0, #+4]
+   \   0000000C   0x6802             LDR      R2,[R0, #+0]
+   \   0000000E   0x6051             STR      R1,[R2, #+4]
+    117          	I->Next			=	I;			//				|^
+   \   00000010   0x6000             STR      R0,[R0, #+0]
+    118          	I->Prev			=	I;			//				|^
+   \   00000012   0x6040             STR      R0,[R0, #+4]
+    119          
+    120          	I->Queue	=	0;
+   \   00000014   0x2100             MOVS     R1,#+0
+   \   00000016   0x6081             STR      R1,[R0, #+8]
+    121          
+    122          	return	I;
+   \                     ??QueueRemove_0: (+1)
+   \   00000018   0x4770             BX       LR               ;; return
+    123          }	//	end of QueueRemove()
+    124          
+    125          /******************************************************************************/
+    126          //	removes from Queue the Item that is the headward neighbor of NextItem
+
+   \                                 In section .text, align 2, keep-with-next
+    127          void	*	QueueRemoveBefore	(QueueT	*	Queue,	void	*	NextItem)
+    128          {
+    129          	QueueItemT	*	NextI	=	NextItem;
+    130          
+    131          	if	(!	Queue)					return	0;							//	can't remove from a null queue
+   \                     QueueRemoveBefore: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD004             BEQ.N    ??QueueRemoveBefore_0
+    132          	if	(QueueEmpty	(Queue))		return	0;							//	can't remove from an empty queue
+   \   00000004   0x6802             LDR      R2,[R0, #+0]
+   \   00000006   0x4282             CMP      R2,R0
+   \   00000008   0xD001             BEQ.N    ??QueueRemoveBefore_0
+    133          	if	(NextI == QueueSelectHead)	return	0;							//	no such item
+   \   0000000A   0x2900             CMP      R1,#+0
+   \   0000000C   0xD101             BNE.N    ??QueueRemoveBefore_1
+   \                     ??QueueRemoveBefore_0: (+1)
+   \   0000000E   0x2000             MOVS     R0,#+0
+   \   00000010   0x4770             BX       LR
+    134          	if	(NextI == QueueSelectTail)	return	QueueRemove	(Queue->Prev);	//	remove the tail item, if any
+   \                     ??QueueRemoveBefore_1: (+1)
+   \   00000012   0xF111 0x0F01      CMN      R1,#+1
+   \   00000016   0xD101             BNE.N    ??QueueRemoveBefore_2
+   \   00000018   0x6840             LDR      R0,[R0, #+4]
+   \   0000001A   0x....             B.N      QueueRemove
+    135          	else							return	QueueRemove	(NextI->Prev);	//	remove preceding item, if any
+   \                     ??QueueRemoveBefore_2: (+1)
+   \   0000001C   0x6848             LDR      R0,[R1, #+4]
+   \   0000001E   0x....             B.N      QueueRemove
+    136          #ifdef	neverdef
+    137          	if	(NextI->Queue == Queue)		return	QueueRemove	(NextI->Prev);	//	remove preceding item, if any
+    138          									return	0;							//	NextItem is not on Queue
+    139          #endif
+    140          }	//	end of QueueRemoveBefore()
+    141          
+    142          /******************************************************************************/
+    143          //	removes from Queue the Item that is the tailward neighbor of PrevItem
+
+   \                                 In section .text, align 2, keep-with-next
+    144          void	*	QueueRemoveAfter	(QueueT	*	Queue,	void	*	PrevItem)
+    145          {
+    146          	QueueItemT	*	PrevI	=	PrevItem;
+    147          
+    148          	if	(!	Queue)					return	0;							//	can't remove from a null queue
+   \                     QueueRemoveAfter: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD101             BNE.N    ??QueueRemoveAfter_0
+   \   00000004   0x2000             MOVS     R0,#+0
+   \   00000006   0x4770             BX       LR
+    149          	if	(QueueEmpty	(Queue))		return	0;							//	can't remove from an empty queue
+   \                     ??QueueRemoveAfter_0: (+1)
+   \   00000008   0x6802             LDR      R2,[R0, #+0]
+   \   0000000A   0x4282             CMP      R2,R0
+   \   0000000C   0xD101             BNE.N    ??QueueRemoveAfter_1
+   \   0000000E   0x2000             MOVS     R0,#+0
+   \   00000010   0x4770             BX       LR
+    150          	if	(PrevI == QueueSelectHead)	return	QueueRemove	(Queue->Next);	//	remove the head item, if any
+   \                     ??QueueRemoveAfter_1: (+1)
+   \   00000012   0x2900             CMP      R1,#+0
+   \   00000014   0xD101             BNE.N    ??QueueRemoveAfter_2
+   \   00000016   0x4610             MOV      R0,R2
+   \   00000018   0x....             B.N      QueueRemove
+    151          	if	(PrevI == QueueSelectTail)	return	0;							//	no such item
+   \                     ??QueueRemoveAfter_2: (+1)
+   \   0000001A   0xF111 0x0F01      CMN      R1,#+1
+   \   0000001E   0xD101             BNE.N    ??QueueRemoveAfter_3
+   \   00000020   0x2000             MOVS     R0,#+0
+   \   00000022   0x4770             BX       LR
+    152          	else							return	QueueRemove	(PrevI->Next);	//	remove preceding item, if any
+   \                     ??QueueRemoveAfter_3: (+1)
+   \   00000024   0x6808             LDR      R0,[R1, #+0]
+   \   00000026   0x....             B.N      QueueRemove
+    153          
+    154          #ifdef	neverdef
+    155          	if	(PrevI->Queue == Queue)		return	QueueRemove	(PrevI->Next);	//	remove preceding item, if any
+    156          									return	0;							//	PrevItem is not on Queue
+    157          #endif
+    158          }	//	end of QueueRemoveAfter()
+    159          
+    160          /******************************************************************************/
+    161          /*	traverse the Items on Queue - Items are _not_ removed from Queue
+    162          	- initially:
+    163          		For QueueNext(), use PrevItem = QueueSelectHead to start at head of Queue
+    164          		For QueuePrev(), use NextItem = QueueSelectTail to start at tail of Queue
+    165          	- subsequently, use the Item pointer returned by the previos invocation
+    166          		to traverse to the next/prev Item
+    167          	-	returns 0 if Queue is empty, no more Items, etc.
+    168          */
+    169          
+    170          /******************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    171          void	*	QueuePrev			(QueueT	*	Queue,	void	*	NextItem)
+    172          {
+    173          	QueueItemT	*	Q		=	(QueueItemT *)Queue;
+    174          	QueueItemT	*	NextI	=	NextItem;
+    175          
+    176          	if	(!	Queue)					/* null value */							return	0;
+   \                     QueuePrev: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD101             BNE.N    ??QueuePrev_0
+   \   00000004   0x2000             MOVS     R0,#+0
+   \   00000006   0x4770             BX       LR
+    177          	if	(NextI == QueueSelectHead)	/* QueueSelectHead is not a valid value */	return	0;
+   \                     ??QueuePrev_0: (+1)
+   \   00000008   0x2900             CMP      R1,#+0
+   \   0000000A   0xD101             BNE.N    ??QueuePrev_1
+   \   0000000C   0x2000             MOVS     R0,#+0
+   \   0000000E   0x4770             BX       LR
+    178          	if	(NextI == QueueSelectTail)	//	forcing return of tail
+   \                     ??QueuePrev_1: (+1)
+   \   00000010   0xF111 0x0F01      CMN      R1,#+1
+   \   00000014   0xD106             BNE.N    ??QueuePrev_2
+    179          	{
+    180          		if	(QueueEmpty	(Queue))												return	0;
+   \   00000016   0x6801             LDR      R1,[R0, #+0]
+   \   00000018   0x4281             CMP      R1,R0
+   \   0000001A   0xD101             BNE.N    ??QueuePrev_3
+   \   0000001C   0x2000             MOVS     R0,#+0
+   \   0000001E   0x4770             BX       LR
+    181          		else						/* return tail */							return	Queue->Prev;
+   \                     ??QueuePrev_3: (+1)
+   \   00000020   0x6840             LDR      R0,[R0, #+4]
+   \   00000022   0x4770             BX       LR
+    182          	}
+    183          		//	NextItem is an actual item
+    184          	if	(NextI->Prev == Q)			/* already at head of queue */				return	0;
+   \                     ??QueuePrev_2: (+1)
+   \   00000024   0x6849             LDR      R1,[R1, #+4]
+   \   00000026   0x4281             CMP      R1,R0
+   \   00000028   0xD101             BNE.N    ??QueuePrev_4
+   \   0000002A   0x2000             MOVS     R0,#+0
+   \   0000002C   0x4770             BX       LR
+    185          	else							/* return preceding Item */					return	NextI->Prev;
+   \                     ??QueuePrev_4: (+1)
+   \   0000002E   0x4608             MOV      R0,R1
+   \   00000030   0x4770             BX       LR               ;; return
+    186          }	//	end of QueuePrev()
+    187          
+    188          /******************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    189          void	*	QueueNext			(QueueT	*	Queue,	void	*	PrevItem)
+    190          {
+    191          	QueueItemT	*	Q		=	(QueueItemT *)Queue;
+    192          	QueueItemT	*	PrevI	=	PrevItem;
+    193          
+    194          	if	(!	Queue)					/* null value */							return	0;
+   \                     QueueNext: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD101             BNE.N    ??QueueNext_0
+   \   00000004   0x2000             MOVS     R0,#+0
+   \   00000006   0x4770             BX       LR
+    195          	if	(PrevI == QueueSelectHead)	// forcing return of head
+   \                     ??QueueNext_0: (+1)
+   \   00000008   0x2900             CMP      R1,#+0
+   \   0000000A   0xD106             BNE.N    ??QueueNext_1
+    196          	{
+    197          		if	(QueueEmpty	(Queue))												return	0;
+   \   0000000C   0x6801             LDR      R1,[R0, #+0]
+   \   0000000E   0x4281             CMP      R1,R0
+   \   00000010   0xD101             BNE.N    ??QueueNext_2
+   \   00000012   0x2000             MOVS     R0,#+0
+   \   00000014   0x4770             BX       LR
+    198          		else						/* return head */							return	Queue->Next;
+   \                     ??QueueNext_2: (+1)
+   \   00000016   0x4608             MOV      R0,R1
+   \   00000018   0x4770             BX       LR
+    199          	}
+    200          	if	(PrevI == QueueSelectTail)	/* QueueSelectTail is not a valid value */	return	0;
+   \                     ??QueueNext_1: (+1)
+   \   0000001A   0xF111 0x0F01      CMN      R1,#+1
+   \   0000001E   0xD101             BNE.N    ??QueueNext_3
+   \   00000020   0x2000             MOVS     R0,#+0
+   \   00000022   0x4770             BX       LR
+    201          		//	PrevItem is an actual item
+    202          	if	(PrevI->Next == Q)			/* already at tail of queue */				return	0;
+   \                     ??QueueNext_3: (+1)
+   \   00000024   0x6809             LDR      R1,[R1, #+0]
+   \   00000026   0x4281             CMP      R1,R0
+   \   00000028   0xD101             BNE.N    ??QueueNext_4
+   \   0000002A   0x2000             MOVS     R0,#+0
+   \   0000002C   0x4770             BX       LR
+    203          	else							/* return next Item */						return	PrevI->Next;
+   \                     ??QueueNext_4: (+1)
+   \   0000002E   0x4608             MOV      R0,R1
+   \   00000030   0x4770             BX       LR               ;; return
+    204          }	//	end of QueueNext()
+    205          
+    206          /******************************************************************************/
+    207          //	means of querying the status of an item
+    208          
+
+   \                                 In section .text, align 2, keep-with-next
+    209          inv_bool_t	QueueAtHead			(void	*	Item)
+    210          {
+    211          	QueueItemT	*	I	=	Item;
+    212          
+    213          	if	(!	I)							return	false;
+   \                     QueueAtHead: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD101             BNE.N    ??QueueAtHead_0
+   \   00000004   0x2000             MOVS     R0,#+0
+   \   00000006   0x4770             BX       LR
+    214          	if	(!	I->Queue)					return	false;
+   \                     ??QueueAtHead_0: (+1)
+   \   00000008   0x6881             LDR      R1,[R0, #+8]
+   \   0000000A   0x2900             CMP      R1,#+0
+   \   0000000C   0xD101             BNE.N    ??QueueAtHead_1
+   \   0000000E   0x2000             MOVS     R0,#+0
+   \   00000010   0x4770             BX       LR
+    215          	if	(I->Prev == (void *)I->Queue)	return	true;
+   \                     ??QueueAtHead_1: (+1)
+   \   00000012   0x6840             LDR      R0,[R0, #+4]
+   \   00000014   0x4288             CMP      R0,R1
+   \   00000016   0xD101             BNE.N    ??QueueAtHead_2
+   \   00000018   0x2001             MOVS     R0,#+1
+   \   0000001A   0x4770             BX       LR
+    216          	else								return	false;
+   \                     ??QueueAtHead_2: (+1)
+   \   0000001C   0x2000             MOVS     R0,#+0
+   \   0000001E   0x4770             BX       LR               ;; return
+    217          }	//	end of QueueAtHead()
+    218          
+
+   \                                 In section .text, align 2, keep-with-next
+    219          inv_bool_t	QueueAtMiddle		(void	*	Item)
+    220          {
+    221          	QueueItemT	*	I	=	Item;
+    222          
+    223          	if	(!	I)							return	false;
+   \                     QueueAtMiddle: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD101             BNE.N    ??QueueAtMiddle_0
+   \   00000004   0x2000             MOVS     R0,#+0
+   \   00000006   0x4770             BX       LR
+    224          	if	(!	I->Queue)					return	false;
+   \                     ??QueueAtMiddle_0: (+1)
+   \   00000008   0x6881             LDR      R1,[R0, #+8]
+   \   0000000A   0x2900             CMP      R1,#+0
+   \   0000000C   0xD101             BNE.N    ??QueueAtMiddle_1
+   \   0000000E   0x2000             MOVS     R0,#+0
+   \   00000010   0x4770             BX       LR
+    225          	if	(I->Next == (void *)I->Queue)	return	false;
+   \                     ??QueueAtMiddle_1: (+1)
+   \   00000012   0x6802             LDR      R2,[R0, #+0]
+   \   00000014   0x428A             CMP      R2,R1
+   \   00000016   0xD101             BNE.N    ??QueueAtMiddle_2
+   \   00000018   0x2000             MOVS     R0,#+0
+   \   0000001A   0x4770             BX       LR
+    226          	if	(I->Prev == (void *)I->Queue)	return	false;
+   \                     ??QueueAtMiddle_2: (+1)
+   \   0000001C   0x6840             LDR      R0,[R0, #+4]
+   \   0000001E   0x4288             CMP      R0,R1
+   \   00000020   0xD101             BNE.N    ??QueueAtMiddle_3
+   \   00000022   0x2000             MOVS     R0,#+0
+   \   00000024   0x4770             BX       LR
+    227          	else								return	true;
+   \                     ??QueueAtMiddle_3: (+1)
+   \   00000026   0x2001             MOVS     R0,#+1
+   \   00000028   0x4770             BX       LR               ;; return
+    228          }	//	end of QueueAtHead()
+    229          
+
+   \                                 In section .text, align 2, keep-with-next
+    230          inv_bool_t	QueueAtTail			(void	*	Item)
+    231          {
+    232          	QueueItemT	*	I	=	Item;
+    233          
+    234          	if	(!	I)							return	false;
+   \                     QueueAtTail: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD101             BNE.N    ??QueueAtTail_0
+   \   00000004   0x2000             MOVS     R0,#+0
+   \   00000006   0x4770             BX       LR
+    235          	if	(!	I->Queue)					return	false;
+   \                     ??QueueAtTail_0: (+1)
+   \   00000008   0x6881             LDR      R1,[R0, #+8]
+   \   0000000A   0x2900             CMP      R1,#+0
+   \   0000000C   0xD101             BNE.N    ??QueueAtTail_1
+   \   0000000E   0x2000             MOVS     R0,#+0
+   \   00000010   0x4770             BX       LR
+    236          	if	(I->Next == (void *)I->Queue)	return	true;
+   \                     ??QueueAtTail_1: (+1)
+   \   00000012   0x6800             LDR      R0,[R0, #+0]
+   \   00000014   0x4288             CMP      R0,R1
+   \   00000016   0xD101             BNE.N    ??QueueAtTail_2
+   \   00000018   0x2001             MOVS     R0,#+1
+   \   0000001A   0x4770             BX       LR
+    237          	else								return	false;
+   \                     ??QueueAtTail_2: (+1)
+   \   0000001C   0x2000             MOVS     R0,#+0
+   \   0000001E   0x4770             BX       LR               ;; return
+    238          }	//	end of QueueAtHead()
+    239          
+
+   \                                 In section .text, align 2, keep-with-next
+    240          QueueT	*	QueueOf				(void	*	Item)	//	returns pointer to owning Q, or null if dequeued
+    241          {
+    242          	QueueItemT	*	I	=	Item;
+    243          
+    244          	if	(!	I)							return	false;
+   \                     QueueOf: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD101             BNE.N    ??QueueOf_0
+   \   00000004   0x2000             MOVS     R0,#+0
+   \   00000006   0x4770             BX       LR
+    245          	if	(!	I->Queue)					return	false;
+   \                     ??QueueOf_0: (+1)
+   \   00000008   0x6880             LDR      R0,[R0, #+8]
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD100             BNE.N    ??QueueOf_1
+   \   0000000E   0x2000             MOVS     R0,#+0
+    246          	else								return	I->Queue;
+   \                     ??QueueOf_1: (+1)
+   \   00000010   0x4770             BX       LR               ;; return
+    247          }	//	end of QueueAtHead()
+    248          
+    249          /******************************************************************************/
+    250          /* administrative routines */
+    251          /******************************************************************************/
+    252          
+    253          /******************************************************************************/
+    254          #ifdef	neverdef
+    255          void	QueueModuleReset	(void)
+    256          {}	/* end of QueueModuleReset */
+    257          #endif
+    258          
+    259          /******************************************************************************/
+    260          #ifdef	neverdef
+    261          void	QueueModuleInit		(void)
+    262          {}	/* end of QueueModuleInit */
+    263          #endif
+    264          
+    265          /******************************************************************************/
+    266          /*
+    267           * end of Queue.c
+    268           */
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   QueueAtHead
+       0   QueueAtMiddle
+       0   QueueAtTail
+       0   QueueInit
+       0   QueueInsertAfter
+       0   QueueInsertBefore
+       0   QueueItemInit
+       0   QueueNext
+       0   QueueOf
+       0   QueuePrev
+       0   QueueRemove
+       0   QueueRemoveAfter
+         0   -> QueueRemove
+       0   QueueRemoveBefore
+         0   -> QueueRemove
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      32  QueueAtHead
+      42  QueueAtMiddle
+      32  QueueAtTail
+       6  QueueInit
+      46  QueueInsertAfter
+      46  QueueInsertBefore
+      10  QueueItemInit
+      50  QueueNext
+      18  QueueOf
+      50  QueuePrev
+      26  QueueRemove
+      40  QueueRemoveAfter
+      32  QueueRemoveBefore
+
+ 
+ 430 bytes in section .text
+ 
+ 430 bytes of CODE memory
+
+Errors: none
+Warnings: none

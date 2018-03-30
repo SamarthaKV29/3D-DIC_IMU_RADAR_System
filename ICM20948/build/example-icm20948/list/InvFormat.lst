@@ -1,0 +1,182 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:30
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvFormat.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvFormat.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\InvFormat.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvFormat.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvFormat.c
+      1          /*
+      2              Copyright (c) 2014-2015 InvenSense Inc. Portions Copyright (c) 2014-2015 Movea. All rights reserved.
+      3          
+      4              This software, related documentation and any modifications thereto (collectively "Software") is subject
+      5              to InvenSense and its licensors' intellectual property rights under U.S. and international copyright and
+      6              other intellectual property rights laws.
+      7          
+      8              InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+      9              and any use, reproduction, disclosure or distribution of the Software without an express license
+     10              agreement from InvenSense is strictly prohibited.
+     11          */
+     12          
+     13          #include "InvFormat.h"
+     14          
+     15          #include "InvString.h"
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void *InvString_memset(void *, int, size_t)
+   \                     InvString_memset: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x4610             MOV      R0,R2
+   \   00000006   0x460A             MOV      R2,R1
+   \   00000008   0x4601             MOV      R1,R0
+   \   0000000A   0x4620             MOV      R0,R4
+   \   0000000C   0x.... 0x....      BL       __aeabi_memset
+   \   00000010   0x4620             MOV      R0,R4
+   \   00000012   0xBD10             POP      {R4,PC}          ;; return
+     16          
+
+   \                                 In section .text, align 2, keep-with-next
+     17          static char *InvFormat_uint2hex(char *out, uint32_t a, size_t size)
+     18          {
+   \                     InvFormat_uint2hex: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   \   00000006   0x4616             MOV      R6,R2
+     19          	static const char hexTab[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+     20          
+     21          	size_t i = size;
+     22          
+     23          	InvString_memset(out, '0', size);
+   \   00000008   0x2130             MOVS     R1,#+48
+   \   0000000A   0x.... 0x....      BL       InvString_memset
+     24          	out[size] = '\0';
+   \   0000000E   0x2000             MOVS     R0,#+0
+   \   00000010   0x55A0             STRB     R0,[R4, R6]
+   \   00000012   0x.... 0x....      ADR.W    R1,`InvFormat_uint2hex::hexTab`
+     25          
+     26          	do
+     27          	{
+     28          		uint32_t remain;
+     29          		remain = a % 16;
+   \                     ??InvFormat_uint2hex_0: (+1)
+   \   00000016   0xF005 0x000F      AND      R0,R5,#0xF
+     30          		a >>= 4;
+   \   0000001A   0x092D             LSRS     R5,R5,#+4
+     31          		out[--i] = hexTab[remain];
+   \   0000001C   0x1E76             SUBS     R6,R6,#+1
+   \   0000001E   0x5C08             LDRB     R0,[R1, R0]
+   \   00000020   0x55A0             STRB     R0,[R4, R6]
+     32          	} while (a != 0 && i != 0);
+   \   00000022   0x2D00             CMP      R5,#+0
+   \   00000024   0xD001             BEQ.N    ??InvFormat_uint2hex_1
+   \   00000026   0x2E00             CMP      R6,#+0
+   \   00000028   0xD1F5             BNE.N    ??InvFormat_uint2hex_0
+     33          
+     34          	return out;
+   \                     ??InvFormat_uint2hex_1: (+1)
+   \   0000002A   0x4620             MOV      R0,R4
+   \   0000002C   0xBD70             POP      {R4-R6,PC}       ;; return
+     35          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     `InvFormat_uint2hex::hexTab`:
+   \   00000000   0x30 0x31          DC8 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70
+   \              0x32 0x33    
+   \              0x34 0x35    
+   \              0x36 0x37    
+   \              0x38 0x39    
+   \              0x41 0x42    
+   \              0x43 0x44    
+   \              0x45 0x46    
+     36          
+
+   \                                 In section .text, align 2, keep-with-next
+     37          char *InvFormat_uint162hex(char out[5], uint16_t a)
+     38          {
+     39          	return InvFormat_uint2hex(out, a, 2 * sizeof(a));
+   \                     InvFormat_uint162hex: (+1)
+   \   00000000   0x2204             MOVS     R2,#+4
+   \   00000002   0x....             B.N      InvFormat_uint2hex
+     40          }
+     41          
+
+   \                                 In section .text, align 2, keep-with-next
+     42          char *InvFormat_uint322hex(char out[9], uint32_t a)
+     43          {
+     44          	return InvFormat_uint2hex(out, a, 2 * sizeof(a));
+   \                     InvFormat_uint322hex: (+1)
+   \   00000000   0x2208             MOVS     R2,#+8
+   \   00000002   0x....             B.N      InvFormat_uint2hex
+     45          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   InvFormat_uint162hex
+         0   -> InvFormat_uint2hex
+      16   InvFormat_uint2hex
+        16   -> InvString_memset
+       0   InvFormat_uint322hex
+         0   -> InvFormat_uint2hex
+       8   InvString_memset
+         8   -> __aeabi_memset
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  InvFormat_uint162hex
+      46  InvFormat_uint2hex
+       4  InvFormat_uint322hex
+      20  InvString_memset
+      16  hexTab
+
+ 
+ 90 bytes in section .text
+ 
+ 90 bytes of CODE memory
+
+Errors: none
+Warnings: none

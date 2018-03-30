@@ -1,0 +1,187 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:29
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\idd_io_hal.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\idd_io_hal.c
+#        -D IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D
+#        NUCLEO -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000
+#        -D STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\idd_io_hal.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\idd_io_hal.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\idd_io_hal.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2016-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23           
+     24          #include "idd_io_hal.h"
+     25          
+     26          // board drivers
+     27          #include "i2c_master.h"
+     28          #include "i2c_slave.h"
+     29          #include "spi_master.h"
+     30          #include "delay.h"
+     31          
+     32          #include <stdint.h>
+     33          #include <stdio.h>
+     34          #include <assert.h>
+     35          #include <string.h>
+     36          
+     37          /* Host Serif object definition for SPI ***************************************/
+     38          
+
+   \                                 In section .text, align 2, keep-with-next
+     39          static int idd_io_hal_init_spi(void)
+     40          {
+   \                     idd_io_hal_init_spi: (+1)
+   \   00000000   0xB580             PUSH     {R7,LR}
+     41          	spi_master_init(SPI_NUM1, SPI_1562KHZ);
+   \   00000002   0x2104             MOVS     R1,#+4
+   \   00000004   0x2000             MOVS     R0,#+0
+   \   00000006   0x.... 0x....      BL       spi_master_init
+     42          	return 0;
+   \   0000000A   0x2000             MOVS     R0,#+0
+   \   0000000C   0xBD02             POP      {R1,PC}          ;; return
+     43          }
+     44          
+
+   \                                 In section .text, align 2, keep-with-next
+     45          static int idd_io_hal_read_reg_spi(uint8_t reg, uint8_t * rbuffer, uint32_t rlen)
+     46          {
+     47          	return spi_master_read_register(SPI_NUM1, reg, rlen, rbuffer);
+   \                     idd_io_hal_read_reg_spi: (+1)
+   \   00000000   0x460B             MOV      R3,R1
+   \   00000002   0xB292             UXTH     R2,R2
+   \   00000004   0x4601             MOV      R1,R0
+   \   00000006   0x2000             MOVS     R0,#+0
+   \   00000008   0x.... 0x....      B.W      spi_master_read_register
+     48          }
+     49          
+
+   \                                 In section .text, align 2, keep-with-next
+     50          static int idd_io_hal_write_reg_spi(uint8_t reg, const uint8_t * wbuffer, uint32_t wlen)
+     51          {
+     52          	return spi_master_write_register(SPI_NUM1, reg, wlen, wbuffer);
+   \                     idd_io_hal_write_reg_spi: (+1)
+   \   00000000   0x460B             MOV      R3,R1
+   \   00000002   0xB292             UXTH     R2,R2
+   \   00000004   0x4601             MOV      R1,R0
+   \   00000006   0x2000             MOVS     R0,#+0
+   \   00000008   0x.... 0x....      B.W      spi_master_write_register
+     53          }
+     54          
+
+   \                                 In section .text, align 4, keep-with-next
+     55          static const inv_host_serif_t serif_instance_spi = {
+   \                     serif_instance_spi:
+   \   00000000   0x........         DC32 idd_io_hal_init_spi, 0H, idd_io_hal_read_reg_spi
+   \              0x00000000   
+   \              0x........   
+   \   0000000C   0x........         DC32 idd_io_hal_write_reg_spi, 0H, 32768, 32768, 2
+   \              0x00000000   
+   \              0x00008000   
+   \              0x00008000   
+   \              0x00000002   
+     56          	idd_io_hal_init_spi,
+     57          	0,
+     58          	idd_io_hal_read_reg_spi,
+     59          	idd_io_hal_write_reg_spi,
+     60          	0,
+     61          	1024*32, /* max transaction size */
+     62          	1024*32, /* max transaction size */
+     63          	INV_HOST_SERIF_TYPE_SPI,
+     64          };
+     65          
+
+   \                                 In section .text, align 2, keep-with-next
+     66          const inv_host_serif_t * idd_io_hal_get_serif_instance_spi(void)
+     67          {
+     68          	return &serif_instance_spi;
+   \                     idd_io_hal_get_serif_instance_spi: (+1)
+   \   00000000   0x.... 0x....      ADR.W    R0,serif_instance_spi
+   \   00000004   0x4770             BX       LR               ;; return
+     69          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   idd_io_hal_get_serif_instance_spi
+       8   idd_io_hal_init_spi
+         8   -> spi_master_init
+       0   idd_io_hal_read_reg_spi
+         0   -> spi_master_read_register
+       0   idd_io_hal_write_reg_spi
+         0   -> spi_master_write_register
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       6  idd_io_hal_get_serif_instance_spi
+      14  idd_io_hal_init_spi
+      12  idd_io_hal_read_reg_spi
+      12  idd_io_hal_write_reg_spi
+      32  serif_instance_spi
+
+ 
+ 76 bytes in section .text
+ 
+ 76 bytes of CODE memory
+
+Errors: none
+Warnings: none

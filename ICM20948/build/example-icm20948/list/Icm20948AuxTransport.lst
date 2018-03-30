@@ -1,0 +1,538 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:28
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948AuxTransport.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948AuxTransport.c
+#        -D IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D
+#        NUCLEO -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000
+#        -D STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\Icm20948AuxTransport.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948AuxTransport.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948AuxTransport.c
+      1          /*
+      2          * ________________________________________________________________________________________________________
+      3          * Copyright © 2014-2015 InvenSense Inc. Portions Copyright © 2014-2015 Movea. All rights reserved.
+      4          * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      5          * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright and
+      6          * other intellectual property rights laws.
+      7          * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+      8          * and any use, reproduction, disclosure or distribution of the Software without an express license
+      9          * agreement from InvenSense is strictly prohibited.
+     10          * ________________________________________________________________________________________________________
+     11          */
+     12          
+     13          #include "Icm20948.h"
+     14          #include "Icm20948Defs.h"
+     15          #include "Icm20948DataBaseDriver.h"
+     16          
+     17          #include "Icm20948AuxTransport.h"
+     18          
+
+   \                                 In section .text, align 2, keep-with-next
+     19          void inv_icm20948_init_secondary(struct inv_icm20948 * s)
+     20          {
+   \                     inv_icm20948_init_secondary: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+     21          	s->secondary_state.slv_reg[0].addr = REG_I2C_SLV0_ADDR;
+   \   00000004   0xF104 0x002C      ADD      R0,R4,#+44
+   \   00000008   0xF240 0x1183      MOVW     R1,#+387
+   \   0000000C   0x8001             STRH     R1,[R0, #+0]
+     22          	s->secondary_state.slv_reg[0].reg  = REG_I2C_SLV0_REG;
+   \   0000000E   0xF44F 0x71C2      MOV      R1,#+388
+   \   00000012   0x8041             STRH     R1,[R0, #+2]
+     23          	s->secondary_state.slv_reg[0].ctrl = REG_I2C_SLV0_CTRL;
+   \   00000014   0xF240 0x1185      MOVW     R1,#+389
+   \   00000018   0x8081             STRH     R1,[R0, #+4]
+     24          	s->secondary_state.slv_reg[0].d0   = REG_I2C_SLV0_DO;
+   \   0000001A   0xF44F 0x71C3      MOV      R1,#+390
+   \   0000001E   0x80C1             STRH     R1,[R0, #+6]
+     25              
+     26              s->secondary_state.slv_reg[1].addr = REG_I2C_SLV1_ADDR;
+   \   00000020   0xF240 0x1187      MOVW     R1,#+391
+   \   00000024   0x8101             STRH     R1,[R0, #+8]
+     27          	s->secondary_state.slv_reg[1].reg  = REG_I2C_SLV1_REG;
+   \   00000026   0xF44F 0x71C4      MOV      R1,#+392
+   \   0000002A   0x8141             STRH     R1,[R0, #+10]
+     28          	s->secondary_state.slv_reg[1].ctrl = REG_I2C_SLV1_CTRL;
+   \   0000002C   0xF240 0x1189      MOVW     R1,#+393
+   \   00000030   0x8181             STRH     R1,[R0, #+12]
+     29          	s->secondary_state.slv_reg[1].d0   = REG_I2C_SLV1_DO;
+   \   00000032   0xF44F 0x71C5      MOV      R1,#+394
+   \   00000036   0x81C1             STRH     R1,[R0, #+14]
+     30              
+     31              s->secondary_state.slv_reg[2].addr = REG_I2C_SLV2_ADDR;
+   \   00000038   0xF240 0x118B      MOVW     R1,#+395
+   \   0000003C   0x8201             STRH     R1,[R0, #+16]
+     32          	s->secondary_state.slv_reg[2].reg  = REG_I2C_SLV2_REG;
+   \   0000003E   0xF44F 0x71C6      MOV      R1,#+396
+   \   00000042   0x8241             STRH     R1,[R0, #+18]
+     33          	s->secondary_state.slv_reg[2].ctrl = REG_I2C_SLV2_CTRL;
+   \   00000044   0xF240 0x118D      MOVW     R1,#+397
+   \   00000048   0x8281             STRH     R1,[R0, #+20]
+     34          	s->secondary_state.slv_reg[2].d0   = REG_I2C_SLV2_DO;
+   \   0000004A   0xF44F 0x71C7      MOV      R1,#+398
+   \   0000004E   0x82C1             STRH     R1,[R0, #+22]
+     35              
+     36          	s->secondary_state.slv_reg[3].addr = REG_I2C_SLV3_ADDR;
+   \   00000050   0xF240 0x118F      MOVW     R1,#+399
+   \   00000054   0x8301             STRH     R1,[R0, #+24]
+     37          	s->secondary_state.slv_reg[3].reg  = REG_I2C_SLV3_REG;
+   \   00000056   0xF44F 0x71C8      MOV      R1,#+400
+   \   0000005A   0x8341             STRH     R1,[R0, #+26]
+     38          	s->secondary_state.slv_reg[3].ctrl = REG_I2C_SLV3_CTRL;
+   \   0000005C   0xF240 0x1191      MOVW     R1,#+401
+   \   00000060   0x8381             STRH     R1,[R0, #+28]
+     39          	s->secondary_state.slv_reg[3].d0   = REG_I2C_SLV3_DO;
+   \   00000062   0xF44F 0x71C9      MOV      R1,#+402
+   \   00000066   0x83C1             STRH     R1,[R0, #+30]
+     40          	
+     41          	/* Make sure that by default all channels are disabled 
+     42          	To not inherit from a previous configuration from a previous run*/
+     43          	inv_icm20948_secondary_stop_channel(s, 0);
+   \   00000068   0x2100             MOVS     R1,#+0
+   \   0000006A   0x4620             MOV      R0,R4
+   \   0000006C   0x.... 0x....      BL       inv_icm20948_secondary_stop_channel
+     44          	inv_icm20948_secondary_stop_channel(s, 1);
+   \   00000070   0x2101             MOVS     R1,#+1
+   \   00000072   0x4620             MOV      R0,R4
+   \   00000074   0x.... 0x....      BL       inv_icm20948_secondary_stop_channel
+     45          	inv_icm20948_secondary_stop_channel(s, 2);
+   \   00000078   0x2102             MOVS     R1,#+2
+   \   0000007A   0x4620             MOV      R0,R4
+   \   0000007C   0x.... 0x....      BL       inv_icm20948_secondary_stop_channel
+     46          	inv_icm20948_secondary_stop_channel(s, 3);
+   \   00000080   0x2103             MOVS     R1,#+3
+   \   00000082   0x4620             MOV      R0,R4
+   \   00000084   0xE8BD 0x4010      POP      {R4,LR}
+   \   00000088   0x....             B.N      inv_icm20948_secondary_stop_channel
+     47          }
+     48          
+     49          /* the following functions are used for configuring the secondary devices */
+     50          
+     51          /*
+     52          * inv_configure_secondary_read(): set secondary registers for reading.
+     53          The chip must be set as bank 3 before calling.
+     54          * This is derived from inv_icm20948_read_secondary in linux...
+     55          * for now, uses a very simple data struct for the registers
+     56          * 
+     57          * index gives the mapping to the particular SLVx registers
+     58          * addr is the physical address of the device to be accessed
+     59          * reg is the device register we wish to access
+     60          * len is the number of bytes to be read
+     61          * 
+     62          */
+
+   \                                 In section .text, align 2, keep-with-next
+     63          int inv_icm20948_read_secondary(struct inv_icm20948 * s, int index, unsigned char addr, unsigned char reg, char len)
+     64          {
+   \                     inv_icm20948_read_secondary: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x461E             MOV      R6,R3
+     65          	int result = 0;
+     66              unsigned char data;
+     67          
+     68              data = INV_MPU_BIT_I2C_READ | addr;
+   \   00000006   0xF042 0x0080      ORR      R0,R2,#0x80
+   \   0000000A   0xF88D 0x0000      STRB     R0,[SP, #+0]
+     69          	result |= inv_icm20948_write_mems_reg(s, s->secondary_state.slv_reg[index].addr, 1, &data);
+   \   0000000E   0xEB04 0x05C1      ADD      R5,R4,R1, LSL #+3
+   \   00000012   0x466B             MOV      R3,SP
+   \   00000014   0x2201             MOVS     R2,#+1
+   \   00000016   0x8DA9             LDRH     R1,[R5, #+44]
+   \   00000018   0x4620             MOV      R0,R4
+   \   0000001A   0x.... 0x....      BL       inv_icm20948_write_mems_reg
+   \   0000001E   0x4607             MOV      R7,R0
+     70          
+     71              data = reg;
+   \   00000020   0xF88D 0x6000      STRB     R6,[SP, #+0]
+     72          	result |= inv_icm20948_write_mems_reg(s, s->secondary_state.slv_reg[index].reg, 1, &data);
+   \   00000024   0x466B             MOV      R3,SP
+   \   00000026   0x2201             MOVS     R2,#+1
+   \   00000028   0x8DE9             LDRH     R1,[R5, #+46]
+   \   0000002A   0x4620             MOV      R0,R4
+   \   0000002C   0x.... 0x....      BL       inv_icm20948_write_mems_reg
+   \   00000030   0xEA40 0x0607      ORR      R6,R0,R7
+     73              
+     74              data = INV_MPU_BIT_SLV_EN | len;
+   \   00000034   0xF99D 0x0018      LDRSB    R0,[SP, #+24]
+   \   00000038   0xF040 0x0080      ORR      R0,R0,#0x80
+   \   0000003C   0xF88D 0x0000      STRB     R0,[SP, #+0]
+     75          	result |= inv_icm20948_write_mems_reg(s, s->secondary_state.slv_reg[index].ctrl, 1, &data);
+   \   00000040   0x466B             MOV      R3,SP
+   \   00000042   0x2201             MOVS     R2,#+1
+   \   00000044   0x8E29             LDRH     R1,[R5, #+48]
+   \   00000046   0x4620             MOV      R0,R4
+   \   00000048   0x.... 0x....      BL       inv_icm20948_write_mems_reg
+   \   0000004C   0x4330             ORRS     R0,R0,R6
+     76              
+     77          	return result;
+   \   0000004E   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+     78          }
+     79          
+
+   \                                 In section .text, align 2, keep-with-next
+     80          int inv_icm20948_execute_read_secondary(struct inv_icm20948 * s, int index, unsigned char addr, int reg, int len, uint8_t *d)
+     81          {
+   \                     inv_icm20948_execute_read_secondary: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   \   00000006   0x9E06             LDR      R6,[SP, #+24]
+     82          	int result = 0;
+     83          
+     84          	result |= inv_icm20948_read_secondary(s, index, addr, reg, len);
+   \   00000008   0x4630             MOV      R0,R6
+   \   0000000A   0xB240             SXTB     R0,R0
+   \   0000000C   0x9000             STR      R0,[SP, #+0]
+   \   0000000E   0xB2DB             UXTB     R3,R3
+   \   00000010   0x4620             MOV      R0,R4
+   \   00000012   0x.... 0x....      BL       inv_icm20948_read_secondary
+   \   00000016   0x4607             MOV      R7,R0
+     85          	
+     86          	result |= inv_icm20948_secondary_enable_i2c(s);
+   \   00000018   0x4620             MOV      R0,R4
+   \   0000001A   0x.... 0x....      BL       inv_icm20948_secondary_enable_i2c
+   \   0000001E   0x4307             ORRS     R7,R0,R7
+     87              
+     88          	inv_icm20948_sleep_us(SECONDARY_INIT_WAIT*1000);
+   \   00000020   0xF64E 0x2060      MOVW     R0,#+60000
+   \   00000024   0x.... 0x....      BL       inv_icm20948_sleep_us
+     89              
+     90          	result |= inv_icm20948_secondary_disable_i2c(s);
+   \   00000028   0x4620             MOV      R0,R4
+   \   0000002A   0x.... 0x....      BL       inv_icm20948_secondary_disable_i2c
+   \   0000002E   0x4307             ORRS     R7,R0,R7
+     91          
+     92              result |= inv_icm20948_read_mems_reg(s, REG_EXT_SLV_SENS_DATA_00, len, d); 
+   \   00000030   0x9B07             LDR      R3,[SP, #+28]
+   \   00000032   0x4632             MOV      R2,R6
+   \   00000034   0x213B             MOVS     R1,#+59
+   \   00000036   0x4620             MOV      R0,R4
+   \   00000038   0x.... 0x....      BL       inv_icm20948_read_mems_reg
+   \   0000003C   0xEA40 0x0607      ORR      R6,R0,R7
+     93          
+     94          	result |= inv_icm20948_secondary_stop_channel(s, index);
+   \   00000040   0x4629             MOV      R1,R5
+   \   00000042   0x4620             MOV      R0,R4
+   \   00000044   0x.... 0x....      BL       inv_icm20948_secondary_stop_channel
+   \   00000048   0x4330             ORRS     R0,R0,R6
+     95          
+     96          	return result;
+   \   0000004A   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+     97          }
+     98          
+     99          /*
+    100          * inv_icm20948_write_secondary(): set secondary registers for writing?.
+    101          The chip must be set as bank 3 before calling.
+    102          * This is derived from inv_icm20948_write_secondary in linux...
+    103          * for now, uses a very simple data struct for the registers
+    104          * 
+    105          * index gives the mapping to the particular SLVx registers
+    106          * addr is the physical address of the device to be accessed
+    107          * reg is the device register we wish to access
+    108          * len is the number of bytes to be read
+    109          * 
+    110          */
+
+   \                                 In section .text, align 2, keep-with-next
+    111          int inv_icm20948_write_secondary(struct inv_icm20948 * s, int index, unsigned char addr, unsigned char reg, char v)
+    112          {
+   \                     inv_icm20948_write_secondary: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x461E             MOV      R6,R3
+    113          	int result = 0;
+    114              unsigned char data;
+    115              
+    116              data = (unsigned char)addr;
+   \   00000006   0xF88D 0x2000      STRB     R2,[SP, #+0]
+    117          	result |= inv_icm20948_write_mems_reg(s, s->secondary_state.slv_reg[index].addr, 1, &data);
+   \   0000000A   0xEB04 0x05C1      ADD      R5,R4,R1, LSL #+3
+   \   0000000E   0x466B             MOV      R3,SP
+   \   00000010   0x2201             MOVS     R2,#+1
+   \   00000012   0x8DA9             LDRH     R1,[R5, #+44]
+   \   00000014   0x.... 0x....      BL       inv_icm20948_write_mems_reg
+   \   00000018   0x4607             MOV      R7,R0
+    118          
+    119              data = reg;
+   \   0000001A   0xF88D 0x6000      STRB     R6,[SP, #+0]
+    120          	result |= inv_icm20948_write_mems_reg(s, s->secondary_state.slv_reg[index].reg, 1, &data);
+   \   0000001E   0x466B             MOV      R3,SP
+   \   00000020   0x2201             MOVS     R2,#+1
+   \   00000022   0x8DE9             LDRH     R1,[R5, #+46]
+   \   00000024   0x4620             MOV      R0,R4
+   \   00000026   0x.... 0x....      BL       inv_icm20948_write_mems_reg
+   \   0000002A   0xEA40 0x0607      ORR      R6,R0,R7
+    121          
+    122              data = v;
+   \   0000002E   0xF99D 0x0018      LDRSB    R0,[SP, #+24]
+   \   00000032   0xB2C0             UXTB     R0,R0
+   \   00000034   0xF88D 0x0000      STRB     R0,[SP, #+0]
+    123              result |= inv_icm20948_write_mems_reg(s, s->secondary_state.slv_reg[index].d0, 1, &data);
+   \   00000038   0x466B             MOV      R3,SP
+   \   0000003A   0x2201             MOVS     R2,#+1
+   \   0000003C   0x8E69             LDRH     R1,[R5, #+50]
+   \   0000003E   0x4620             MOV      R0,R4
+   \   00000040   0x.... 0x....      BL       inv_icm20948_write_mems_reg
+   \   00000044   0x4306             ORRS     R6,R0,R6
+    124              
+    125              data = INV_MPU_BIT_SLV_EN | 1;
+   \   00000046   0x2081             MOVS     R0,#+129
+   \   00000048   0xF88D 0x0000      STRB     R0,[SP, #+0]
+    126          	result |= inv_icm20948_write_mems_reg(s, s->secondary_state.slv_reg[index].ctrl, 1, &data);
+   \   0000004C   0x466B             MOV      R3,SP
+   \   0000004E   0x2201             MOVS     R2,#+1
+   \   00000050   0x8E29             LDRH     R1,[R5, #+48]
+   \   00000052   0x4620             MOV      R0,R4
+   \   00000054   0x.... 0x....      BL       inv_icm20948_write_mems_reg
+   \   00000058   0x4330             ORRS     R0,R0,R6
+    127              
+    128              return result;
+   \   0000005A   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+    129          }
+    130          
+
+   \                                 In section .text, align 2, keep-with-next
+    131          int inv_icm20948_execute_write_secondary(struct inv_icm20948 * s, int index, unsigned char addr, int reg, uint8_t v)
+    132          {
+   \                     inv_icm20948_execute_write_secondary: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0xB082             SUB      SP,SP,#+8
+   \   00000004   0x4604             MOV      R4,R0
+   \   00000006   0x460D             MOV      R5,R1
+    133          	int result = 0;
+    134          
+    135          	result |= inv_icm20948_write_secondary(s, index, addr, reg, v);
+   \   00000008   0xF99D 0x0018      LDRSB    R0,[SP, #+24]
+   \   0000000C   0x9000             STR      R0,[SP, #+0]
+   \   0000000E   0xB2DB             UXTB     R3,R3
+   \   00000010   0x4620             MOV      R0,R4
+   \   00000012   0x.... 0x....      BL       inv_icm20948_write_secondary
+   \   00000016   0x4606             MOV      R6,R0
+    136          	
+    137          	result |= inv_icm20948_secondary_enable_i2c(s);
+   \   00000018   0x4620             MOV      R0,R4
+   \   0000001A   0x.... 0x....      BL       inv_icm20948_secondary_enable_i2c
+   \   0000001E   0x4306             ORRS     R6,R0,R6
+    138              
+    139          	inv_icm20948_sleep_us(SECONDARY_INIT_WAIT*1000);
+   \   00000020   0xF64E 0x2060      MOVW     R0,#+60000
+   \   00000024   0x.... 0x....      BL       inv_icm20948_sleep_us
+    140              
+    141          	result |= inv_icm20948_secondary_disable_i2c(s);
+   \   00000028   0x4620             MOV      R0,R4
+   \   0000002A   0x.... 0x....      BL       inv_icm20948_secondary_disable_i2c
+   \   0000002E   0x4306             ORRS     R6,R0,R6
+    142          
+    143          	result |= inv_icm20948_secondary_stop_channel(s, index);
+   \   00000030   0x4629             MOV      R1,R5
+   \   00000032   0x4620             MOV      R0,R4
+   \   00000034   0x.... 0x....      BL       inv_icm20948_secondary_stop_channel
+   \   00000038   0x4330             ORRS     R0,R0,R6
+    144          
+    145          	return result;
+   \   0000003A   0xBD76             POP      {R1,R2,R4-R6,PC}  ;; return
+    146          }
+    147          
+
+   \                                 In section .text, align 2, keep-with-next
+    148          void inv_icm20948_secondary_saveI2cOdr(struct inv_icm20948 * s)
+    149          {
+    150          	inv_icm20948_read_mems_reg(s, REG_I2C_MST_ODR_CONFIG,1,&s->secondary_state.sSavedI2cOdr);
+   \                     inv_icm20948_secondary_saveI2cOdr: (+1)
+   \   00000000   0xF100 0x034C      ADD      R3,R0,#+76
+   \   00000004   0x2201             MOVS     R2,#+1
+   \   00000006   0xF44F 0x71C0      MOV      R1,#+384
+   \   0000000A   0x.... 0x....      B.W      inv_icm20948_read_mems_reg
+    151          }
+    152          
+
+   \                                 In section .text, align 2, keep-with-next
+    153          void inv_icm20948_secondary_restoreI2cOdr(struct inv_icm20948 * s)
+    154          {
+    155          	inv_icm20948_write_single_mems_reg(s, REG_I2C_MST_ODR_CONFIG,s->secondary_state.sSavedI2cOdr);
+   \                     inv_icm20948_secondary_restoreI2cOdr: (+1)
+   \   00000000   0xF890 0x204C      LDRB     R2,[R0, #+76]
+   \   00000004   0xF44F 0x71C0      MOV      R1,#+384
+   \   00000008   0x.... 0x....      B.W      inv_icm20948_write_single_mems_reg
+    156          }
+    157          
+
+   \                                 In section .text, align 2, keep-with-next
+    158          int inv_icm20948_secondary_stop_channel(struct inv_icm20948 * s, int index)
+    159          {
+    160          	return inv_icm20948_write_single_mems_reg(s, s->secondary_state.slv_reg[index].ctrl, 0);
+   \                     inv_icm20948_secondary_stop_channel: (+1)
+   \   00000000   0x2200             MOVS     R2,#+0
+   \   00000002   0xEB00 0x01C1      ADD      R1,R0,R1, LSL #+3
+   \   00000006   0x8E09             LDRH     R1,[R1, #+48]
+   \   00000008   0x.... 0x....      B.W      inv_icm20948_write_single_mems_reg
+    161          }
+    162          
+
+   \                                 In section .text, align 2, keep-with-next
+    163          int inv_icm20948_secondary_enable_i2c(struct inv_icm20948 * s)
+    164          {
+    165          	s->base_state.user_ctrl |= BIT_I2C_MST_EN;
+   \                     inv_icm20948_secondary_enable_i2c: (+1)
+   \   00000000   0x7F01             LDRB     R1,[R0, #+28]
+   \   00000002   0xF041 0x0220      ORR      R2,R1,#0x20
+   \   00000006   0x7702             STRB     R2,[R0, #+28]
+    166          	return inv_icm20948_write_single_mems_reg(s, REG_USER_CTRL, s->base_state.user_ctrl); 
+   \   00000008   0x2103             MOVS     R1,#+3
+   \   0000000A   0x.... 0x....      B.W      inv_icm20948_write_single_mems_reg
+    167          }
+    168          
+
+   \                                 In section .text, align 2, keep-with-next
+    169          int inv_icm20948_secondary_disable_i2c(struct inv_icm20948 * s)
+    170          {
+    171          	s->base_state.user_ctrl &= ~BIT_I2C_MST_EN;
+   \                     inv_icm20948_secondary_disable_i2c: (+1)
+   \   00000000   0x7F01             LDRB     R1,[R0, #+28]
+   \   00000002   0xF001 0x02DF      AND      R2,R1,#0xDF
+   \   00000006   0x7702             STRB     R2,[R0, #+28]
+    172          	return inv_icm20948_write_single_mems_reg(s, REG_USER_CTRL, s->base_state.user_ctrl); 
+   \   00000008   0x2103             MOVS     R1,#+3
+   \   0000000A   0x.... 0x....      B.W      inv_icm20948_write_single_mems_reg
+    173          }
+    174          
+    175          
+
+   \                                 In section .text, align 2, keep-with-next
+    176          int inv_icm20948_secondary_set_odr(struct inv_icm20948 * s, int divider, unsigned int* effectiveDivider)
+    177          {
+   \                     inv_icm20948_secondary_set_odr: (+1)
+   \   00000000   0xB418             PUSH     {R3,R4}
+    178          	int mst_odr_config = 0;
+   \   00000002   0x2300             MOVS     R3,#+0
+    179          
+    180              // find 2^x = divider to fit BASE_SAMPLE_RATE/2^REG_I2C_MST_ODR_CONFIG
+    181              do
+    182              {
+    183          		divider>>=1;
+   \                     ??inv_icm20948_secondary_set_odr_0: (+1)
+   \   00000004   0x1049             ASRS     R1,R1,#+1
+    184          		mst_odr_config++;
+   \   00000006   0x1C5B             ADDS     R3,R3,#+1
+    185              } while(divider>>1);
+   \   00000008   0x104C             ASRS     R4,R1,#+1
+   \   0000000A   0xD1FB             BNE.N    ??inv_icm20948_secondary_set_odr_0
+    186              
+    187          	if (mst_odr_config < MIN_MST_ODR_CONFIG)
+   \   0000000C   0x2B04             CMP      R3,#+4
+   \   0000000E   0xDA00             BGE.N    ??inv_icm20948_secondary_set_odr_1
+    188          		mst_odr_config = MIN_MST_ODR_CONFIG;
+   \   00000010   0x2304             MOVS     R3,#+4
+    189          
+    190          	*effectiveDivider = 1<<mst_odr_config;
+   \                     ??inv_icm20948_secondary_set_odr_1: (+1)
+   \   00000012   0x2101             MOVS     R1,#+1
+   \   00000014   0x4099             LSLS     R1,R1,R3
+   \   00000016   0x6011             STR      R1,[R2, #+0]
+    191          
+    192          	return	inv_icm20948_set_secondary_divider(s, (unsigned char)mst_odr_config);
+   \   00000018   0x4619             MOV      R1,R3
+   \   0000001A   0xB2C9             UXTB     R1,R1
+   \   0000001C   0xBC14             POP      {R2,R4}
+   \   0000001E   0x.... 0x....      B.W      inv_icm20948_set_secondary_divider
+    193          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      24   inv_icm20948_execute_read_secondary
+        24   -> inv_icm20948_read_mems_reg
+        24   -> inv_icm20948_read_secondary
+        24   -> inv_icm20948_secondary_disable_i2c
+        24   -> inv_icm20948_secondary_enable_i2c
+        24   -> inv_icm20948_secondary_stop_channel
+        24   -> inv_icm20948_sleep_us
+      24   inv_icm20948_execute_write_secondary
+        24   -> inv_icm20948_secondary_disable_i2c
+        24   -> inv_icm20948_secondary_enable_i2c
+        24   -> inv_icm20948_secondary_stop_channel
+        24   -> inv_icm20948_sleep_us
+        24   -> inv_icm20948_write_secondary
+       8   inv_icm20948_init_secondary
+         0   -> inv_icm20948_secondary_stop_channel
+         8   -> inv_icm20948_secondary_stop_channel
+      24   inv_icm20948_read_secondary
+        24   -> inv_icm20948_write_mems_reg
+       0   inv_icm20948_secondary_disable_i2c
+         0   -> inv_icm20948_write_single_mems_reg
+       0   inv_icm20948_secondary_enable_i2c
+         0   -> inv_icm20948_write_single_mems_reg
+       0   inv_icm20948_secondary_restoreI2cOdr
+         0   -> inv_icm20948_write_single_mems_reg
+       0   inv_icm20948_secondary_saveI2cOdr
+         0   -> inv_icm20948_read_mems_reg
+       8   inv_icm20948_secondary_set_odr
+         0   -> inv_icm20948_set_secondary_divider
+       0   inv_icm20948_secondary_stop_channel
+         0   -> inv_icm20948_write_single_mems_reg
+      24   inv_icm20948_write_secondary
+        24   -> inv_icm20948_write_mems_reg
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      76  inv_icm20948_execute_read_secondary
+      60  inv_icm20948_execute_write_secondary
+     138  inv_icm20948_init_secondary
+      80  inv_icm20948_read_secondary
+      14  inv_icm20948_secondary_disable_i2c
+      14  inv_icm20948_secondary_enable_i2c
+      12  inv_icm20948_secondary_restoreI2cOdr
+      14  inv_icm20948_secondary_saveI2cOdr
+      34  inv_icm20948_secondary_set_odr
+      12  inv_icm20948_secondary_stop_channel
+      92  inv_icm20948_write_secondary
+
+ 
+ 546 bytes in section .text
+ 
+ 546 bytes of CODE memory
+
+Errors: none
+Warnings: none

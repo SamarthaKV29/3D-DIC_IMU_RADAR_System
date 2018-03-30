@@ -1,0 +1,1284 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:41
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\VSensor\VSensor.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\VSensor\VSensor.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\VSensor.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\VSensor.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\VSensor\VSensor.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2015-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "VSensor.h"
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void InvList_init(InvList *)
+   \                     InvList_init: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0xD106             BNE.N    ??InvList_init_0
+   \   00000006   0x2229             MOVS     R2,#+41
+   \   00000008   0x.... 0x....      ADR.W    R1,?_1
+   \   0000000C   0x.... 0x....      ADR.W    R0,?_0
+   \   00000010   0x.... 0x....      BL       InvAssert
+   \                     ??InvList_init_0: (+1)
+   \   00000014   0x2000             MOVS     R0,#+0
+   \   00000016   0x6020             STR      R0,[R4, #+0]
+   \   00000018   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp InvList *InvList_head(InvList *)
+   \                     InvList_head: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0xD106             BNE.N    ??InvList_head_0
+   \   00000006   0x2240             MOVS     R2,#+64
+   \   00000008   0x.... 0x....      ADR.W    R1,?_1
+   \   0000000C   0x.... 0x....      ADR.W    R0,?_0
+   \   00000010   0x.... 0x....      BL       InvAssert
+   \                     ??InvList_head_0: (+1)
+   \   00000014   0x6820             LDR      R0,[R4, #+0]
+   \   00000016   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp InvList *InvList_next(InvList *)
+   \                     InvList_next: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0xD106             BNE.N    ??InvList_next_0
+   \   00000006   0x2249             MOVS     R2,#+73
+   \   00000008   0x.... 0x....      ADR.W    R1,?_1
+   \   0000000C   0x.... 0x....      ADR.W    R0,?_0
+   \   00000010   0x.... 0x....      BL       InvAssert
+   \                     ??InvList_next_0: (+1)
+   \   00000014   0x6820             LDR      R0,[R4, #+0]
+   \   00000016   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp int InvList_isEmpty(InvList *)
+   \                     InvList_isEmpty: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0xD106             BNE.N    ??InvList_isEmpty_0
+   \   00000006   0x2254             MOVS     R2,#+84
+   \   00000008   0x.... 0x....      ADR.W    R1,?_1
+   \   0000000C   0x.... 0x....      ADR.W    R0,?_0
+   \   00000010   0x.... 0x....      BL       InvAssert
+   \                     ??InvList_isEmpty_0: (+1)
+   \   00000014   0x6820             LDR      R0,[R4, #+0]
+   \   00000016   0x2800             CMP      R0,#+0
+   \   00000018   0xD101             BNE.N    ??InvList_isEmpty_1
+   \   0000001A   0x2001             MOVS     R0,#+1
+   \   0000001C   0xBD10             POP      {R4,PC}
+   \                     ??InvList_isEmpty_1: (+1)
+   \   0000001E   0x2000             MOVS     R0,#+0
+   \   00000020   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp int VSensor_update(VSensor *, int, void *)
+   \                     VSensor_update: (+1)
+   \   00000000   0x6803             LDR      R3,[R0, #+0]
+   \   00000002   0x4718             BX       R3
+     25          #include "VSensorListener.h"
+     26          
+     27          #include <string.h>
+     28          
+     29          CASSERT(VSENSOR_EVENT_NEW_REQUESTED_RI == VSENSOR_EVENT_NEW_EFFECTIVE_RI);
+     30          CASSERT(VSENSOR_EVENT_NEW_REQUESTED_MRL == VSENSOR_EVENT_NEW_EFFECTIVE_MRL);
+     31          
+     32          #define EVENT_UPDATERI  VSENSOR_EVENT_NEW_REQUESTED_RI
+     33          #define EVENT_UPDATEMRL VSENSOR_EVENT_NEW_REQUESTED_MRL
+     34          
+     35          #define STATUS_FLAG_SETUP_MASK 0x03
+     36          
+
+   \                                 In section .text, align 2, keep-with-next
+     37          static int setupVSensor(VSensor * vsensor)
+     38          {
+   \                     setupVSensor: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+     39          	ASSERT(vsensor && vsensor->update);
+   \   00000004   0xD002             BEQ.N    ??setupVSensor_0
+   \   00000006   0x6820             LDR      R0,[R4, #+0]
+   \   00000008   0x2800             CMP      R0,#+0
+   \   0000000A   0xD106             BNE.N    ??setupVSensor_1
+   \                     ??setupVSensor_0: (+1)
+   \   0000000C   0x2227             MOVS     R2,#+39
+   \   0000000E   0x.... 0x....      ADR.W    R1,?_3
+   \   00000012   0x.... 0x....      ADR.W    R0,?_2
+   \   00000016   0x.... 0x....      BL       InvAssert
+     40          
+     41          	// check weither we are already initialized
+     42          	if((vsensor->status & STATUS_FLAG_SETUP_MASK) == 0) {
+   \                     ??setupVSensor_1: (+1)
+   \   0000001A   0x6960             LDR      R0,[R4, #+20]
+   \   0000001C   0xF010 0x0F03      TST      R0,#0x3
+   \   00000020   0xD11F             BNE.N    ??setupVSensor_2
+     43          
+     44          		/* Unknown type, assuming VSensor is not inialized */
+     45          		if(vsensor->type == VSENSOR_TYPE_UNKNOWN) {
+   \   00000022   0xF9B4 0x1008      LDRSH    R1,[R4, #+8]
+   \   00000026   0x2900             CMP      R1,#+0
+   \   00000028   0xD01D             BEQ.N    ??setupVSensor_3
+     46          			return -1;
+     47          		}
+     48          
+     49          		// Update status flag before calling SETUP method so that 
+     50          		// any circular dependency does not end with infinite loop
+     51          		vsensor->status |= VSENSOR_STATUS_FLAG_SETUP_OK;
+   \   0000002A   0xF040 0x0001      ORR      R0,R0,#0x1
+   \   0000002E   0x6160             STR      R0,[R4, #+20]
+     52          		if(vsensor->update(vsensor, VSENSOR_EVENT_SETUP, 0) != 0) {
+   \   00000030   0x2200             MOVS     R2,#+0
+   \   00000032   0x4611             MOV      R1,R2
+   \   00000034   0x4620             MOV      R0,R4
+   \   00000036   0x6823             LDR      R3,[R4, #+0]
+   \   00000038   0x4798             BLX      R3
+   \   0000003A   0x2800             CMP      R0,#+0
+   \   0000003C   0x6960             LDR      R0,[R4, #+20]
+   \   0000003E   0xD008             BEQ.N    ??setupVSensor_4
+     53          			vsensor->status &= ~VSENSOR_STATUS_FLAG_SETUP_OK;
+   \   00000040   0x0840             LSRS     R0,R0,#+1
+   \   00000042   0x0040             LSLS     R0,R0,#+1
+   \   00000044   0x6160             STR      R0,[R4, #+20]
+     54          			vsensor->status |= VSENSOR_STATUS_FLAG_SETUP_ERROR;
+   \   00000046   0xF040 0x0002      ORR      R0,R0,#0x2
+   \   0000004A   0x6160             STR      R0,[R4, #+20]
+     55          
+     56          			return -1;
+   \   0000004C   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000050   0xBD10             POP      {R4,PC}
+     57          		}
+     58          		else {
+     59          			vsensor->status &= ~VSENSOR_STATUS_FLAG_SETUP_ERROR;
+   \                     ??setupVSensor_4: (+1)
+   \   00000052   0xF020 0x0002      BIC      R0,R0,#0x2
+   \   00000056   0x6160             STR      R0,[R4, #+20]
+     60          			vsensor->status |= VSENSOR_STATUS_FLAG_SETUP_OK;
+   \   00000058   0xF040 0x0001      ORR      R0,R0,#0x1
+   \   0000005C   0x6160             STR      R0,[R4, #+20]
+     61          		}
+     62          	}
+     63          	else if(vsensor->status & VSENSOR_STATUS_FLAG_SETUP_ERROR) {
+     64          		return -1;
+     65          	}
+     66          
+     67          	return 0;
+   \                     ??setupVSensor_5: (+1)
+   \   0000005E   0x2000             MOVS     R0,#+0
+   \   00000060   0xBD10             POP      {R4,PC}          ;; return
+   \                     ??setupVSensor_2: (+1)
+   \   00000062   0x0780             LSLS     R0,R0,#+30
+   \   00000064   0xD5FB             BPL.N    ??setupVSensor_5
+   \                     ??setupVSensor_3: (+1)
+   \   00000066   0xF04F 0x30FF      MOV      R0,#-1
+   \   0000006A   0xBD10             POP      {R4,PC}
+     68          }
+     69          
+
+   \                                 In section .text, align 2, keep-with-next
+     70          static struct InvList * getList(VSensorListener * listener)
+     71          {
+     72          	return &listener->vsensor->list;
+   \                     getList: (+1)
+   \   00000000   0x6880             LDR      R0,[R0, #+8]
+   \   00000002   0x1D00             ADDS     R0,R0,#+4
+   \   00000004   0x4770             BX       LR               ;; return
+     73          }
+     74          
+
+   \                                 In section .text, align 2, keep-with-next
+     75          static void getMinRimrl(struct InvList * list,
+     76          		uint32_t *minri, uint32_t *minmrl)
+     77          {
+   \                     getMinRimrl: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x460D             MOV      R5,R1
+   \   00000004   0x4614             MOV      R4,R2
+     78          	struct InvList * cur = InvList_head(list);
+   \   00000006   0x.... 0x....      BL       InvList_head
+     79          
+     80          	if(cur == 0) {
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD103             BNE.N    ??getMinRimrl_0
+     81          		*minri = 0;
+   \   0000000E   0x2000             MOVS     R0,#+0
+   \   00000010   0x6028             STR      R0,[R5, #+0]
+     82          		*minmrl = 0;
+   \   00000012   0x6020             STR      R0,[R4, #+0]
+   \   00000014   0xBD31             POP      {R0,R4,R5,PC}
+     83          	}
+     84          	else {
+     85          		const VSensorListener *listener = INVLIST_GET(cur, VSensorListener, next);
+     86          
+     87          		*minri = listener->ri;
+   \                     ??getMinRimrl_0: (+1)
+   \   00000016   0x68C1             LDR      R1,[R0, #+12]
+   \   00000018   0x6029             STR      R1,[R5, #+0]
+     88          		*minmrl = listener->mrl;
+   \   0000001A   0x6901             LDR      R1,[R0, #+16]
+   \   0000001C   0x6021             STR      R1,[R4, #+0]
+   \   0000001E   0xE00B             B.N      ??getMinRimrl_1
+     89          
+     90          		while ((cur = InvList_next(cur)) != 0) {
+     91          			const VSensorListener *listener = INVLIST_GET(cur, VSensorListener, next);
+     92          
+     93          			if(listener->ri < *minri) {
+   \                     ??getMinRimrl_2: (+1)
+   \   00000020   0x68C1             LDR      R1,[R0, #+12]
+   \   00000022   0x682A             LDR      R2,[R5, #+0]
+   \   00000024   0x4291             CMP      R1,R2
+   \   00000026   0xD900             BLS.N    ??getMinRimrl_3
+   \   00000028   0x4611             MOV      R1,R2
+   \                     ??getMinRimrl_3: (+1)
+   \   0000002A   0x6029             STR      R1,[R5, #+0]
+     94          				*minri = listener->ri;
+     95          			}
+     96          
+     97          			if(listener->mrl < *minmrl) {
+   \   0000002C   0x6901             LDR      R1,[R0, #+16]
+   \   0000002E   0x6822             LDR      R2,[R4, #+0]
+   \   00000030   0x4291             CMP      R1,R2
+   \   00000032   0xD900             BLS.N    ??getMinRimrl_4
+   \   00000034   0x4611             MOV      R1,R2
+   \                     ??getMinRimrl_4: (+1)
+   \   00000036   0x6021             STR      R1,[R4, #+0]
+     98          				*minmrl = listener->mrl;
+     99          			}
+    100          		}
+   \                     ??getMinRimrl_1: (+1)
+   \   00000038   0x.... 0x....      BL       InvList_next
+   \   0000003C   0x2800             CMP      R0,#+0
+   \   0000003E   0xD1EF             BNE.N    ??getMinRimrl_2
+    101          	}
+    102          }
+   \   00000040   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+    103          
+
+   \                                 In section .text, align 2, keep-with-next
+    104          static void apply(VSensorListener * listener, int flag, int force)
+    105          {
+   \                     apply: (+1)
+   \   00000000   0xB5F0             PUSH     {R4-R7,LR}
+   \   00000002   0xB083             SUB      SP,SP,#+12
+   \   00000004   0x4604             MOV      R4,R0
+   \   00000006   0x460D             MOV      R5,R1
+   \   00000008   0x4616             MOV      R6,R2
+    106          	uint32_t eri;
+    107          	uint32_t emrl;
+    108          	struct VSensor * vsensor = listener->vsensor;
+   \   0000000A   0x68A7             LDR      R7,[R4, #+8]
+    109          
+    110          	/* Get min RI/MRL from */
+    111          	getMinRimrl(getList(listener), &eri, &emrl);
+   \   0000000C   0x.... 0x....      BL       getList
+   \   00000010   0xAA01             ADD      R2,SP,#+4
+   \   00000012   0x4669             MOV      R1,SP
+   \   00000014   0x.... 0x....      BL       getMinRimrl
+    112          
+    113          	/* Saturate RI according to vsensor attribute */
+    114          	if(eri < vsensor->attr.min_ri) {
+   \   00000018   0x9800             LDR      R0,[SP, #+0]
+   \   0000001A   0x69B9             LDR      R1,[R7, #+24]
+   \   0000001C   0x4288             CMP      R0,R1
+   \   0000001E   0xD200             BCS.N    ??apply_0
+   \   00000020   0x4608             MOV      R0,R1
+   \                     ??apply_0: (+1)
+   \   00000022   0x9000             STR      R0,[SP, #+0]
+    115          		eri = vsensor->attr.min_ri;
+    116          	}
+    117          
+    118          	/* Check for change */
+    119          	if(vsensor->eri != eri) {
+   \   00000024   0x68F8             LDR      R0,[R7, #+12]
+   \   00000026   0x9900             LDR      R1,[SP, #+0]
+   \   00000028   0x4288             CMP      R0,R1
+   \   0000002A   0xD003             BEQ.N    ??apply_1
+    120          		flag |= (1 << EVENT_UPDATERI);
+   \   0000002C   0xF045 0x0510      ORR      R5,R5,#0x10
+    121          		vsensor->eri = eri;
+   \   00000030   0x4608             MOV      R0,R1
+   \   00000032   0x60F8             STR      R0,[R7, #+12]
+    122          	}
+    123          
+    124          	if(vsensor->emrl != emrl) {
+   \                     ??apply_1: (+1)
+   \   00000034   0x6938             LDR      R0,[R7, #+16]
+   \   00000036   0x9901             LDR      R1,[SP, #+4]
+   \   00000038   0x4288             CMP      R0,R1
+   \   0000003A   0xD003             BEQ.N    ??apply_2
+    125          		flag |= (1 << EVENT_UPDATEMRL);
+   \   0000003C   0xF045 0x0520      ORR      R5,R5,#0x20
+    126          		vsensor->emrl = emrl;
+   \   00000040   0x4608             MOV      R0,R1
+   \   00000042   0x6138             STR      R0,[R7, #+16]
+    127          	}
+    128          
+    129          	/* Force notify of RI/MRL on first subscribe */
+    130          	if(flag & (1 << VSENSOR_EVENT_SUBSCRIBE)) {
+   \                     ??apply_2: (+1)
+   \   00000044   0x0768             LSLS     R0,R5,#+29
+   \   00000046   0xD501             BPL.N    ??apply_3
+    131          		flag |= (1 << EVENT_UPDATERI);
+    132          		flag |= (1 << EVENT_UPDATEMRL);
+   \   00000048   0xF045 0x0530      ORR      R5,R5,#0x30
+    133          	}
+    134          
+    135          	/* Do not notify of RI/MRL when unsubscribing */
+    136          	if(flag & (1 << VSENSOR_EVENT_UNSUBSCRIBE)) {
+   \                     ??apply_3: (+1)
+   \   0000004C   0x0728             LSLS     R0,R5,#+28
+   \   0000004E   0xD501             BPL.N    ??apply_4
+    137          		flag &= ~(1 << EVENT_UPDATERI);
+    138          		flag &= ~(1 << EVENT_UPDATEMRL);
+   \   00000050   0xF025 0x0530      BIC      R5,R5,#0x30
+    139          	}
+    140          
+    141          	/* Apply to VSensor */
+    142          
+    143          	/*
+    144          	 * Unsubscribing event is applied in VSensorListener_disable()
+    145          	 */
+    146          
+    147          	if(flag & (1 << EVENT_UPDATERI)) {
+   \                     ??apply_4: (+1)
+   \   00000054   0x06E8             LSLS     R0,R5,#+27
+   \   00000056   0xD505             BPL.N    ??apply_5
+    148          		VSensor_update(vsensor, EVENT_UPDATERI, &vsensor->eri);
+   \   00000058   0xF107 0x020C      ADD      R2,R7,#+12
+   \   0000005C   0x2104             MOVS     R1,#+4
+   \   0000005E   0x4638             MOV      R0,R7
+   \   00000060   0x.... 0x....      BL       VSensor_update
+    149          	}
+    150          
+    151          	if(flag & (1 << EVENT_UPDATEMRL)) {
+   \                     ??apply_5: (+1)
+   \   00000064   0x06A8             LSLS     R0,R5,#+26
+   \   00000066   0xD505             BPL.N    ??apply_6
+    152          		VSensor_update(vsensor, EVENT_UPDATEMRL, &vsensor->emrl);
+   \   00000068   0xF107 0x0210      ADD      R2,R7,#+16
+   \   0000006C   0x2105             MOVS     R1,#+5
+   \   0000006E   0x4638             MOV      R0,R7
+   \   00000070   0x.... 0x....      BL       VSensor_update
+    153          	}
+    154          
+    155          	if(flag & (1 << VSENSOR_EVENT_SUBSCRIBE)) {
+   \                     ??apply_6: (+1)
+   \   00000074   0x0768             LSLS     R0,R5,#+29
+   \   00000076   0xD504             BPL.N    ??apply_7
+    156          		VSensor_update(vsensor, VSENSOR_EVENT_SUBSCRIBE, 0);
+   \   00000078   0x2200             MOVS     R2,#+0
+   \   0000007A   0x2102             MOVS     R1,#+2
+   \   0000007C   0x4638             MOV      R0,R7
+   \   0000007E   0x.... 0x....      BL       VSensor_update
+    157          	}
+    158          
+    159          	/* ERI, EMRL value was changed by the sensor during update */
+    160          	if(vsensor->eri != eri) {
+   \                     ??apply_7: (+1)
+   \   00000082   0x68F8             LDR      R0,[R7, #+12]
+   \   00000084   0x9900             LDR      R1,[SP, #+0]
+   \   00000086   0x4288             CMP      R0,R1
+   \   00000088   0xD001             BEQ.N    ??apply_8
+    161          		flag |= (1 << EVENT_UPDATERI);
+   \   0000008A   0xF045 0x0510      ORR      R5,R5,#0x10
+    162          	}
+    163          
+    164          	if(vsensor->emrl != emrl) {
+   \                     ??apply_8: (+1)
+   \   0000008E   0x6938             LDR      R0,[R7, #+16]
+   \   00000090   0x9901             LDR      R1,[SP, #+4]
+   \   00000092   0x4288             CMP      R0,R1
+   \   00000094   0xD001             BEQ.N    ??apply_9
+    165          		flag |= (1 << EVENT_UPDATEMRL);
+   \   00000096   0xF045 0x0520      ORR      R5,R5,#0x20
+    166          	}
+    167          
+    168          	/* Notify to all subscribers that a new config was applied only
+    169          	   if something new is to be signaled */
+    170          
+    171          	if(flag & (1 << EVENT_UPDATERI)) {
+   \                     ??apply_9: (+1)
+   \   0000009A   0x06E8             LSLS     R0,R5,#+27
+   \   0000009C   0xD505             BPL.N    ??apply_10
+    172          		VSensor_notifyEvent(vsensor, EVENT_UPDATERI, &vsensor->eri);
+   \   0000009E   0xF107 0x020C      ADD      R2,R7,#+12
+   \   000000A2   0x2104             MOVS     R1,#+4
+   \   000000A4   0x4638             MOV      R0,R7
+   \   000000A6   0x.... 0x....      BL       VSensor_notifyEvent
+    173          	}
+    174          
+    175          	if(flag & (1 << EVENT_UPDATEMRL)) {
+   \                     ??apply_10: (+1)
+   \   000000AA   0x06A8             LSLS     R0,R5,#+26
+   \   000000AC   0xD505             BPL.N    ??apply_11
+    176          		VSensor_notifyEvent(vsensor, EVENT_UPDATEMRL, &vsensor->emrl);
+   \   000000AE   0xF107 0x0210      ADD      R2,R7,#+16
+   \   000000B2   0x2105             MOVS     R1,#+5
+   \   000000B4   0x4638             MOV      R0,R7
+   \   000000B6   0x.... 0x....      BL       VSensor_notifyEvent
+    177          	}
+    178          
+    179          	/* No change but listeners asked to be notified anyway */
+    180          
+    181          	if((force & (1 << EVENT_UPDATERI)) != 0
+    182          			&& (flag & (1 << EVENT_UPDATERI)) == 0) {
+   \                     ??apply_11: (+1)
+   \   000000BA   0x06F0             LSLS     R0,R6,#+27
+   \   000000BC   0xD507             BPL.N    ??apply_12
+   \   000000BE   0x06E8             LSLS     R0,R5,#+27
+   \   000000C0   0xD405             BMI.N    ??apply_12
+    183          		listener->handler(listener, EVENT_UPDATERI, &vsensor->eri);
+   \   000000C2   0xF107 0x020C      ADD      R2,R7,#+12
+   \   000000C6   0x2104             MOVS     R1,#+4
+   \   000000C8   0x4620             MOV      R0,R4
+   \   000000CA   0x6863             LDR      R3,[R4, #+4]
+   \   000000CC   0x4798             BLX      R3
+    184          	}
+    185          
+    186          	if((force & (1 << EVENT_UPDATEMRL)) != 0
+    187          			&& (flag & (1 << EVENT_UPDATEMRL)) == 0) {
+   \                     ??apply_12: (+1)
+   \   000000CE   0x06B0             LSLS     R0,R6,#+26
+   \   000000D0   0xD507             BPL.N    ??apply_13
+   \   000000D2   0x06A8             LSLS     R0,R5,#+26
+   \   000000D4   0xD405             BMI.N    ??apply_13
+    188          		listener->handler(listener, EVENT_UPDATEMRL, &vsensor->emrl);
+   \   000000D6   0xF107 0x0210      ADD      R2,R7,#+16
+   \   000000DA   0x2105             MOVS     R1,#+5
+   \   000000DC   0x4620             MOV      R0,R4
+   \   000000DE   0x6863             LDR      R3,[R4, #+4]
+   \   000000E0   0x4798             BLX      R3
+    189          	}
+    190          }
+   \                     ??apply_13: (+1)
+   \   000000E2   0xBDF7             POP      {R0-R2,R4-R7,PC}  ;; return
+    191          
+
+   \                                 In section .text, align 2, keep-with-next
+    192          static void dummyHandler(VSensorListener * listener, int event, const void * data)
+    193          {
+    194          	(void)listener, (void)event, (void)data;
+    195          }
+   \                     dummyHandler: (+1)
+   \   00000000   0x4770             BX       LR               ;; return
+    196          
+
+   \                                 In section .text, align 2, keep-with-next
+    197          int VSensorListener_attach(VSensorListener *listener, struct VSensor *vsensor,
+    198          		VSensorListenerHandler handler, void * arg)
+    199          {
+   \                     VSensorListener_attach: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   \   00000006   0x4616             MOV      R6,R2
+   \   00000008   0x461F             MOV      R7,R3
+    200          	if(listener && vsensor) {
+   \   0000000A   0x2C00             CMP      R4,#+0
+   \   0000000C   0xD010             BEQ.N    ??VSensorListener_attach_0
+   \   0000000E   0x2D00             CMP      R5,#+0
+   \   00000010   0xD00E             BEQ.N    ??VSensorListener_attach_0
+    201          		InvList_init(&listener->next);
+   \   00000012   0x.... 0x....      BL       InvList_init
+    202          		listener->handler = (handler != 0) ? handler : dummyHandler;
+   \   00000016   0x0030             MOVS     R0,R6
+   \   00000018   0xD100             BNE.N    ??VSensorListener_attach_1
+   \   0000001A   0x....             LDR.N    R6,??DataTable6
+   \                     ??VSensorListener_attach_1: (+1)
+   \   0000001C   0x6066             STR      R6,[R4, #+4]
+    203          		listener->vsensor = vsensor;
+   \   0000001E   0x60A5             STR      R5,[R4, #+8]
+    204          		listener->ri      = 0;
+   \   00000020   0x2000             MOVS     R0,#+0
+   \   00000022   0x60E0             STR      R0,[R4, #+12]
+    205          		listener->mrl     = 0;
+   \   00000024   0x6120             STR      R0,[R4, #+16]
+    206          		listener->arg     = arg;
+   \   00000026   0x6167             STR      R7,[R4, #+20]
+    207          
+    208          		return setupVSensor(vsensor);
+   \   00000028   0x4628             MOV      R0,R5
+   \   0000002A   0xE8BD 0x40F2      POP      {R1,R4-R7,LR}
+   \   0000002E   0x....             B.N      setupVSensor
+    209          	}
+    210          
+    211          	return -1;
+   \                     ??VSensorListener_attach_0: (+1)
+   \   00000030   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000034   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+    212          }
+    213          
+
+   \                                 In section .text, align 2, keep-with-next
+    214          static inline int isListenerValid(VSensorListener *listener)
+    215          {
+    216          	if(!listener || !listener->vsensor || (listener->vsensor->status & VSENSOR_STATUS_FLAG_SETUP_ERROR)) {
+   \                     isListenerValid: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD005             BEQ.N    ??isListenerValid_0
+   \   00000004   0x6880             LDR      R0,[R0, #+8]
+   \   00000006   0x2800             CMP      R0,#+0
+   \   00000008   0xD002             BEQ.N    ??isListenerValid_0
+   \   0000000A   0x7D00             LDRB     R0,[R0, #+20]
+   \   0000000C   0x0780             LSLS     R0,R0,#+30
+   \   0000000E   0xD501             BPL.N    ??isListenerValid_1
+    217          		/* invalid */
+    218          		return 0;
+   \                     ??isListenerValid_0: (+1)
+   \   00000010   0x2000             MOVS     R0,#+0
+   \   00000012   0x4770             BX       LR
+    219          	}
+    220          
+    221          	return 1;
+   \                     ??isListenerValid_1: (+1)
+   \   00000014   0x2001             MOVS     R0,#+1
+   \   00000016   0x4770             BX       LR               ;; return
+    222          }
+    223          
+
+   \                                 In section .text, align 2, keep-with-next
+    224          void VSensorListener_setRi(VSensorListener *listener, uint32_t ri)
+    225          {
+   \                     VSensorListener_setRi: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+    226          	if(!isListenerValid(listener))
+   \   00000006   0x.... 0x....      BL       isListenerValid
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD00D             BEQ.N    ??VSensorListener_setRi_0
+    227          		return;
+    228          
+    229          	listener->ri = ri;
+   \   0000000E   0x60E5             STR      R5,[R4, #+12]
+    230          
+    231          	if(InvList_isIn(&listener->vsensor->list, &listener->next)) {
+   \   00000010   0x4621             MOV      R1,R4
+   \   00000012   0x68A0             LDR      R0,[R4, #+8]
+   \   00000014   0x1D00             ADDS     R0,R0,#+4
+   \   00000016   0x.... 0x....      BL       InvList_isIn
+   \   0000001A   0x2800             CMP      R0,#+0
+   \   0000001C   0xD005             BEQ.N    ??VSensorListener_setRi_0
+    232          		apply(listener, 0, (1 << EVENT_UPDATERI));
+   \   0000001E   0x2210             MOVS     R2,#+16
+   \   00000020   0x2100             MOVS     R1,#+0
+   \   00000022   0x4620             MOV      R0,R4
+   \   00000024   0xE8BD 0x4038      POP      {R3-R5,LR}
+   \   00000028   0x....             B.N      apply
+    233          	}
+    234          }
+   \                     ??VSensorListener_setRi_0: (+1)
+   \   0000002A   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+    235          
+
+   \                                 In section .text, align 2, keep-with-next
+    236          void VSensorListener_setMrl(VSensorListener *listener, uint32_t mrl)
+    237          {
+   \                     VSensorListener_setMrl: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+    238          	if(!isListenerValid(listener))
+   \   00000006   0x.... 0x....      BL       isListenerValid
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD00D             BEQ.N    ??VSensorListener_setMrl_0
+    239          		return;
+    240          
+    241          	listener->mrl = mrl;
+   \   0000000E   0x6125             STR      R5,[R4, #+16]
+    242          
+    243          	if(InvList_isIn(&listener->vsensor->list, &listener->next)) {
+   \   00000010   0x4621             MOV      R1,R4
+   \   00000012   0x68A0             LDR      R0,[R4, #+8]
+   \   00000014   0x1D00             ADDS     R0,R0,#+4
+   \   00000016   0x.... 0x....      BL       InvList_isIn
+   \   0000001A   0x2800             CMP      R0,#+0
+   \   0000001C   0xD005             BEQ.N    ??VSensorListener_setMrl_0
+    244          		apply(listener, 0, (1 << EVENT_UPDATEMRL));
+   \   0000001E   0x2220             MOVS     R2,#+32
+   \   00000020   0x2100             MOVS     R1,#+0
+   \   00000022   0x4620             MOV      R0,R4
+   \   00000024   0xE8BD 0x4038      POP      {R3-R5,LR}
+   \   00000028   0x....             B.N      apply
+    245          	}
+    246          }
+   \                     ??VSensorListener_setMrl_0: (+1)
+   \   0000002A   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+    247          
+
+   \                                 In section .text, align 2, keep-with-next
+    248          void VSensorListener_enable(VSensorListener *listener)
+    249          {
+   \                     VSensorListener_enable: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    250          	int  flag = 0;
+   \   00000004   0x2500             MOVS     R5,#+0
+    251          
+    252          	if(!isListenerValid(listener))
+   \   00000006   0x.... 0x....      BL       isListenerValid
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD018             BEQ.N    ??VSensorListener_enable_0
+    253          		return;
+    254          
+    255          	if(InvList_isEmpty(&listener->vsensor->list))
+   \   0000000E   0x68A0             LDR      R0,[R4, #+8]
+   \   00000010   0x1D00             ADDS     R0,R0,#+4
+   \   00000012   0x.... 0x....      BL       InvList_isEmpty
+   \   00000016   0x2800             CMP      R0,#+0
+   \   00000018   0xD000             BEQ.N    ??VSensorListener_enable_1
+    256          		flag |= (1 << VSENSOR_EVENT_SUBSCRIBE);
+   \   0000001A   0x2504             MOVS     R5,#+4
+    257          
+    258          	if(InvList_add(&listener->vsensor->list, &listener->next) == 0) {
+   \                     ??VSensorListener_enable_1: (+1)
+   \   0000001C   0x4621             MOV      R1,R4
+   \   0000001E   0x68A0             LDR      R0,[R4, #+8]
+   \   00000020   0x1D00             ADDS     R0,R0,#+4
+   \   00000022   0x.... 0x....      BL       InvList_add
+   \   00000026   0x2800             CMP      R0,#+0
+   \   00000028   0xD10A             BNE.N    ??VSensorListener_enable_0
+    259          		/* notify this listener it has successfuly subscribed to the vsensor */
+    260          		listener->handler(listener, VSENSOR_EVENT_HAS_SUBSCRIBED, 0);
+   \   0000002A   0x2200             MOVS     R2,#+0
+   \   0000002C   0x2102             MOVS     R1,#+2
+   \   0000002E   0x4620             MOV      R0,R4
+   \   00000030   0x6863             LDR      R3,[R4, #+4]
+   \   00000032   0x4798             BLX      R3
+    261          
+    262          		apply(listener, flag, (1 << EVENT_UPDATERI) | (1 << EVENT_UPDATEMRL));
+   \   00000034   0x2230             MOVS     R2,#+48
+   \   00000036   0x4629             MOV      R1,R5
+   \   00000038   0x4620             MOV      R0,R4
+   \   0000003A   0xE8BD 0x4038      POP      {R3-R5,LR}
+   \   0000003E   0x....             B.N      apply
+    263          	}
+    264          }
+   \                     ??VSensorListener_enable_0: (+1)
+   \   00000040   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+    265          
+
+   \                                 In section .text, align 2, keep-with-next
+    266          void VSensorListener_disable(VSensorListener *listener)
+    267          {
+   \                     VSensorListener_disable: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    268          	if(!isListenerValid(listener))
+   \   00000004   0x.... 0x....      BL       isListenerValid
+   \   00000008   0x2800             CMP      R0,#+0
+   \   0000000A   0xD02D             BEQ.N    ??VSensorListener_disable_0
+    269          		return;
+    270          
+    271          	if(InvList_remove(&listener->vsensor->list, &listener->next) == 0) {
+   \   0000000C   0x4621             MOV      R1,R4
+   \   0000000E   0x68A0             LDR      R0,[R4, #+8]
+   \   00000010   0x1D00             ADDS     R0,R0,#+4
+   \   00000012   0x.... 0x....      BL       InvList_remove
+   \   00000016   0x2800             CMP      R0,#+0
+   \   00000018   0xD126             BNE.N    ??VSensorListener_disable_0
+    272          		if(InvList_isEmpty(&listener->vsensor->list)) {
+   \   0000001A   0x68A0             LDR      R0,[R4, #+8]
+   \   0000001C   0x1D00             ADDS     R0,R0,#+4
+   \   0000001E   0x.... 0x....      BL       InvList_isEmpty
+   \   00000022   0x2800             CMP      R0,#+0
+   \   00000024   0xD014             BEQ.N    ??VSensorListener_disable_1
+    273          			apply(listener, (1 << VSENSOR_EVENT_UNSUBSCRIBE), 0);
+   \   00000026   0x2200             MOVS     R2,#+0
+   \   00000028   0x2108             MOVS     R1,#+8
+   \   0000002A   0x4620             MOV      R0,R4
+   \   0000002C   0x.... 0x....      BL       apply
+    274          
+    275          			/*
+    276          			 * Add node back to list and apply update:
+    277          			 * this allows to call VSensorListener_notify() when handling UNSUBSCRIBE event
+    278          			 */
+    279          			InvList_add(&listener->vsensor->list, &listener->next);
+   \   00000030   0x4621             MOV      R1,R4
+   \   00000032   0x68A0             LDR      R0,[R4, #+8]
+   \   00000034   0x1D00             ADDS     R0,R0,#+4
+   \   00000036   0x.... 0x....      BL       InvList_add
+    280          			VSensor_update(listener->vsensor, VSENSOR_EVENT_UNSUBSCRIBE, 0);
+   \   0000003A   0x2200             MOVS     R2,#+0
+   \   0000003C   0x2103             MOVS     R1,#+3
+   \   0000003E   0x68A0             LDR      R0,[R4, #+8]
+   \   00000040   0x.... 0x....      BL       VSensor_update
+    281          			InvList_remove(&listener->vsensor->list, &listener->next);
+   \   00000044   0x4621             MOV      R1,R4
+   \   00000046   0x68A0             LDR      R0,[R4, #+8]
+   \   00000048   0x1D00             ADDS     R0,R0,#+4
+   \   0000004A   0x.... 0x....      BL       InvList_remove
+   \   0000004E   0xE004             B.N      ??VSensorListener_disable_2
+    282          		}
+    283          		else {
+    284          			apply(listener, 0, 0);
+   \                     ??VSensorListener_disable_1: (+1)
+   \   00000050   0x2200             MOVS     R2,#+0
+   \   00000052   0x4611             MOV      R1,R2
+   \   00000054   0x4620             MOV      R0,R4
+   \   00000056   0x.... 0x....      BL       apply
+    285          		}
+    286          
+    287          		/* notify this listener it has successfuly unsubscribed from the vsensor */
+    288          		listener->handler(listener, VSENSOR_EVENT_HAS_UNSUBSCRIBED, 0);
+   \                     ??VSensorListener_disable_2: (+1)
+   \   0000005A   0x2200             MOVS     R2,#+0
+   \   0000005C   0x2103             MOVS     R1,#+3
+   \   0000005E   0x4620             MOV      R0,R4
+   \   00000060   0x6863             LDR      R3,[R4, #+4]
+   \   00000062   0xE8BD 0x4010      POP      {R4,LR}
+   \   00000066   0x4718             BX       R3
+    289          	}
+    290          }
+   \                     ??VSensorListener_disable_0: (+1)
+   \   00000068   0xBD10             POP      {R4,PC}          ;; return
+    291          
+
+   \                                 In section .text, align 2, keep-with-next
+    292          void VSensor_init(VSensor * vsensor, VSensorUpdateCb update,
+    293          		int type, unsigned sdata, const VSensorAttr * attr, void * arg)
+    294          {
+   \                     VSensor_init: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   \   00000006   0x4616             MOV      R6,R2
+   \   00000008   0x461F             MOV      R7,R3
+    295          	memset(vsensor, 0, sizeof(* vsensor));
+   \   0000000A   0x2200             MOVS     R2,#+0
+   \   0000000C   0x2120             MOVS     R1,#+32
+   \   0000000E   0x.... 0x....      BL       __aeabi_memset4
+    296          	vsensor->type   = type;
+   \   00000012   0x8126             STRH     R6,[R4, #+8]
+    297          	vsensor->sdata  = sdata;
+   \   00000014   0x8167             STRH     R7,[R4, #+10]
+    298          	vsensor->update = update;
+   \   00000016   0x6025             STR      R5,[R4, #+0]
+    299          	vsensor->arg    = arg;
+   \   00000018   0x9807             LDR      R0,[SP, #+28]
+   \   0000001A   0x61E0             STR      R0,[R4, #+28]
+   \   0000001C   0x9806             LDR      R0,[SP, #+24]
+    300          
+    301          	if(attr) {
+   \   0000001E   0x2800             CMP      R0,#+0
+   \   00000020   0xD002             BEQ.N    ??VSensor_init_0
+    302          		vsensor->attr = *attr;
+   \   00000022   0x6800             LDR      R0,[R0, #+0]
+   \   00000024   0x61A0             STR      R0,[R4, #+24]
+   \   00000026   0xBDF1             POP      {R0,R4-R7,PC}
+    303          	} else {
+    304          		vsensor->attr.min_ri = VSENSOR_ATTR_MIN_RI_DEFAULT;
+   \                     ??VSensor_init_0: (+1)
+   \   00000028   0xF44F 0x707A      MOV      R0,#+1000
+   \   0000002C   0x61A0             STR      R0,[R4, #+24]
+    305          //		vsensor->attr.max_ri = VSENSOR_ATTR_MAX_RI_DEFAULT;
+    306          	}
+    307          }
+   \   0000002E   0xBDF1             POP      {R0,R4-R7,PC}    ;; return
+    308          
+
+   \                                 In section .text, align 2, keep-with-next
+    309          void VSensor_notifyEvent(VSensor *vsensor, int event, const void * data)
+    310          {
+   \                     VSensor_notifyEvent: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x460C             MOV      R4,R1
+   \   00000004   0x4615             MOV      R5,R2
+    311          	struct InvList *cur = InvList_head(&vsensor->list);
+   \   00000006   0x1D00             ADDS     R0,R0,#+4
+   \   00000008   0x.... 0x....      BL       InvList_head
+   \   0000000C   0x0006             MOVS     R6,R0
+   \   0000000E   0xE008             B.N      ??VSensor_notifyEvent_0
+    312          
+    313          	while (cur != 0) {
+    314          		VSensorListener *listener = INVLIST_GET(cur, VSensorListener, next);
+    315          		listener->handler(listener, event, data);
+   \                     ??VSensor_notifyEvent_1: (+1)
+   \   00000010   0x462A             MOV      R2,R5
+   \   00000012   0x4621             MOV      R1,R4
+   \   00000014   0x4630             MOV      R0,R6
+   \   00000016   0x6873             LDR      R3,[R6, #+4]
+   \   00000018   0x4798             BLX      R3
+    316          		cur = InvList_next(cur);
+   \   0000001A   0x4630             MOV      R0,R6
+   \   0000001C   0x.... 0x....      BL       InvList_next
+   \   00000020   0x0006             MOVS     R6,R0
+    317          	}
+   \                     ??VSensor_notifyEvent_0: (+1)
+   \   00000022   0xD1F5             BNE.N    ??VSensor_notifyEvent_1
+    318          }
+   \   00000024   0xBD70             POP      {R4-R6,PC}       ;; return
+    319          
+    320          
+
+   \                                 In section .text, align 2, keep-with-next
+    321          static void vsensorSmartListenerHandler(struct VSensorListener * listener, int event, const void * data)
+    322          {
+   \                     vsensorSmartListenerHandler: (+1)
+   \   00000000   0xE92D 0x41F0      PUSH     {R4-R8,LR}
+   \   00000004   0xB082             SUB      SP,SP,#+8
+   \   00000006   0x4604             MOV      R4,R0
+   \   00000008   0x460D             MOV      R5,R1
+   \   0000000A   0x4616             MOV      R6,R2
+    323          	struct VSensorSmartListener * smartlistener = (struct VSensorSmartListener *)listener;
+    324          	const void * new_data;
+    325          	int result, icount = 0;
+   \   0000000C   0x2700             MOVS     R7,#+0
+    326          
+    327          	do {
+    328          		result = smartlistener->decimator(smartlistener, event, data, &new_data);
+   \                     ??vsensorSmartListenerHandler_0: (+1)
+   \   0000000E   0x466B             MOV      R3,SP
+   \   00000010   0x4632             MOV      R2,R6
+   \   00000012   0x4629             MOV      R1,R5
+   \   00000014   0x4620             MOV      R0,R4
+   \   00000016   0xF8D4 0xC01C      LDR      R12,[R4, #+28]
+   \   0000001A   0x47E0             BLX      R12
+   \   0000001C   0x4680             MOV      R8,R0
+    329          		if(result) {
+   \   0000001E   0xF1B8 0x0F00      CMP      R8,#+0
+   \   00000022   0xD004             BEQ.N    ??vsensorSmartListenerHandler_1
+    330          			smartlistener->handler(listener, event, new_data);
+   \   00000024   0x9A00             LDR      R2,[SP, #+0]
+   \   00000026   0x4629             MOV      R1,R5
+   \   00000028   0x4620             MOV      R0,R4
+   \   0000002A   0x69A3             LDR      R3,[R4, #+24]
+   \   0000002C   0x4798             BLX      R3
+    331          		}
+    332          	} while(result > 1 && ++icount < 10);
+   \                     ??vsensorSmartListenerHandler_1: (+1)
+   \   0000002E   0xF1B8 0x0F02      CMP      R8,#+2
+   \   00000032   0xDB02             BLT.N    ??vsensorSmartListenerHandler_2
+   \   00000034   0x1C7F             ADDS     R7,R7,#+1
+   \   00000036   0x2F0A             CMP      R7,#+10
+   \   00000038   0xDBE9             BLT.N    ??vsensorSmartListenerHandler_0
+    333          }
+   \                     ??vsensorSmartListenerHandler_2: (+1)
+   \   0000003A   0xE8BD 0x81F3      POP      {R0,R1,R4-R8,PC}  ;; return
+    334          
+
+   \                                 In section .text, align 2, keep-with-next
+    335          int VSensorSmartListener_attach(VSensorSmartListener * listener, struct VSensor * vsensor,
+    336          		VSensorListenerHandler handler, void * arg, VSensorDecimatorCb decimator)
+    337          {
+   \                     VSensorSmartListener_attach: (+1)
+   \   00000000   0xB418             PUSH     {R3,R4}
+   \   00000002   0x9C02             LDR      R4,[SP, #+8]
+    338          	listener->decimator = decimator;
+   \   00000004   0x61C4             STR      R4,[R0, #+28]
+    339          	listener->handler = handler;
+   \   00000006   0x6182             STR      R2,[R0, #+24]
+    340          
+    341          	if(!decimator) {
+   \   00000008   0x2C00             CMP      R4,#+0
+   \   0000000A   0xD102             BNE.N    ??VSensorSmartListener_attach_0
+    342          		/* no decimator provided, acts as a standard VSensorListener */
+    343          		return VSensorListener_attach(&listener->base, vsensor, handler, arg);
+   \   0000000C   0xB001             ADD      SP,SP,#+4
+   \   0000000E   0xBC10             POP      {R4}
+   \   00000010   0x....             B.N      VSensorListener_attach
+    344          	}
+    345          	else {
+    346          		return VSensorListener_attach(&listener->base, vsensor, vsensorSmartListenerHandler, arg);
+   \                     ??VSensorSmartListener_attach_0: (+1)
+   \   00000012   0x....             LDR.N    R2,??DataTable6_1
+   \   00000014   0xB001             ADD      SP,SP,#+4
+   \   00000016   0xBC10             POP      {R4}
+   \   00000018   0x....             B.N      VSensorListener_attach
+    347          	}
+    348          }
+    349          
+
+   \                                 In section .text, align 2, keep-with-next
+    350          int VSensorSmartListenerRIR_decimator(struct VSensorSmartListener * smartlistener, int event,
+    351          		const void * data, const void ** new_data)
+    352          {
+   \                     VSensorSmartListenerRIR_decimator: (+1)
+   \   00000000   0xB410             PUSH     {R4}
+    353          	struct VSensorSmartListenerRIR * rir = (struct VSensorSmartListenerRIR *)smartlistener;
+    354          
+    355          	switch(event) {
+   \   00000002   0x2901             CMP      R1,#+1
+   \   00000004   0xD010             BEQ.N    ??VSensorSmartListenerRIR_decimator_0
+   \   00000006   0x2904             CMP      R1,#+4
+   \   00000008   0xD118             BNE.N    ??VSensorSmartListenerRIR_decimator_1
+    356          	case VSENSOR_EVENT_NEW_EFFECTIVE_RI:
+    357          	{
+    358          		const uint32_t eri = *(const uint32_t *)data;
+   \   0000000A   0x6811             LDR      R1,[R2, #+0]
+    359          		if(eri < smartlistener->base.ri && eri != 0) {
+   \   0000000C   0x68C4             LDR      R4,[R0, #+12]
+   \   0000000E   0x42A1             CMP      R1,R4
+   \   00000010   0xD206             BCS.N    ??VSensorSmartListenerRIR_decimator_2
+   \   00000012   0x2900             CMP      R1,#+0
+   \   00000014   0xD004             BEQ.N    ??VSensorSmartListenerRIR_decimator_2
+    360          			rir->rate = smartlistener->base.ri / eri;
+   \   00000016   0xFBB4 0xF1F1      UDIV     R1,R4,R1
+   \   0000001A   0x6241             STR      R1,[R0, #+36]
+    361          			rir->cnt = rir->rate;
+   \   0000001C   0x6201             STR      R1,[R0, #+32]
+   \   0000001E   0xE00D             B.N      ??VSensorSmartListenerRIR_decimator_1
+    362          		}
+    363          		else {
+    364          			rir->cnt = 0;
+   \                     ??VSensorSmartListenerRIR_decimator_2: (+1)
+   \   00000020   0x2100             MOVS     R1,#+0
+   \   00000022   0x6201             STR      R1,[R0, #+32]
+    365          			rir->rate = 0;
+   \   00000024   0x6241             STR      R1,[R0, #+36]
+   \   00000026   0xE009             B.N      ??VSensorSmartListenerRIR_decimator_1
+    366          		}
+    367          		break;
+    368          	}
+    369          
+    370          	case VSENSOR_EVENT_NEW_DATA:
+    371          		if(++rir->cnt < rir->rate) {
+   \                     ??VSensorSmartListenerRIR_decimator_0: (+1)
+   \   00000028   0x6A01             LDR      R1,[R0, #+32]
+   \   0000002A   0x1C49             ADDS     R1,R1,#+1
+   \   0000002C   0x6201             STR      R1,[R0, #+32]
+   \   0000002E   0x6A44             LDR      R4,[R0, #+36]
+   \   00000030   0x42A1             CMP      R1,R4
+   \   00000032   0xD201             BCS.N    ??VSensorSmartListenerRIR_decimator_3
+    372          			/* drop data */
+    373          			return 0;
+   \   00000034   0x2000             MOVS     R0,#+0
+   \   00000036   0xE003             B.N      ??VSensorSmartListenerRIR_decimator_4
+    374          		}
+    375          		/* keep data */
+    376          		rir->cnt = 0;
+   \                     ??VSensorSmartListenerRIR_decimator_3: (+1)
+   \   00000038   0x2100             MOVS     R1,#+0
+   \   0000003A   0x6201             STR      R1,[R0, #+32]
+    377          		break;
+    378          
+    379          	default:
+    380          		break;
+    381          	}
+    382          
+    383          	*new_data = data;
+   \                     ??VSensorSmartListenerRIR_decimator_1: (+1)
+   \   0000003C   0x601A             STR      R2,[R3, #+0]
+    384          	return 1;
+   \   0000003E   0x2001             MOVS     R0,#+1
+   \                     ??VSensorSmartListenerRIR_decimator_4: (+1)
+   \   00000040   0xBC10             POP      {R4}
+   \   00000042   0x4770             BX       LR               ;; return
+    385          }
+    386          
+
+   \                                 In section .text, align 2, keep-with-next
+    387          int VSensorSmartListenerRIR_attach(VSensorSmartListenerRIR * listener, struct VSensor * vsensor,
+    388          		VSensorListenerHandler handler, void * arg)
+    389          {
+   \                     VSensorSmartListenerRIR_attach: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0xB082             SUB      SP,SP,#+8
+    390          	listener->cnt = 0;
+   \   00000004   0x2400             MOVS     R4,#+0
+   \   00000006   0x6204             STR      R4,[R0, #+32]
+    391          	listener->rate = 0;
+   \   00000008   0x6244             STR      R4,[R0, #+36]
+    392          
+    393          	return VSensorSmartListener_attach(&listener->base, vsensor, handler, arg, VSensorSmartListenerRIR_decimator);
+   \   0000000A   0x....             LDR.N    R4,??DataTable6_2
+   \   0000000C   0x9400             STR      R4,[SP, #+0]
+   \   0000000E   0x.... 0x....      BL       VSensorSmartListener_attach
+   \   00000012   0xBD16             POP      {R1,R2,R4,PC}    ;; return
+    394          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6:
+   \   00000000   0x........         DC32     dummyHandler
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6_1:
+   \   00000000   0x........         DC32     vsensorSmartListenerHandler
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6_2:
+   \   00000000   0x........         DC32     VSensorSmartListenerRIR_decimator
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_0:
+   \   00000000   0x6C 0x69          DC8 "list"
+   \              0x73 0x74    
+   \              0x00         
+   \   00000005   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_1:
+   \   00000000   0x43 0x3A          DC8 43H, 3AH, 5CH, 55H, 73H, 65H, 72H, 73H
+   \              0x5C 0x55    
+   \              0x73 0x65    
+   \              0x72 0x73    
+   \   00000008   0x5C 0x70          DC8 5CH, 70H, 72H, 61H, 73H, 61H, 5CH, 44H
+   \              0x72 0x61    
+   \              0x73 0x61    
+   \              0x5C 0x44    
+   \   00000010   0x6F 0x63          DC8 6FH, 63H, 75H, 6DH, 65H, 6EH, 74H, 73H
+   \              0x75 0x6D    
+   \              0x65 0x6E    
+   \              0x74 0x73    
+   \   00000018   0x5C 0x31          DC8 5CH, 31H, 2EH, 30H, 2EH, 30H, 5CH, 73H
+   \              0x2E 0x30    
+   \              0x2E 0x30    
+   \              0x5C 0x73    
+   \   00000020   0x6F 0x75          DC8 6FH, 75H, 72H, 63H, 65H, 73H, 5CH, 65H
+   \              0x72 0x63    
+   \              0x65 0x73    
+   \              0x5C 0x65    
+   \   00000028   0x78 0x61          DC8 78H, 61H, 6DH, 70H, 6CH, 65H, 73H, 5CH
+   \              0x6D 0x70    
+   \              0x6C 0x65    
+   \              0x73 0x5C    
+   \   00000030   0x65 0x78          DC8 65H, 78H, 61H, 6DH, 70H, 6CH, 65H, 2DH
+   \              0x61 0x6D    
+   \              0x70 0x6C    
+   \              0x65 0x2D    
+   \   00000038   0x69 0x63          DC8 69H, 63H, 6DH, 32H, 30H, 39H, 34H, 38H
+   \              0x6D 0x32    
+   \              0x30 0x39    
+   \              0x34 0x38    
+   \   00000040   0x2F 0x2E          DC8 2FH, 2EH, 2EH, 2FH, 2EH, 2EH, 5CH, 49H
+   \              0x2E 0x2F    
+   \              0x2E 0x2E    
+   \              0x5C 0x49    
+   \   00000048   0x6E 0x76          DC8 6EH, 76H, 6EH, 2FH, 45H, 6DH, 62H, 55H
+   \              0x6E 0x2F    
+   \              0x45 0x6D    
+   \              0x62 0x55    
+   \   00000050   0x74 0x69          DC8 74H, 69H, 6CH, 73H, 2FH, 49H, 6EH, 76H
+   \              0x6C 0x73    
+   \              0x2F 0x49    
+   \              0x6E 0x76    
+   \   00000058   0x4C 0x69          DC8 4CH, 69H, 73H, 74H, 2EH, 68H, 0
+   \              0x73 0x74    
+   \              0x2E 0x68    
+   \              0x00         
+   \   0000005F   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_2:
+   \   00000000   0x76 0x73          DC8 "vsensor && vsensor->update"
+   \              0x65 0x6E    
+   \              0x73 0x6F    
+   \              0x72 0x20    
+   \              0x26 0x26    
+   \              0x20 0x76    
+   \              0x73 0x65    
+   \              0x6E 0x73    
+   \              0x6F 0x72    
+   \              0x2D 0x3E    
+   \              0x75 0x70    
+   \              0x64 0x61    
+   \              0x74 0x65    
+   \              0x00         
+   \   0000001B   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_3:
+   \   00000000   0x43 0x3A          DC8 43H, 3AH, 5CH, 55H, 73H, 65H, 72H, 73H
+   \              0x5C 0x55    
+   \              0x73 0x65    
+   \              0x72 0x73    
+   \   00000008   0x5C 0x70          DC8 5CH, 70H, 72H, 61H, 73H, 61H, 5CH, 44H
+   \              0x72 0x61    
+   \              0x73 0x61    
+   \              0x5C 0x44    
+   \   00000010   0x6F 0x63          DC8 6FH, 63H, 75H, 6DH, 65H, 6EH, 74H, 73H
+   \              0x75 0x6D    
+   \              0x65 0x6E    
+   \              0x74 0x73    
+   \   00000018   0x5C 0x31          DC8 5CH, 31H, 2EH, 30H, 2EH, 30H, 5CH, 73H
+   \              0x2E 0x30    
+   \              0x2E 0x30    
+   \              0x5C 0x73    
+   \   00000020   0x6F 0x75          DC8 6FH, 75H, 72H, 63H, 65H, 73H, 5CH, 49H
+   \              0x72 0x63    
+   \              0x65 0x73    
+   \              0x5C 0x49    
+   \   00000028   0x6E 0x76          DC8 6EH, 76H, 6EH, 5CH, 56H, 53H, 65H, 6EH
+   \              0x6E 0x5C    
+   \              0x56 0x53    
+   \              0x65 0x6E    
+   \   00000030   0x73 0x6F          DC8 73H, 6FH, 72H, 5CH, 56H, 53H, 65H, 6EH
+   \              0x72 0x5C    
+   \              0x56 0x53    
+   \              0x65 0x6E    
+   \   00000038   0x73 0x6F          DC8 73H, 6FH, 72H, 2EH, 63H, 0
+   \              0x72 0x2E    
+   \              0x63 0x00    
+   \   0000003E   0x00 0x00          DC8 0, 0
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   InvList_head
+         8   -> InvAssert
+       8   InvList_init
+         8   -> InvAssert
+       8   InvList_isEmpty
+         8   -> InvAssert
+       8   InvList_next
+         8   -> InvAssert
+      24   VSensorListener_attach
+        24   -> InvList_init
+         0   -> setupVSensor
+       8   VSensorListener_disable
+         0   -- Indirect call
+         8   -> InvList_add
+         8   -> InvList_isEmpty
+         8   -> InvList_remove
+         8   -> VSensor_update
+         8   -> apply
+         8   -> isListenerValid
+      16   VSensorListener_enable
+        16   -- Indirect call
+        16   -> InvList_add
+        16   -> InvList_isEmpty
+         0   -> apply
+        16   -> isListenerValid
+      16   VSensorListener_setMrl
+        16   -> InvList_isIn
+         0   -> apply
+        16   -> isListenerValid
+      16   VSensorListener_setRi
+        16   -> InvList_isIn
+         0   -> apply
+        16   -> isListenerValid
+      16   VSensorSmartListenerRIR_attach
+        16   -> VSensorSmartListener_attach
+       4   VSensorSmartListenerRIR_decimator
+       8   VSensorSmartListener_attach
+         0   -> VSensorListener_attach
+      24   VSensor_init
+        24   -> __aeabi_memset4
+      16   VSensor_notifyEvent
+        16   -- Indirect call
+        16   -> InvList_head
+        16   -> InvList_next
+       0   VSensor_update
+         0   -- Indirect call
+      32   apply
+        32   -- Indirect call
+        32   -> VSensor_notifyEvent
+        32   -> VSensor_update
+        32   -> getList
+        32   -> getMinRimrl
+       0   dummyHandler
+       0   getList
+      16   getMinRimrl
+        16   -> InvList_head
+        16   -> InvList_next
+       0   isListenerValid
+       8   setupVSensor
+         8   -- Indirect call
+         8   -> InvAssert
+      32   vsensorSmartListenerHandler
+        32   -- Indirect call
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable6
+       4  ??DataTable6_1
+       4  ??DataTable6_2
+       8  ?_0
+      96  ?_1
+      28  ?_2
+      64  ?_3
+      24  InvList_head
+      26  InvList_init
+      34  InvList_isEmpty
+      24  InvList_next
+      54  VSensorListener_attach
+     106  VSensorListener_disable
+      66  VSensorListener_enable
+      44  VSensorListener_setMrl
+      44  VSensorListener_setRi
+      20  VSensorSmartListenerRIR_attach
+      68  VSensorSmartListenerRIR_decimator
+      26  VSensorSmartListener_attach
+      48  VSensor_init
+      38  VSensor_notifyEvent
+       4  VSensor_update
+     228  apply
+       2  dummyHandler
+       6  getList
+      66  getMinRimrl
+      24  isListenerValid
+     108  setupVSensor
+      62  vsensorSmartListenerHandler
+
+ 
+ 1 330 bytes in section .text
+ 
+ 1 330 bytes of CODE memory
+
+Errors: none
+Warnings: none

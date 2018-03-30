@@ -1,0 +1,252 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:37
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\stm32f4xx_it.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\stm32f4xx_it.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\stm32f4xx_it.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_it.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\stm32f4xx_it.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    GPIO/GPIO_IOToggle/stm32f4xx_it.c 
+      4            * @author  MCD Application Team
+      5            * @version V1.6.1
+      6            * @date    21-October-2015
+      7            * @brief   Main Interrupt Service Routines.
+      8            *          This file provides template for all exceptions handler and 
+      9            *          peripherals interrupt service routine.
+     10            ******************************************************************************
+     11            * @attention
+     12            *
+     13            * <h2><center>&copy; COPYRIGHT 2015 STMicroelectronics</center></h2>
+     14            *
+     15            * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+     16            * You may not use this file except in compliance with the License.
+     17            * You may obtain a copy of the License at:
+     18            *
+     19            *        http://www.st.com/software_license_agreement_liberty_v2
+     20            *
+     21            * Unless required by applicable law or agreed to in writing, software 
+     22            * distributed under the License is distributed on an "AS IS" BASIS, 
+     23            * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     24            * See the License for the specific language governing permissions and
+     25            * limitations under the License.
+     26            *
+     27            ******************************************************************************
+     28            */
+     29          
+     30          /* Includes ------------------------------------------------------------------*/
+     31          #include "stm32f4xx_it.h"
+     32          
+     33          /** @addtogroup STM32F4xx_StdPeriph_Examples
+     34            * @{
+     35            */
+     36          
+     37          /** @addtogroup GPIO_IOToggle
+     38            * @{
+     39            */
+     40          
+     41          /* Private typedef -----------------------------------------------------------*/
+     42          /* Private define ------------------------------------------------------------*/
+     43          /* Private macro -------------------------------------------------------------*/
+     44          /* Private variables ---------------------------------------------------------*/
+     45          /* Private function prototypes -----------------------------------------------*/
+     46          /* Private functions ---------------------------------------------------------*/
+     47          
+     48          /******************************************************************************/
+     49          /*            Cortex-M4 Processor Exceptions Handlers                         */
+     50          /******************************************************************************/
+     51          
+     52          /**
+     53            * @brief   This function handles NMI exception.
+     54            * @param  None
+     55            * @retval None
+     56            */
+
+   \                                 In section .text, align 2, keep-with-next
+     57          void NMI_Handler(void)
+     58          {
+     59          }
+   \                     NMI_Handler: (+1)
+   \   00000000   0x4770             BX       LR               ;; return
+     60          
+     61          /**
+     62            * @brief  This function handles Hard Fault exception.
+     63            * @param  None
+     64            * @retval None
+     65            */
+
+   \                                 In section .text, align 2, keep-with-next
+     66          void HardFault_Handler(void)
+     67          {
+     68            /* Go to infinite loop when Hard Fault exception occurs */
+     69            while (1)
+   \                     HardFault_Handler: (+1)
+   \                     ??HardFault_Handler_0: (+1)
+   \   00000000   0xE7FE             B.N      ??HardFault_Handler_0
+     70            {
+     71            }
+     72          }
+     73          
+     74          /**
+     75            * @brief  This function handles Memory Manage exception.
+     76            * @param  None
+     77            * @retval None
+     78            */
+
+   \                                 In section .text, align 2, keep-with-next
+     79          void MemManage_Handler(void)
+     80          {
+     81            /* Go to infinite loop when Memory Manage exception occurs */
+     82            while (1)
+   \                     MemManage_Handler: (+1)
+   \                     ??MemManage_Handler_0: (+1)
+   \   00000000   0xE7FE             B.N      ??MemManage_Handler_0
+     83            {
+     84            }
+     85          }
+     86          
+     87          /**
+     88            * @brief  This function handles Bus Fault exception.
+     89            * @param  None
+     90            * @retval None
+     91            */
+
+   \                                 In section .text, align 2, keep-with-next
+     92          void BusFault_Handler(void)
+     93          {
+     94            /* Go to infinite loop when Bus Fault exception occurs */
+     95            while (1)
+   \                     BusFault_Handler: (+1)
+   \                     ??BusFault_Handler_0: (+1)
+   \   00000000   0xE7FE             B.N      ??BusFault_Handler_0
+     96            {
+     97            }
+     98          }
+     99          
+    100          /**
+    101            * @brief  This function handles Usage Fault exception.
+    102            * @param  None
+    103            * @retval None
+    104            */
+
+   \                                 In section .text, align 2, keep-with-next
+    105          void UsageFault_Handler(void)
+    106          {
+    107            /* Go to infinite loop when Usage Fault exception occurs */
+    108            while (1)
+   \                     UsageFault_Handler: (+1)
+   \                     ??UsageFault_Handler_0: (+1)
+   \   00000000   0xE7FE             B.N      ??UsageFault_Handler_0
+    109            {
+    110            }
+    111          }
+    112           
+    113          /**
+    114            * @brief  This function handles Debug Monitor exception.
+    115            * @param  None
+    116            * @retval None
+    117            */
+
+   \                                 In section .text, align 2, keep-with-next
+    118          void DebugMon_Handler(void)
+    119          {
+    120          }
+   \                     DebugMon_Handler: (+1)
+   \   00000000   0x4770             BX       LR               ;; return
+    121          
+    122          /******************************************************************************/
+    123          /*                 STM32F4xx Peripherals Interrupt Handlers                   */
+    124          /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+    125          /*  available peripheral interrupt handler's name please refer to the startup */
+    126          /*  file (startup_stm32f40xx.s/startup_stm32f427x.s/startup_stm32f429x.s).    */
+    127          /******************************************************************************/
+    128          
+    129          /**
+    130            * @brief  This function handles PPP interrupt request.
+    131            * @param  None
+    132            * @retval None
+    133            */
+    134          /*void PPP_IRQHandler(void)
+    135          {
+    136          }*/
+    137          
+    138          /**
+    139            * @}
+    140            */ 
+    141          
+    142          /**
+    143            * @}
+    144            */ 
+    145          
+    146          
+    147          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   BusFault_Handler
+       0   DebugMon_Handler
+       0   HardFault_Handler
+       0   MemManage_Handler
+       0   NMI_Handler
+       0   UsageFault_Handler
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  BusFault_Handler
+       2  DebugMon_Handler
+       2  HardFault_Handler
+       2  MemManage_Handler
+       2  NMI_Handler
+       2  UsageFault_Handler
+
+ 
+ 12 bytes in section .text
+ 
+ 12 bytes of CODE memory
+
+Errors: none
+Warnings: none

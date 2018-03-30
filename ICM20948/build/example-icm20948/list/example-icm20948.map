@@ -1,0 +1,1456 @@
+###############################################################################
+#
+# IAR ELF Linker V7.70.2.11706/W32 for ARM                22/Dec/2017  10:34:42
+# Copyright 2007-2016 IAR Systems AB.
+#
+#    Output file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\bin\example-icm20948.elf
+#    Map file     =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\example-icm20948.map
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\common.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\DataConverter.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\dbg_gpio.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\delay.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\DeviceIcm20948.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\DynProtocol.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\DynProtocolTransportUart.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\ErrorHelper.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\example.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\flash_manager.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\gpio.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\HostSerif.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\i2c_master.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\i2c_slave.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\iar_hook.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948Augmented.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948AuxCompassAkm.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948AuxTransport.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948DataBaseControl.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948DataBaseDriver.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948DataConverter.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948Dmp3Driver.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948LoadFirmware.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948MPUFifoControl.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948SelfTest.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948Setup.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948Transport.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\idd_io_hal.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvBasicMath.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvCksum.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvFormat.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvList.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvPrintf.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvProtocol.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvQueue.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvScheduler.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\led.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Logger.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Message.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\misc.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\RingByteBuffer.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\rtc_timer.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Sensor.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\spi_master.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\spi_slave.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\startup_stm32f411xe.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_adc.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_can.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_cec.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_crc.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_cryp.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_cryp_aes.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_cryp_des.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_cryp_tdes.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_dac.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_dbgmcu.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_dcmi.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_dma.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_dma2d.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_dsi.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_exti.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_flash.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_flash_ramfunc.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_fmpi2c.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_gpio.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_hash.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_hash_md5.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_hash_sha1.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_i2c.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_it.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_iwdg.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_lptim.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_ltdc.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_pwr.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_qspi.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_rcc.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_rng.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_rtc.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_sai.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_sdio.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_spdifrx.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_spi.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_syscfg.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_tim.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_usart.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_wwdg.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\sys_timer.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\system_stm32f4xx.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\timer.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\uart.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\UartTxEmulator.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\VSensor.o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\VSensorId.o
+#        -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\bin\example-icm20948.elf
+#        --map
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\example-icm20948.map
+#        --config
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/stm32f411xe_flash_sector_reserved.icf
+#        --entry __iar_program_start --vfe
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__SystemLibrary = DLib
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at 0x08000000 { ro section .intvec };
+"P1":  place in [from 0x08008000 to 0x0807ffff] { ro };
+"P2":  place in [from 0x20000000 to 0x2001ffff] { rw, block CSTACK, block HEAP };
+initialize by copy { rw };
+
+  Section             Kind        Address     Size  Object
+  -------             ----        -------     ----  ------
+"A0":                                        0x198
+  .intvec             ro code  0x08000000    0x198  startup_stm32f411xe.o [1]
+                             - 0x08000198    0x198
+
+"P1":                                      0x12996
+  .text               ro code  0x08008000   0x4948  example.o [1]
+  .text               ro code  0x0800c948     0x34  assert.o [3]
+  .text               ro code  0x0800c97c    0x100  flash_manager.o [1]
+  .text               ro code  0x0800ca7c     0x7c  misc.o [1]
+  .text               ro code  0x0800caf8     0xc6  delay.o [1]
+  .text               ro code  0x0800cbbe     0x1a  xsnprout.o [3]
+  .text               ro code  0x0800cbd8    0xdd2  uart.o [1]
+  .text               ro code  0x0800d9ac    0x1c4  DynProtocolTransportUart.o [1]
+  .text               ro code  0x0800db70   0x114c  DynProtocol.o [1]
+  .text               ro code  0x0800ecbc    0x3cc  timer.o [1]
+  .text               ro code  0x0800f088    0x248  gpio.o [1]
+  .text               ro code  0x0800f2d0     0x44  Message.o [1]
+  .text               ro code  0x0800f314     0x4c  idd_io_hal.o [1]
+  .text               ro code  0x0800f360    0xa84  DeviceIcm20948.o [1]
+  .text               ro code  0x0800fde4     0x76  ABImemcpy_unaligned.o [5]
+  .text               ro code  0x0800fe5c     0x44  snprintf.o [3]
+  .text               ro code  0x0800fea0     0x3c  vsnprint.o [3]
+  .text               ro code  0x0800fedc     0x88  Sensor.o [1]
+  .text               ro code  0x0800ff64     0x66  ABImemset.o [5]
+  .text               ro code  0x0800ffca     0x94  DataConverter.o [1]
+  .text               ro code  0x08010060     0x3a  ABImemset48.o [5]
+  .text               ro code  0x0801009c      0x6  ABImemclr4.o [5]
+  .text               ro code  0x080100a4     0x24  printf.o [3]
+  .text               ro code  0x080100c8      0x6  abort.o [3]
+  .text               ro code  0x080100d0    0x144  stm32f4xx_flash.o [1]
+  .text               ro code  0x08010214     0xde  stm32f4xx_tim.o [1]
+  .text               ro code  0x080102f4     0xf0  stm32f4xx_rcc.o [1]
+  .text               ro code  0x080103e4    0x158  stm32f4xx_dma.o [1]
+  .text               ro code  0x0801053c    0x180  stm32f4xx_usart.o [1]
+  .text               ro code  0x080106bc    0x164  RingByteBuffer.o [1]
+  .text               ro code  0x08010820     0xae  stm32f4xx_gpio.o [1]
+  .text               ro code  0x080108d0     0x24  common.o [1]
+  .text               ro code  0x080108f4     0x28  stm32f4xx_syscfg.o [1]
+  .text               ro code  0x0801091c     0x94  stm32f4xx_exti.o [1]
+  .text               ro code  0x080109b0    0x448  spi_master.o [1]
+  .text               ro code  0x08010df8   0x122c  Icm20948Setup.o [1]
+  .text               ro code  0x08012024    0x79c  Icm20948SelfTest.o [1]
+  .text               ro code  0x080127c0    0x510  Icm20948AuxCompassAkm.o [1]
+  .text               ro code  0x08012cd0    0x584  Icm20948Transport.o [1]
+  .text               ro code  0x08013254    0xdca  xprintffull_nomb.o [3]
+  .text               ro code  0x08014020      0xc  XXexit.o [5]
+  .text               ro code  0x0801402c     0xa8  stm32f4xx_spi.o [1]
+  .text               ro code  0x080140d4    0xb22  Icm20948DataConverter.o [1]
+  .text               ro code  0x08014bf8   0x13cc  Icm20948DataBaseControl.o [1]
+  .text               ro code  0x08015fc4    0x5e0  Icm20948Augmented.o [1]
+  .text               ro code  0x080165a4    0x760  Icm20948DataBaseDriver.o [1]
+  .text               ro code  0x08016d04    0x874  Icm20948Dmp3Driver.o [1]
+  .text               ro code  0x08017578     0xc4  Icm20948LoadFirmware.o [1]
+  .text               ro code  0x0801763c    0x824  Icm20948MPUFifoControl.o [1]
+  .text               ro code  0x08017e60     0xee  I64DivMod.o [5]
+  .text               ro code  0x08017f4e    0x208  Icm20948AuxTransport.o [1]
+  .text               ro code  0x08018158     0x16  strchr.o [5]
+  .text               ro code  0x08018170     0x36  strlen.o [5]
+  .text               ro code  0x080181a8     0x58  memchr.o [5]
+  .text               ro code  0x08018200     0x44  xdnorm.o [4]
+  .text               ro code  0x08018244     0x2e  DblCmpLe.o [4]
+  .text               ro code  0x08018274     0x2e  DblCmpGe.o [4]
+  .text               ro code  0x080182a4    0x114  xdscale.o [4]
+  .text               ro code  0x080183b8     0x58  DblToI32.o [4]
+  .text               ro code  0x08018410     0x30  I32ToDbl.o [4]
+  .text               ro code  0x08018440    0x180  DblSub.o [4]
+  .text               ro code  0x080185c0    0x1a2  DblMul.o [4]
+  .text               ro code  0x08018764    0x256  DblDiv.o [4]
+  .text               ro code  0x080189ba      0xe  div.o [3]
+  .text               ro code  0x080189c8      0x6  cosf.o [4]
+  .text               ro code  0x080189ce      0x6  sinf.o [4]
+  .text               ro code  0x080189d4     0x1c  sqrtf.o [4]
+  .text               ro code  0x080189f0     0x22  S64Shr.o [5]
+  .text               ro code  0x08018a14     0x22  I64Shl.o [5]
+  .text               ro code  0x08018a38     0x62  memcmp_unaligned.o [5]
+  .text               ro code  0x08018a9c     0x78  ABImemmove_unaligned.o [5]
+  .text               ro code  0x08018b14      0x2  I64DivZer.o [5]
+  .text               ro code  0x08018b18     0xd4  DblAdd.o [4]
+  .text               ro code  0x08018bec    0x168  xfsin.o [4]
+  .text               ro code  0x08018d54      0xc  iarEdom.o [5]
+  .text               ro code  0x08018d60      0xc  errno.o [3]
+  .text               ro code  0x08018d6c     0xec  xfquad.o [4]
+  .text               ro code  0x08018e58      0x2  xtls.o [3]
+  .text               ro code  0x08018e5a     0x50  xfdint.o [4]
+  .text               ro code  0x08018eac     0xe6  fmodf.o [4]
+  .rodata             const    0x08018f94    0xaf8  Sensor.o [1]
+  .rodata             const    0x08019a8c    0x5d4  example.o [1]
+  .text               ro code  0x0801a060    0x190  i2c_slave.o [1]
+  .text               ro code  0x0801a1f0     0x76  stm32f4xx_i2c.o [1]
+  .text               ro code  0x0801a268     0xfc  system_stm32f4xx.o [1]
+  .text               ro code  0x0801a364     0x94  rtc_timer.o [1]
+  .text               ro code  0x0801a3f8     0x84  stm32f4xx_rtc.o [1]
+  .text               ro code  0x0801a47c     0x10  stm32f4xx_pwr.o [1]
+  .text               ro code  0x0801a48c     0x84  spi_slave.o [1]
+  .text               ro code  0x0801a510     0x78  lz77_init_single.o [5]
+  .text               ro code  0x0801a588     0x4a  iar_hook.o [1]
+  .text               ro code  0x0801a5d2     0x40  zero_init3.o [5]
+  .text               ro code  0x0801a612     0x28  putchar.o [3]
+  .text               ro code  0x0801a63c     0x28  data_init.o [5]
+  .text               ro code  0x0801a664     0x22  fpinit_M.o [4]
+  .iar.init_table     const    0x0801a688     0x20  - Linker created -
+  .text               ro code  0x0801a6a8     0x20  sys_timer.o [1]
+  .text               ro code  0x0801a6c8     0x1a  cmain.o [5]
+  .text               ro code  0x0801a6e2      0x4  low_level_init.o [3]
+  .text               ro code  0x0801a6e6      0x4  exit.o [3]
+  .text               ro code  0x0801a6ec      0xa  cexit.o [5]
+  .text               ro code  0x0801a6f6     0x16  xprout.o [3]
+  .text               ro code  0x0801a70c     0x10  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a71c      0xc  stm32f4xx_it.o [1]
+  .text               ro code  0x0801a728      0xc  cstartup_M.o [5]
+  .text               ro code  0x0801a734      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a738      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a73c      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a740      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a744      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a748      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a74c      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a750      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a754      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a758      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a75c      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a760      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a764      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a768      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a76c      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a770      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a774      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a778      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a77c      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a780      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a784      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a788      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a78c      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a790      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a794      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a798      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a79c      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7a0      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7a4      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7a8      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7ac      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7b0      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7b4      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7b8      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7bc      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7c0      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7c4      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7c8      0x4  startup_stm32f411xe.o [1]
+  .text               ro code  0x0801a7cc      0x4  startup_stm32f411xe.o [1]
+  .rodata             const    0x0801a7d0      0x0  zero_init3.o [5]
+  .rodata             const    0x0801a7d0      0x0  lz77_init_single.o [5]
+  Initializer bytes   const    0x0801a7d0    0x1c6  <for P2-1>
+                             - 0x0801a996  0x12996
+
+"P2", part 1 of 3:                           0x2fc
+  P2-1                         0x20000000    0x2fc  <Init block>
+    .data             inited   0x20000000     0x14  Icm20948DataConverter.o [1]
+    .data             inited   0x20000014    0x208  Sensor.o [1]
+    .data             inited   0x2000021c     0x10  stm32f4xx_rcc.o [1]
+    .data             inited   0x2000022c     0x14  system_stm32f4xx.o [1]
+    .data             inited   0x20000240     0xb8  uart.o [1]
+    __DLIB_PERTHREAD  inited   0x200002f8      0x4  errno.o [3]
+                             - 0x200002fc    0x2fc
+
+"P2", part 2 of 3:                           0x800
+  CSTACK                       0x20000300    0x800  <Block>
+    CSTACK            uninit   0x20000300    0x800  <Block tail>
+                             - 0x20000b00    0x800
+
+"P2", part 3 of 3:                          0xcef8
+  .bss                zero     0x20000b00   0x8a0c  uart.o [1]
+  .bss                zero     0x2000950c     0x64  uart.o [1]
+  .bss                zero     0x20009570   0x1768  example.o [1]
+  .bss                zero     0x2000acd8    0x8ac  uart.o [1]
+  .bss                zero     0x2000b584    0x840  i2c_slave.o [1]
+  .bss                zero     0x2000bdc4    0x804  spi_slave.o [1]
+  .bss                zero     0x2000c5c8    0x804  spi_slave.o [1]
+  .bss                zero     0x2000cdcc    0x4a4  Icm20948MPUFifoControl.o [1]
+  .bss                zero     0x2000d270    0x404  timer.o [1]
+  .bss                zero     0x2000d674    0x100  example.o [1]
+  .bss                zero     0x2000d774     0x88  example.o [1]
+  .bss                zero     0x2000d7fc     0x84  example.o [1]
+  .bss                zero     0x2000d880     0x64  uart.o [1]
+  .bss                zero     0x2000d8e4     0x3c  timer.o [1]
+  .bss                zero     0x2000d920     0x34  timer.o [1]
+  .bss                zero     0x2000d954     0x34  timer.o [1]
+  .bss                zero     0x2000d988     0x14  rtc_timer.o [1]
+  .bss                zero     0x2000d99c      0xc  gpio.o [1]
+  .bss                zero     0x2000d9a8      0xc  i2c_slave.o [1]
+  .bss                zero     0x2000d9b4      0xc  rtc_timer.o [1]
+  .bss                zero     0x2000d9c0      0xc  sys_timer.o [1]
+  .bss                zero     0x2000d9cc      0x8  flash_manager.o [1]
+  .bss                zero     0x2000d9d4      0x8  Message.o [1]
+  .bss                zero     0x2000d9dc      0x4  common.o [1]
+  .bss                zero     0x2000d9e0      0x4  delay.o [1]
+  .bss                zero     0x2000d9e4      0x4  Icm20948DataBaseDriver.o [1]
+  .bss                zero     0x2000d9e8      0x4  Icm20948Transport.o [1]
+  .bss                zero     0x2000d9ec      0x4  spi_slave.o [1]
+  .bss                zero     0x2000d9f0      0x2  Icm20948Dmp3Driver.o [1]
+  .bss                zero     0x2000d9f2      0x2  spi_master.o [1]
+  .bss                zero     0x2000d9f4      0x1  Icm20948DataBaseDriver.o [1]
+  .bss                zero     0x2000d9f5      0x1  Icm20948DataBaseDriver.o [1]
+  .bss                zero     0x2000d9f6      0x1  timer.o [1]
+                             - 0x2000d9f7   0xcef7
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address     Size
+          -------     ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0xcef7:
+          0x20000b00  0xcef7
+
+Copy/lz77 (__iar_lz77_init_single3)
+    1 source range, total size 0x1c6 (59% of destination):
+          0x0801a7d0   0x1c6
+    1 destination range, total size 0x2fc:
+          0x20000000   0x2fc
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                      ro code  ro data  rw data
+    ------                      -------  -------  -------
+C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj: [1]
+    DataConverter.o                 148
+    DeviceIcm20948.o              2 692
+    DynProtocol.o                 4 428
+    DynProtocolTransportUart.o      452
+    Icm20948Augmented.o           1 504
+    Icm20948AuxCompassAkm.o       1 296
+    Icm20948AuxTransport.o          520
+    Icm20948DataBaseControl.o     5 068
+    Icm20948DataBaseDriver.o      1 888                 6
+    Icm20948DataConverter.o       2 850       11       20
+    Icm20948Dmp3Driver.o          2 164                 2
+    Icm20948LoadFirmware.o          196
+    Icm20948MPUFifoControl.o      2 084             1 188
+    Icm20948SelfTest.o            1 948
+    Icm20948Setup.o               4 652
+    Icm20948Transport.o           1 412                 4
+    Message.o                        68                 8
+    RingByteBuffer.o                356
+    Sensor.o                        136    3 117      520
+    common.o                         36                 4
+    delay.o                         198                 4
+    example.o                    18 760    1 492    6 516
+    flash_manager.o                 256                 8
+    gpio.o                          584                12
+    i2c_slave.o                     400             2 124
+    iar_hook.o                       74
+    idd_io_hal.o                     76
+    misc.o                          124
+    rtc_timer.o                     148                32
+    spi_master.o                  1 096                 2
+    spi_slave.o                     132             4 108
+    startup_stm32f411xe.o           580
+    stm32f4xx_dma.o                 344
+    stm32f4xx_exti.o                148
+    stm32f4xx_flash.o               324
+    stm32f4xx_gpio.o                174
+    stm32f4xx_i2c.o                 118
+    stm32f4xx_it.o                   12
+    stm32f4xx_pwr.o                  16
+    stm32f4xx_rcc.o                 240       10       16
+    stm32f4xx_rtc.o                 132
+    stm32f4xx_spi.o                 168
+    stm32f4xx_syscfg.o               40
+    stm32f4xx_tim.o                 222
+    stm32f4xx_usart.o               384
+    sys_timer.o                      32                12
+    system_stm32f4xx.o              252       12       20
+    timer.o                         972             1 193
+    uart.o                        3 538      109   37 944
+    -----------------------------------------------------
+    Total:                       63 442    4 751   53 743
+
+command line: [2]
+    -----------------------------------------------------
+    Total:
+
+dl7M_tln.a: [3]
+    abort.o                           6
+    assert.o                         52
+    div.o                            14
+    errno.o                          12        3        4
+    exit.o                            4
+    low_level_init.o                  4
+    printf.o                         36
+    putchar.o                        40
+    snprintf.o                       68
+    vsnprint.o                       60
+    xprintffull_nomb.o            3 530
+    xprout.o                         22
+    xsnprout.o                       26
+    xtls.o                            2
+    -----------------------------------------------------
+    Total:                        3 876        3        4
+
+m7M_tls.a: [4]
+    DblAdd.o                        212
+    DblCmpGe.o                       46
+    DblCmpLe.o                       46
+    DblDiv.o                        598
+    DblMul.o                        418
+    DblSub.o                        384
+    DblToI32.o                       88
+    I32ToDbl.o                       48
+    cosf.o                            6
+    fmodf.o                         230
+    fpinit_M.o                       34
+    sinf.o                            6
+    sqrtf.o                          28
+    xdnorm.o                         68
+    xdscale.o                       276
+    xfdint.o                         80
+    xfquad.o                        236
+    xfsin.o                         360
+    -----------------------------------------------------
+    Total:                        3 164
+
+rt7M_tl.a: [5]
+    ABImemclr4.o                      6
+    ABImemcpy_unaligned.o           118
+    ABImemmove_unaligned.o          120
+    ABImemset.o                     102
+    ABImemset48.o                    58
+    I64DivMod.o                     238
+    I64DivZer.o                       2
+    I64Shl.o                         34
+    S64Shr.o                         34
+    XXexit.o                         12
+    cexit.o                          10
+    cmain.o                          26
+    cstartup_M.o                     12
+    data_init.o                      40
+    iarEdom.o                        12
+    lz77_init_single.o              120
+    memchr.o                         88
+    memcmp_unaligned.o               98
+    strchr.o                         22
+    strlen.o                         54
+    zero_init3.o                     64
+    -----------------------------------------------------
+    Total:                        1 270
+
+    Gaps                             48        4
+    Linker created                            32    2 048
+---------------------------------------------------------
+    Grand Total:                 71 800    4 790   55 795
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                      Address    Size  Type      Object
+-----                      -------    ----  ----      ------
+.iar.init_table$$Base   0x0801a688           --   Gb  - Linker created -
+.iar.init_table$$Limit  0x0801a6a8           --   Gb  - Linker created -
+?main                   0x0801a6c9          Code  Gb  cmain.o [5]
+AHBPrescTable           0x2000022c    0x10  Data  Gb  system_stm32f4xx.o [1]
+AK09916_ST_Lower        0x08012cc0     0x8  Data  Lc  Icm20948AuxCompassAkm.o [1]
+AK09916_ST_Upper        0x08012cc8     0x8  Data  Lc  Icm20948AuxCompassAkm.o [1]
+APBAHBPrescTable        0x2000021c    0x10  Data  Lc  stm32f4xx_rcc.o [1]
+BusFault_Handler        0x0801a723     0x2  Code  Gb  stm32f4xx_it.o [1]
+CSTACK$$Base            0x20000300           --   Gb  - Linker created -
+CSTACK$$Limit           0x20000b00           --   Gb  - Linker created -
+CaptureNumber           0x2000d9b8     0x4  Data  Lc  rtc_timer.o [1]
+DMA1_Stream6_IRQHandler
+                        0x0800d8ad     0x4  Code  Gb  uart.o [1]
+DMA1_Stream7_IRQHandler
+                        0x0800d99d     0x4  Code  Gb  uart.o [1]
+DMA2_Stream2_IRQHandler
+                        0x0800d9a1     0x4  Code  Gb  uart.o [1]
+DMA2_Stream5_IRQHandler
+                        0x0800d9a5     0x4  Code  Gb  uart.o [1]
+DMA2_Stream6_IRQHandler
+                        0x0800d8b1     0x4  Code  Gb  uart.o [1]
+DMA2_Stream7_IRQHandler
+                        0x0800d8b5     0x4  Code  Gb  uart.o [1]
+DMA_ClearFlag           0x08010473    0x1c  Code  Gb  stm32f4xx_dma.o [1]
+DMA_ClearITPendingBit   0x08010509    0x1c  Code  Gb  stm32f4xx_dma.o [1]
+DMA_Cmd                 0x08010455    0x16  Code  Gb  stm32f4xx_dma.o [1]
+DMA_GetCmdStatus        0x0801046b     0x8  Code  Gb  stm32f4xx_dma.o [1]
+DMA_GetITStatus         0x080104c3    0x46  Code  Gb  stm32f4xx_dma.o [1]
+DMA_ITConfig            0x0801048f    0x34  Code  Gb  stm32f4xx_dma.o [1]
+DMA_Init                0x080103e5    0x4e  Code  Gb  stm32f4xx_dma.o [1]
+DMA_StructInit          0x08010433    0x22  Code  Gb  stm32f4xx_dma.o [1]
+DebugMon_Handler        0x0801a727     0x2  Code  Gb  stm32f4xx_it.o [1]
+DividerRateSet          0x08014c55    0x3c  Code  Lc  Icm20948DataBaseControl.o [1]
+DmpDriver_convertion    0x08011245    0x14  Code  Lc  Icm20948Setup.o [1]
+DynProTransportUart_callEventCB
+                        0x0800d9ad    0x14  Code  Lc  DynProtocolTransportUart.o [1]
+DynProTransportUart_init
+                        0x0800d9c1     0xc  Code  Gb  DynProtocolTransportUart.o [1]
+DynProTransportUart_rxProcessByte
+                        0x0800d9cd    0xda  Code  Gb  DynProtocolTransportUart.o [1]
+DynProTransportUart_txAssignBuffer
+                        0x0800daa7    0x1e  Code  Gb  DynProtocolTransportUart.o [1]
+DynProTransportUart_txEncodeFrame
+                        0x0800dac5    0x38  Code  Gb  DynProtocolTransportUart.o [1]
+DynProtocol_callEventCB
+                        0x0800e37f    0x16  Code  Lc  DynProtocol.o [1]
+DynProtocol_checkFrameSize
+                        0x0800e83b    0x3c  Code  Lc  DynProtocol.o [1]
+DynProtocol_decodePktAsync
+                        0x0800e35f    0x20  Code  Lc  DynProtocol.o [1]
+DynProtocol_decodePktCommand
+                        0x0800e1a9    0xda  Code  Lc  DynProtocol.o [1]
+DynProtocol_decodePktResponse
+                        0x0800e283    0xdc  Code  Lc  DynProtocol.o [1]
+DynProtocol_decodeSensorEvent
+                        0x0800dda1   0x408  Code  Lc  DynProtocol.o [1]
+DynProtocol_decodeVect16QxToQy
+                        0x0800db71    0x34  Code  Lc  DynProtocol.o [1]
+DynProtocol_doProcess   0x0800e395    0x78  Code  Lc  DynProtocol.o [1]
+DynProtocol_encodeAsync
+                        0x0800eac5    0x66  Code  Gb  DynProtocol.o [1]
+DynProtocol_encodeQxToQyVect16
+                        0x0800dba5    0x32  Code  Lc  DynProtocol.o [1]
+DynProtocol_encodeResponse
+                        0x0800e987   0x13e  Code  Gb  DynProtocol.o [1]
+DynProtocol_encodeSensorEvent
+                        0x0800e40d   0x42e  Code  Lc  DynProtocol.o [1]
+DynProtocol_getPayload  0x0800dc35   0x148  Code  Lc  DynProtocol.o [1]
+DynProtocol_getPrecision
+                        0x0800dbd7    0x5e  Code  Lc  DynProtocol.o [1]
+DynProtocol_init        0x0800e877    0x2c  Code  Gb  DynProtocol.o [1]
+DynProtocol_processPktByte
+                        0x0800e8c7    0xc0  Code  Gb  DynProtocol.o [1]
+DynProtocol_setPrecision
+                        0x0800e8a3    0x24  Code  Gb  DynProtocol.o [1]
+EXTI15_10_IRQHandler    0x0800f245    0x40  Code  Gb  gpio.o [1]
+EXTI4_IRQHandler        0x0800f223    0x22  Code  Gb  gpio.o [1]
+EXTI9_5_IRQHandler      0x0800f285    0x40  Code  Gb  gpio.o [1]
+EXTI_ClearITPendingBit  0x0801099f     0x6  Code  Gb  stm32f4xx_exti.o [1]
+EXTI_GetITStatus        0x0801098f    0x10  Code  Gb  stm32f4xx_exti.o [1]
+EXTI_Init               0x0801091d    0x72  Code  Gb  stm32f4xx_exti.o [1]
+FLASH_ClearFlag         0x08010197     0x6  Code  Gb  stm32f4xx_flash.o [1]
+FLASH_EraseSector       0x080100f7    0x6c  Code  Gb  stm32f4xx_flash.o [1]
+FLASH_GetStatus         0x0801019d    0x38  Code  Gb  stm32f4xx_flash.o [1]
+FLASH_Lock              0x080100e9     0xe  Code  Gb  stm32f4xx_flash.o [1]
+FLASH_ProgramByte       0x08010163    0x34  Code  Gb  stm32f4xx_flash.o [1]
+FLASH_Unlock            0x080100d1    0x18  Code  Gb  stm32f4xx_flash.o [1]
+FLASH_WaitForLastOperation
+                        0x080101ed    0x28  Code  Gb  stm32f4xx_flash.o [1]
+GPIO_Init               0x08010821    0x80  Code  Gb  stm32f4xx_gpio.o [1]
+GPIO_PinAFConfig        0x080108a9    0x26  Code  Gb  stm32f4xx_gpio.o [1]
+GPIO_ResetBits          0x080108a5     0x4  Code  Gb  stm32f4xx_gpio.o [1]
+GPIO_SetBits            0x080108a1     0x4  Code  Gb  stm32f4xx_gpio.o [1]
+HardFault_Handler       0x0801a71f     0x2  Code  Gb  stm32f4xx_it.o [1]
+I2C1_ER_IRQHandler      0x0801a061    0x32  Code  Gb  i2c_slave.o [1]
+I2C1_EV_IRQHandler      0x0801a093   0x13e  Code  Gb  i2c_slave.o [1]
+I2C1_EV_IRQHandler::receiving_i2c_data
+                        0x2000d9b0     0x4  Data  Lc  i2c_slave.o [1]
+I2C_ClearFlag           0x0801a25b     0x6  Code  Gb  stm32f4xx_i2c.o [1]
+I2C_ClearITPendingBit   0x0801a261     0x6  Code  Gb  stm32f4xx_i2c.o [1]
+I2C_GenerateSTOP        0x0801a1f1    0x18  Code  Gb  stm32f4xx_i2c.o [1]
+I2C_GetFlagStatus       0x0801a221    0x3a  Code  Gb  stm32f4xx_i2c.o [1]
+I2C_GetLastEvent        0x0801a213     0xe  Code  Gb  stm32f4xx_i2c.o [1]
+I2C_ReceiveData         0x0801a20d     0x6  Code  Gb  stm32f4xx_i2c.o [1]
+I2C_SendData            0x0801a209     0x4  Code  Gb  stm32f4xx_i2c.o [1]
+I2C_interrupt_cb        0x2000d9ac     0x4  Data  Lc  i2c_slave.o [1]
+InvAssert               0x0800d9a9     0x2  Code  Gb  uart.o [1]
+IsInitedSpi1            0x2000d9f2     0x1  Data  Lc  spi_master.o [1]
+IsInitedSpi2            0x2000d9f3     0x1  Data  Lc  spi_master.o [1]
+LoadInt                 0x080137f5    0x6e  Code  Lc  xprintffull_nomb.o [3]
+MemManage_Handler       0x0801a721     0x2  Code  Gb  stm32f4xx_it.o [1]
+MinDelayGenActual       0x08014c11    0x44  Code  Lc  Icm20948DataBaseControl.o [1]
+NMI_Handler             0x0801a71d     0x2  Code  Gb  stm32f4xx_it.o [1]
+NVIC_Init               0x0800ca87    0x5e  Code  Gb  misc.o [1]
+NVIC_PriorityGroupConfig
+                        0x0800ca7d     0xa  Code  Gb  misc.o [1]
+PWR_ClearFlag           0x0801a47d     0xc  Code  Gb  stm32f4xx_pwr.o [1]
+PeriodValue             0x2000d9bc     0x4  Data  Lc  rtc_timer.o [1]
+RCC_AHB1PeriphClockCmd  0x08010387    0x16  Code  Gb  stm32f4xx_rcc.o [1]
+RCC_APB1PeriphClockCmd  0x0801039d    0x16  Code  Gb  stm32f4xx_rcc.o [1]
+RCC_APB2PeriphClockCmd  0x080103b3    0x16  Code  Gb  stm32f4xx_rcc.o [1]
+RCC_GetClocksFreq       0x080102f5    0x92  Code  Gb  stm32f4xx_rcc.o [1]
+RTC_ClearITPendingBit   0x0801a459    0x18  Code  Gb  stm32f4xx_rtc.o [1]
+RTC_GetITStatus         0x0801a42f    0x2a  Code  Gb  stm32f4xx_rtc.o [1]
+RTC_ITConfig            0x0801a3f9    0x36  Code  Gb  stm32f4xx_rtc.o [1]
+RTC_WKUP_IRQHandler     0x0801a365    0x46  Code  Gb  rtc_timer.o [1]
+Region$$Table$$Base     0x0801a688           --   Gb  - Linker created -
+Region$$Table$$Limit    0x0801a6a8           --   Gb  - Linker created -
+RingByteBuffer_clear    0x080106f3    0x20  Code  Gb  RingByteBuffer.o [1]
+RingByteBuffer_init     0x080106bd    0x36  Code  Gb  RingByteBuffer.o [1]
+RingByteBuffer_isEmpty  0x0800cc05    0x2c  Code  Lc  uart.o [1]
+RingByteBuffer_isFull   0x0800cbd9    0x2c  Code  Lc  uart.o [1]
+RingByteBuffer_popByte  0x08010795    0x34  Code  Gb  RingByteBuffer.o [1]
+RingByteBuffer_pushByte
+                        0x0801075b    0x3a  Code  Gb  RingByteBuffer.o [1]
+RingByteBuffer_size     0x08010713    0x48  Code  Gb  RingByteBuffer.o [1]
+SPI2_IRQHandler         0x0801a48d    0x72  Code  Gb  spi_slave.o [1]
+SPI_Cmd                 0x0801407d    0x18  Code  Gb  stm32f4xx_spi.o [1]
+SPI_I2S_GetFlagStatus   0x0801409d     0xe  Code  Gb  stm32f4xx_spi.o [1]
+SPI_I2S_GetITStatus     0x080140ab    0x2a  Code  Gb  stm32f4xx_spi.o [1]
+SPI_I2S_ReceiveData     0x08014095     0x4  Code  Gb  stm32f4xx_spi.o [1]
+SPI_I2S_SendData        0x08014099     0x4  Code  Gb  stm32f4xx_spi.o [1]
+SPI_Init                0x0801402d    0x38  Code  Gb  stm32f4xx_spi.o [1]
+SPI_StructInit          0x08014065    0x18  Code  Gb  stm32f4xx_spi.o [1]
+SPIx_TIMEOUT_UserCallback
+                        0x08010b39     0x2  Code  Lc  spi_master.o [1]
+SYSCFG_EXTILineConfig   0x080108f5    0x24  Code  Gb  stm32f4xx_syscfg.o [1]
+SampleRateDividerGet    0x08014c91    0x18  Code  Lc  Icm20948DataBaseControl.o [1]
+SetSysClock             0x0801a2a9    0x98  Code  Lc  system_stm32f4xx.o [1]
+SysTick_Handler         0x0801a6a9    0x1a  Code  Gb  sys_timer.o [1]
+SystemCoreClock         0x2000023c     0x4  Data  Gb  system_stm32f4xx.o [1]
+SystemInit              0x0801a269    0x40  Code  Gb  system_stm32f4xx.o [1]
+TIM2_IRQHandler         0x0800edd5    0xf8  Code  Gb  timer.o [1]
+TIM3_IRQHandler         0x0800eecd    0xcc  Code  Gb  timer.o [1]
+TIM4_IRQHandler         0x0800ef99    0xcc  Code  Gb  timer.o [1]
+TIM5_IRQHandler         0x0801a3ab    0x42  Code  Gb  rtc_timer.o [1]
+TIM_ClearITPendingBit   0x080102ed     0x6  Code  Gb  stm32f4xx_tim.o [1]
+TIM_Cmd                 0x08010281    0x18  Code  Gb  stm32f4xx_tim.o [1]
+TIM_GetCapture1         0x080102c5     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_GetCapture2         0x080102c9     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_GetCapture3         0x080102cd     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_GetCapture4         0x080102d1     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_GetCounter          0x0801027d     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_GetITStatus         0x080102d5    0x18  Code  Gb  stm32f4xx_tim.o [1]
+TIM_SetCompare1         0x080102b5     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_SetCompare2         0x080102b9     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_SetCompare3         0x080102bd     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_SetCompare4         0x080102c1     0x4  Code  Gb  stm32f4xx_tim.o [1]
+TIM_TimeBaseInit        0x08010215    0x68  Code  Gb  stm32f4xx_tim.o [1]
+TIMx                    0x2000d9e0     0x4  Data  Lc  delay.o [1]
+UART_1                  0x20000240    0x64  Data  Lc  uart.o [1]
+UART_2                  0x2000950c    0x64  Data  Lc  uart.o [1]
+UART_6                  0x2000d880    0x64  Data  Lc  uart.o [1]
+USART1_IRQHandler       0x0800d81b     0x4  Code  Gb  uart.o [1]
+USART2_IRQHandler       0x0800d81f     0x4  Code  Gb  uart.o [1]
+USART6_IRQHandler       0x0800d823     0x4  Code  Gb  uart.o [1]
+USART_Cmd               0x080105f1    0x18  Code  Gb  stm32f4xx_usart.o [1]
+USART_DMACmd            0x08010619    0x14  Code  Gb  stm32f4xx_usart.o [1]
+USART_GetFlagStatus     0x08010667     0xe  Code  Gb  stm32f4xx_usart.o [1]
+USART_GetITStatus       0x08010675    0x48  Code  Gb  stm32f4xx_usart.o [1]
+USART_ITConfig          0x0801062d    0x3a  Code  Gb  stm32f4xx_usart.o [1]
+USART_Init              0x0801053d    0xaa  Code  Gb  stm32f4xx_usart.o [1]
+USART_ReceiveData       0x08010611     0x8  Code  Gb  stm32f4xx_usart.o [1]
+USART_SendData          0x08010609     0x8  Code  Gb  stm32f4xx_usart.o [1]
+UsageFault_Handler      0x0801a725     0x2  Code  Gb  stm32f4xx_it.o [1]
+_GenldFullNoMb          0x08013d6d   0x26a  Code  Lc  xprintffull_nomb.o [3]
+_LdtobFullNoMb          0x0801396d   0x3fa  Code  Lc  xprintffull_nomb.o [3]
+_LitobFullNoMb          0x08013863   0x10a  Code  Lc  xprintffull_nomb.o [3]
+_PrintfFullNoMb         0x08013255   0x59a  Code  Gb  xprintffull_nomb.o [3]
+_Prout                  0x0801a6f7    0x16  Code  Gb  xprout.o [3]
+_PutcharsFullNoMb       0x08013fd7    0x2e  Code  Lc  xprintffull_nomb.o [3]
+_SNProut                0x0800cbbf    0x1a  Code  Gb  xsnprout.o [3]
+__aeabi_assert          0x0800c949    0x14  Code  Gb  assert.o [3]
+__aeabi_cdcmple         0x08018245          Code  Gb  DblCmpLe.o [4]
+__aeabi_cdrcmple        0x08018275          Code  Gb  DblCmpGe.o [4]
+__aeabi_d2iz            0x080183b9          Code  Gb  DblToI32.o [4]
+__aeabi_d2uiz           0x080183e5          Code  Gb  DblToI32.o [4]
+__aeabi_ddiv            0x08018765          Code  Gb  DblDiv.o [4]
+__aeabi_dmul            0x080185c1          Code  Gb  DblMul.o [4]
+__aeabi_dsub            0x08018441          Code  Gb  DblSub.o [4]
+__aeabi_errno_addr      0x08018d61     0x6  Code  Gb  errno.o [3]
+__aeabi_i2d             0x08018411          Code  Gb  I32ToDbl.o [4]
+__aeabi_lasr            0x080189f1          Code  Gb  S64Shr.o [5]
+__aeabi_ldiv0           0x08018b15          Code  Gb  I64DivZer.o [5]
+__aeabi_llsl            0x08018a15          Code  Gb  I64Shl.o [5]
+__aeabi_memclr4         0x0801009d          Code  Gb  ABImemclr4.o [5]
+__aeabi_memset          0x0800ff65          Code  Gb  ABImemset.o [5]
+__aeabi_memset4         0x08010061          Code  Gb  ABImemset48.o [5]
+__aeabi_memset8         0x08010061          Code  Gb  ABImemset48.o [5]
+__aeabi_ui2d            0x08018425          Code  Gb  I32ToDbl.o [4]
+__aeabi_uldivmod        0x08017e61          Code  Gb  I64DivMod.o [5]
+__cmain                 0x0801a6c9          Code  Gb  cmain.o [5]
+__end_sector_reserved {Abs}
+                        0x08007fff          Data  Gb  command line/config [2]
+__exit                  0x08014021          Code  Gb  XXexit.o [5]
+__iar_Dnorm             0x08018201    0x44  Code  Gb  xdnorm.o [4]
+__iar_Dscale            0x080182a5   0x114  Code  Gb  xdscale.o [4]
+__iar_Errno             0x200002f8     0x4  Data  Gb  errno.o [3]
+__iar_FDint             0x08018e5b    0x50  Code  Gb  xfdint.o [4]
+__iar_FQuad             0x08018d6d    0xc2  Code  Gb  xfquad.o [4]
+__iar_FSin              0x08018bed   0x126  Code  Gb  xfsin.o [4]
+__iar_Memchr            0x080181a9          Code  Gb  memchr.o [5]
+__iar_Memset            0x0800ff65          Code  Gb  ABImemset.o [5]
+__iar_Memset4_word      0x08010069          Code  Gb  ABImemset48.o [5]
+__iar_Memset8_word      0x08010069          Code  Gb  ABImemset48.o [5]
+__iar_Memset_word       0x0800ff6d          Code  Gb  ABImemset.o [5]
+__iar_Strchr            0x08018159          Code  Gb  strchr.o [5]
+__iar_d2uiz             0x080183f1          Code  Gb  DblToI32.o [4]
+__iar_dadd              0x08018b19          Code  Gb  DblAdd.o [4]
+__iar_data_init3        0x0801a63d    0x28  Code  Gb  data_init.o [5]
+__iar_dlib_perthread_access
+                        0x08018e59     0x2  Code  Gb  xtls.o [3]
+__iar_dsub              0x08018455          Code  Gb  DblSub.o [4]
+__iar_dsubStart         0x08018467          Code  Gb  DblSub.o [4]
+__iar_edom              0x08018d55          Code  Gb  iarEdom.o [5]
+__iar_init_vfp          0x0801a665          Code  Gb  fpinit_M.o [4]
+__iar_lz77_init_single3
+                        0x0801a511    0x78  Code  Gb  lz77_init_single.o [5]
+__iar_program_start     0x0801a729          Code  Gb  cstartup_M.o [5]
+__iar_ui2d              0x08018429          Code  Gb  I32ToDbl.o [4]
+__iar_unaligned___aeabi_memcpy
+                        0x0800fde5          Code  Gb  ABImemcpy_unaligned.o [5]
+__iar_unaligned___aeabi_memcpy4
+                        0x0800fe05          Code  Gb  ABImemcpy_unaligned.o [5]
+__iar_unaligned___aeabi_memcpy8
+                        0x0800fe05          Code  Gb  ABImemcpy_unaligned.o [5]
+__iar_unaligned___aeabi_memmove
+                        0x08018a9d          Code  Gb  ABImemmove_unaligned.o [5]
+__iar_unaligned___aeabi_memmove4
+                        0x08018a9d          Code  Gb  ABImemmove_unaligned.o [5]
+__iar_unaligned___aeabi_memmove8
+                        0x08018a9d          Code  Gb  ABImemmove_unaligned.o [5]
+__iar_unaligned_memcmp  0x08018a39          Code  Gb  memcmp_unaligned.o [5]
+__iar_vfp_fmodf         0x08018ead          Code  Gb  fmodf.o [4]
+__iar_zero_init3        0x0801a5d3    0x40  Code  Gb  zero_init3.o [5]
+__low_level_init        0x0801a6e3     0x4  Code  Gb  low_level_init.o [3]
+__start_sector_reserved {Abs}
+                        0x08004000          Data  Gb  command line/config [2]
+__vector_table          0x08000000          Data  Gb  startup_stm32f411xe.o [1]
+__write                 0x0801a589    0x4a  Code  Wk  iar_hook.o [1]
+_call_main              0x0801a6d5          Code  Gb  cmain.o [5]
+_exit                   0x0801a6ed          Code  Gb  cexit.o [5]
+_main                   0x0801a6df          Code  Gb  cmain.o [5]
+abort                   0x080100c9     0x6  Code  Gb  abort.o [3]
+activate_compass        0x0801695f     0x8  Code  Lc  Icm20948DataBaseDriver.o [1]
+apply_stored_offsets    0x0800c809    0x8a  Code  Lc  example.o [1]
+build_sensor_event      0x0800fab5    0x72  Code  Lc  DeviceIcm20948.o [1]
+build_sensor_event_data
+                        0x0800f961   0x154  Code  Lc  DeviceIcm20948.o [1]
+check_fifo_decoded_headers
+                        0x08017955    0x24  Code  Lc  Icm20948MPUFifoControl.o [1]
+check_rc                0x08008847    0x1a  Code  Lc  example.o [1]
+check_reg_access_lp_disable
+                        0x08012d77    0x30  Code  Lc  Icm20948Transport.o [1]
+commonUSARTx_GetITStatus_IRQHandler
+                        0x0800d707    0x44  Code  Lc  uart.o [1]
+commonUSARTx_IRQHandler
+                        0x0800d74b    0xd0  Code  Lc  uart.o [1]
+commonUSARTx_RX_DMA_IRQ_HANDLER
+                        0x0800d8b9    0x76  Code  Lc  uart.o [1]
+commonUSARTx_TX_DMA_IRQ_HANDLER
+                        0x0800d827    0x7c  Code  Lc  uart.o [1]
+commonUSARTx_read_data_IRQHandler
+                        0x0800d6d9    0x2e  Code  Lc  uart.o [1]
+convert_sensor_event_to_dyn_prot_data
+                        0x08008bf5   0x1bc  Code  Lc  example.o [1]
+cosf                    0x080189c9     0x6  Code  Gb  cosf.o [4]
+data_handler            0x0800f929    0x38  Code  Lc  DeviceIcm20948.o [1]
+delay_init              0x0800cb35    0x36  Code  Gb  delay.o [1]
+delay_us                0x0800cb7d    0x42  Code  Gb  delay.o [1]
+desactivate_compass     0x08016967     0x8  Code  Lc  Icm20948DataBaseDriver.o [1]
+device                  0x20009574     0x4  Data  Lc  example.o [1]
+device_icm20948         0x2000a7a8   0x530  Data  Lc  example.o [1]
+device_icm20948_vt      0x0800fd74    0x58  Data  Lc  DeviceIcm20948.o [1]
+disable_irq             0x080108d1    0x10  Code  Gb  common.o [1]
+div                     0x080189bb     0xe  Code  Gb  div.o [3]
+dmp3_image              0x08009034  0x37d4  Data  Lc  example.o [1]
+dmp_get_fifo_all        0x080177c1    0x5a  Code  Lc  Icm20948MPUFifoControl.o [1]
+dmp_get_fifo_length     0x080176af    0x3e  Code  Lc  Icm20948MPUFifoControl.o [1]
+dmp_icm20948_get_bias_acc
+                        0x08017007    0x62  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_get_bias_cmp
+                        0x080170cb    0x62  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_get_bias_gyr
+                        0x08017069    0x62  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_get_pedometer_num_of_steps
+                        0x080172bd    0x3e  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_reset_control_registers
+                        0x08016d41    0x56  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_B2S_matrix
+                        0x0801746b    0xec  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_FIFO_watermark
+                        0x08016dc1    0x2c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_accel_cal_params
+                        0x08017173    0x5e  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_accel_feedback_gain
+                        0x0801714b    0x28  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_accel_fsr
+                        0x080172fb    0x5c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_accel_scale2
+                        0x08017357    0x5c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_b2s_rate
+                        0x0801740f    0x5c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_bac_rate
+                        0x080173b3    0x5c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_batchmode_params
+                        0x08016e97    0x5c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_bias_acc
+                        0x08016ef3    0x5c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_bias_cmp
+                        0x08016fab    0x5c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_bias_gyr
+                        0x08016f4f    0x5c  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_compass_matrix
+                        0x080171d1    0xec  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_data_interrupt_control
+                        0x08016d97    0x2a  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_data_output_control1
+                        0x08016d15    0x18  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_data_output_control2
+                        0x08016d2d    0x10  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_data_output_control2::data_output_control_reg2
+                        0x2000d9f0     0x2  Data  Lc  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_data_rdy_status
+                        0x08016ded    0x2a  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_gyro_sf
+                        0x0801712d    0x1e  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_motion_event_control
+                        0x08016e17    0x1a  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_ped_y_ratio
+                        0x08017557    0x22  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_icm20948_set_sensor_rate
+                        0x08016e31    0x66  Code  Gb  Icm20948Dmp3Driver.o [1]
+dmp_read_fifo           0x0801776b    0x56  Code  Lc  Icm20948MPUFifoControl.o [1]
+dmp_reset_fifo          0x080176ed    0x7e  Code  Lc  Icm20948MPUFifoControl.o [1]
+enable_irq              0x080108e1     0xe  Code  Gb  common.o [1]
+end_sector_address      0x2000d9d0     0x4  Data  Lc  flash_manager.o [1]
+exit                    0x0801a6e7     0x4  Code  Gb  exit.o [3]
+ext_interrupt_cb        0x08008761    0x16  Code  Gb  example.o [1]
+extract_sample_cnt      0x08017979    0x7a  Code  Lc  Icm20948MPUFifoControl.o [1]
+fd                      0x2000cdcc    0xa4  Data  Gb  Icm20948MPUFifoControl.o [1]
+fifo_data               0x2000ce70   0x400  Data  Lc  Icm20948MPUFifoControl.o [1]
+flash_linker_init       0x08008521    0x1a  Code  Lc  example.o [1]
+flash_manager_eraseUnsafe
+                        0x0800c99f    0x1c  Code  Lc  flash_manager.o [1]
+flash_manager_getEmptySlotAddr
+                        0x0800c97d    0x22  Code  Lc  flash_manager.o [1]
+flash_manager_get_end_sector_address
+                        0x0800ca67     0x4  Code  Gb  flash_manager.o [1]
+flash_manager_get_start_sector_address
+                        0x0800ca63     0x4  Code  Gb  flash_manager.o [1]
+flash_manager_readData  0x0800c9bb    0x3c  Code  Gb  flash_manager.o [1]
+flash_manager_writeData
+                        0x0800c9f7    0x6c  Code  Gb  flash_manager.o [1]
+flash_manager_writeData::cFlashHeader
+                        0x0800ca78     0x4  Data  Lc  flash_manager.o [1]
+fmodf                   0x08018eb1          Code  Gb  fmodf.o [4]
+getMinDlyAccel          0x08014ca9    0xd8  Code  Lc  Icm20948DataBaseControl.o [1]
+getMinDlyCompass        0x08014e59    0x60  Code  Lc  Icm20948DataBaseControl.o [1]
+getMinDlyGyro           0x08014dad    0x8a  Code  Lc  Icm20948DataBaseControl.o [1]
+get_multiple_56_rate    0x08015381    0x38  Code  Lc  Icm20948DataBaseControl.o [1]
+get_packet_size_and_samplecnt
+                        0x0801781b   0x13a  Code  Lc  Icm20948MPUFifoControl.o [1]
+gpio_sensor_irq_init    0x0800f089   0x19a  Code  Gb  gpio.o [1]
+handle_command          0x080088f9   0x2f6  Code  Gb  example.o [1]
+host_serif_read_reg_legacy
+                        0x0800f49d    0x12  Code  Lc  DeviceIcm20948.o [1]
+host_serif_write_reg_legacy
+                        0x0800f4af    0x12  Code  Lc  DeviceIcm20948.o [1]
+i2c_cur_data            0x2000d9a8     0x1  Data  Lc  i2c_slave.o [1]
+i2c_data                0x2000b584   0x840  Data  Lc  i2c_slave.o [1]
+icm20948_instance       0x2000d9e8     0x4  Data  Gb  Icm20948Transport.o [1]
+idd_driver_2_sensortype
+                        0x0800f42d    0x70  Code  Lc  DeviceIcm20948.o [1]
+idd_io_hal_get_serif_instance_spi
+                        0x0800f33b     0x6  Code  Gb  idd_io_hal.o [1]
+idd_io_hal_init_spi     0x0800f315     0xe  Code  Lc  idd_io_hal.o [1]
+idd_io_hal_read_reg_spi
+                        0x0800f323     0xc  Code  Lc  idd_io_hal.o [1]
+idd_io_hal_write_reg_spi
+                        0x0800f32f     0xc  Code  Lc  idd_io_hal.o [1]
+idd_sensortype_2_driver
+                        0x0800f3ad    0x80  Code  Lc  DeviceIcm20948.o [1]
+iddwrapper_protocol_event_cb
+                        0x08008e65    0xf6  Code  Lc  example.o [1]
+iddwrapper_protocol_event_cb::dma_buffer
+                        0x2000d7f8     0x4  Data  Lc  example.o [1]
+iddwrapper_protocol_event_cb::resp_edata
+                        0x2000d774    0x84  Data  Lc  example.o [1]
+iddwrapper_set_encoding_format
+                        0x08008db1    0xb2  Code  Lc  example.o [1]
+iddwrapper_transport_event_cb
+                        0x08008f5d    0x3c  Code  Lc  example.o [1]
+int_timestamp_buffer    0x2000d270   0x404  Data  Lc  timer.o [1]
+internal_delay          0x0800cb11    0x24  Code  Lc  delay.o [1]
+inv_check_accelgyro_self_test
+                        0x08012237    0x7e  Code  Lc  Icm20948SelfTest.o [1]
+inv_convert_androidSensor_to_control
+                        0x080156d3    0xb4  Code  Lc  Icm20948DataBaseControl.o [1]
+inv_dc_float_to_sfix32  0x08010009    0x56  Code  Gb  DataConverter.o [1]
+inv_dc_int16_to_little8
+                        0x0800ffdd     0xa  Code  Gb  DataConverter.o [1]
+inv_dc_int32_to_little8
+                        0x0800ffcb    0x12  Code  Gb  DataConverter.o [1]
+inv_dc_le_to_int16      0x0800fffd     0xc  Code  Gb  DataConverter.o [1]
+inv_dc_little8_to_int32
+                        0x0800ffe7    0x16  Code  Gb  DataConverter.o [1]
+inv_decode_3_16bit_elements
+                        0x08017b0b    0x20  Code  Lc  Icm20948MPUFifoControl.o [1]
+inv_decode_3_32bit_elements
+                        0x08017ac7    0x44  Code  Lc  Icm20948MPUFifoControl.o [1]
+inv_device_cleanup      0x0800812f    0x34  Code  Lc  example.o [1]
+inv_device_get_sensor_config
+                        0x0800845d    0x4a  Code  Lc  example.o [1]
+inv_device_get_sensor_data
+                        0x08008397    0x40  Code  Lc  example.o [1]
+inv_device_icm20948_cleanup
+                        0x0800f6bd    0x30  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_enable_sensor
+                        0x0800f7cb    0x1c  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_get_base
+                        0x08008519     0x8  Code  Lc  example.o [1]
+inv_device_icm20948_get_sensor_config
+                        0x0800f8d7    0x52  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_init
+                        0x0800f4c1    0x44  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_init2
+                        0x0800f505    0x94  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_init_aux_compass
+                        0x0800f853     0x8  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_load
+                        0x0800f6ed     0xc  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_ping_sensor
+                        0x0800f765    0x66  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_poll
+                        0x0800f599     0xc  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_read_mems_register
+                        0x0800f841    0x12  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_reset
+                        0x0800f5cd    0x36  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_self_test
+                        0x0800f6f9    0x6c  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_set_sensor_config
+                        0x0800f85b    0x7c  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_set_sensor_mounting_matrix
+                        0x0800f813    0x1c  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_set_sensor_period_us
+                        0x0800f7e7    0x22  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_set_sensor_timeout
+                        0x0800f809     0xa  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_setup
+                        0x0800f603    0xba  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_whoami
+                        0x0800f5a5    0x28  Code  Gb  DeviceIcm20948.o [1]
+inv_device_icm20948_write_mems_register
+                        0x0800f82f    0x12  Code  Gb  DeviceIcm20948.o [1]
+inv_device_load         0x08008197    0x4e  Code  Lc  example.o [1]
+inv_device_ping_sensor  0x080081e5    0x3c  Code  Lc  example.o [1]
+inv_device_poll         0x08008163    0x34  Code  Lc  example.o [1]
+inv_device_reset        0x080080c7    0x34  Code  Lc  example.o [1]
+inv_device_self_test    0x080083d7    0x3c  Code  Lc  example.o [1]
+inv_device_set_sensor_config
+                        0x08008413    0x4a  Code  Lc  example.o [1]
+inv_device_set_sensor_mounting_matrix
+                        0x08008321    0x76  Code  Lc  example.o [1]
+inv_device_set_sensor_period_us
+                        0x080082a1    0x40  Code  Lc  example.o [1]
+inv_device_set_sensor_timeout
+                        0x080082e1    0x40  Code  Lc  example.o [1]
+inv_device_setup        0x080080fb    0x34  Code  Lc  example.o [1]
+inv_device_start_sensor
+                        0x08008221    0x40  Code  Lc  example.o [1]
+inv_device_stop_sensor  0x08008261    0x40  Code  Lc  example.o [1]
+inv_device_whoami       0x0800808d    0x3a  Code  Lc  example.o [1]
+inv_do_test_accelgyro   0x08012475    0xa0  Code  Lc  Icm20948SelfTest.o [1]
+inv_enable_sensor_internal
+                        0x080157e3   0x468  Code  Lc  Icm20948DataBaseControl.o [1]
+inv_host_serif_open     0x08008001    0x20  Code  Lc  example.o [1]
+inv_icm20948_allow_lpen_control
+                        0x080165ad     0xc  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_apply_raw_compass_matrix
+                        0x08012c79    0x46  Code  Gb  Icm20948AuxCompassAkm.o [1]
+inv_icm20948_augmented_init
+                        0x08015fc5    0x20  Code  Gb  Icm20948Augmented.o [1]
+inv_icm20948_augmented_sensors_get_gravity
+                        0x08015fe5    0x96  Code  Gb  Icm20948Augmented.o [1]
+inv_icm20948_augmented_sensors_get_linearacceleration
+                        0x0801607b    0x3e  Code  Gb  Icm20948Augmented.o [1]
+inv_icm20948_augmented_sensors_get_orientation
+                        0x080160b9    0x9c  Code  Gb  Icm20948Augmented.o [1]
+inv_icm20948_augmented_sensors_set_odr
+                        0x08016159   0x304  Code  Gb  Icm20948Augmented.o [1]
+inv_icm20948_augmented_sensors_update_odr
+                        0x0801645d   0x148  Code  Gb  Icm20948Augmented.o [1]
+inv_icm20948_base_control_init
+                        0x08014ecd    0xf4  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_check_akm_self_test
+                        0x08012889   0x218  Code  Gb  Icm20948AuxCompassAkm.o [1]
+inv_icm20948_compass_dmp_cal
+                        0x08012b43   0x130  Code  Gb  Icm20948AuxCompassAkm.o [1]
+inv_icm20948_compass_isconnected
+                        0x08012b33    0x10  Code  Gb  Icm20948AuxCompassAkm.o [1]
+inv_icm20948_convert_big8_to_int32
+                        0x08014be1    0x16  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_compute_scalar_part_fxp
+                        0x080144b5    0x3c  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_dmp3_to_body
+                        0x08014455    0x50  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_fast_sqrt_fxp
+                        0x080144f1    0xc0  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_get_highest_bit_position
+                        0x0801463d    0x54  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_int16_to_big8
+                        0x08014bc5     0xa  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_int32_to_big8
+                        0x08014bcf    0x12  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_matrix_to_quat_flt
+                        0x08014691   0x27c  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_mult_q30_fxp
+                        0x080144a9     0xc  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_mult_qfix_fxp
+                        0x0801490d     0x8  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_quat_rotate_fxp
+                        0x08014251    0x3e  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_quat_to_col_major_matrix_fxp
+                        0x08014921    0xda  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_rotation_vector
+                        0x08014299    0xbe  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_convert_test_limits_and_scale_fxp
+                        0x080145b1    0x80  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_ctrl_androidSensor_enabled
+                        0x08014bf9    0x18  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_enable_activity_classifier
+                        0x08015c4b    0x4e  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_enable_batch
+                        0x08015cdb    0x38  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_enable_sensor
+                        0x08015787    0x5c  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_enable_tilt
+                        0x08015c99    0x42  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_get_acc_bias
+                        0x08015ed1     0x4  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_get_activitiy_classifier_on_flag
+                        0x08015de9     0x6  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_get_batch_mode_status
+                        0x08015d23     0x6  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_get_gyr_bias
+                        0x08015ed5     0x4  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_get_mag_bias
+                        0x08015ed9     0x4  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_set_acc_bias
+                        0x08015edd    0x18  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_set_accel_cal_params
+                        0x08015e13    0x7c  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_set_accel_quaternion_gain
+                        0x08015def    0x24  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_set_batch_mode_status
+                        0x08015d13    0x10  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_set_batch_timeout_ms
+                        0x08015d29    0xc0  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_set_gyr_bias
+                        0x08015ef5    0x18  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_ctrl_set_mag_bias
+                        0x08015f0d    0x18  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_dmp_get_6quaternion
+                        0x08017d65    0x18  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_9quaternion
+                        0x08017d7d    0x18  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_accel
+                        0x08017cd5    0x18  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_bac_state
+                        0x08017ddd    0x16  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_bac_ts
+                        0x08017df3    0x16  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_calibrated_compass
+                        0x08017dc5    0x18  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_calibrated_gyro
+                        0x08017d27    0x3e  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_flip_pickup_state
+                        0x08017e09    0x16  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_gmrvquaternion
+                        0x08017d95    0x18  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_gyro_bias
+                        0x08017d0f    0x18  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_raw_compass
+                        0x08017dad    0x18  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_dmp_get_raw_gyro
+                        0x08017ced    0x22  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_enable_batch_timeout
+                        0x080113bd    0x2a  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_enable_hw_sensors
+                        0x08016c9f    0x66  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_enable_sensor
+                        0x08011341    0x3a  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_enter_duty_cycle_mode
+                        0x08016785    0x18  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_enter_low_noise_mode
+                        0x0801679d    0x18  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_execute_read_secondary
+                        0x08018029    0x4c  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_execute_write_secondary
+                        0x080180d1    0x3c  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_fifo_pop   0x08017a4b    0x7c  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_fifo_swmirror
+                        0x080179f3    0x58  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_firmware_load
+                        0x08017579    0xc4  Code  Gb  Icm20948LoadFirmware.o [1]
+inv_icm20948_get_accel_accuracy
+                        0x08017e1f     0x8  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_get_accel_divider
+                        0x08016a07     0x6  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_get_accel_fullscale
+                        0x08016beb     0x6  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_get_bias   0x0801118b    0xa0  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_get_chip_power_state
+                        0x08016689     0x4  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_get_compass_availability
+                        0x0801696f     0x6  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_get_dmp_start_address
+                        0x08016d0d     0x8  Code  Gb  Icm20948Dmp3Driver.o [1]
+inv_icm20948_get_fsr    0x08011067    0x86  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_get_gmrv_accuracy
+                        0x08017e37     0x6  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_get_gyro_accuracy
+                        0x08017e27     0x8  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_get_gyro_divider
+                        0x080169cd     0x4  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_get_gyro_fullscale
+                        0x08016af5     0x6  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_get_lowpower_or_highperformance
+                        0x0801123d     0x8  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_get_lpen_control
+                        0x080165b9     0x6  Code  Lc  Icm20948DataBaseDriver.o [1]
+inv_icm20948_get_mag_accuracy
+                        0x08017e2f     0x8  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_get_rv_accuracy
+                        0x08017e3d     0x6  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_get_secondary_divider
+                        0x080169e1     0x4  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_get_time_us
+                        0x08008841     0x6  Code  Gb  example.o [1]
+inv_icm20948_get_whoami
+                        0x08010f1f     0x6  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_identify_interrupt
+                        0x0801766f    0x40  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_init_matrix
+                        0x08010f25    0x44  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_init_scale
+                        0x08010fd5    0x16  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_init_secondary
+                        0x08017f4f    0x8a  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_init_structure
+                        0x08010f6d    0x3e  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_initialize
+                        0x08010fab    0x2a  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_initialize_auxiliary
+                        0x0801130d    0x18  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_initialize_lower_driver
+                        0x080167b5   0x1aa  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_initialize_lower_driver::data
+                        0x2000d9f5     0x1  Data  Lc  Icm20948DataBaseDriver.o [1]
+inv_icm20948_inv_decode_one_ivory_fifo_packet
+                        0x08017b2b   0x1aa  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_is_streamed_sensor
+                        0x080113ed    0x18  Code  Lc  Icm20948Setup.o [1]
+inv_icm20948_load       0x080113e7     0x6  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_load_firmware
+                        0x08016d05     0x8  Code  Gb  Icm20948Dmp3Driver.o [1]
+inv_icm20948_math_atan2_q15_fxp
+                        0x08014ad3    0xc6  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_math_atan2_q15_fxp::PI15
+                        0x20000010     0x4  Data  Lc  Icm20948DataConverter.o [1]
+inv_icm20948_math_atan2_q15_fxp::constA7
+                        0x20000000    0x10  Data  Lc  Icm20948DataConverter.o [1]
+inv_icm20948_mpu_set_FIFO_RST_Diamond
+                        0x0801763d    0x32  Code  Gb  Icm20948MPUFifoControl.o [1]
+inv_icm20948_poll_sensor
+                        0x080115c9   0xa48  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_prevent_lpen_control
+                        0x080165a5     0x8  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_q_mult_q_qi
+                        0x0801419f    0xb2  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_read_mems  0x08012fe3   0x120  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_read_mems_reg
+                        0x08012f01    0xe2  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_read_reg   0x08012d5d     0x2  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_read_reg_one
+                        0x08010df9     0x6  Code  Lc  Icm20948Setup.o [1]
+inv_icm20948_read_secondary
+                        0x08017fd9    0x50  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_register_aux_compass
+                        0x080127c1    0x2c  Code  Gb  Icm20948AuxCompassAkm.o [1]
+inv_icm20948_reset_states
+                        0x0800f371    0x38  Code  Lc  DeviceIcm20948.o [1]
+inv_icm20948_resume_akm
+                        0x08012ad5    0x5e  Code  Gb  Icm20948AuxCompassAkm.o [1]
+inv_icm20948_run_selftest
+                        0x08012515    0xaa  Code  Gb  Icm20948SelfTest.o [1]
+inv_icm20948_secondary_disable_i2c
+                        0x08018127     0xe  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_secondary_enable_i2c
+                        0x08018119     0xe  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_secondary_set_odr
+                        0x08018135    0x22  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_secondary_stop_channel
+                        0x0801810d     0xc  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_sensor_android_2_sensor_type
+                        0x08010e71    0x8e  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_serif_read_reg
+                        0x08012cd1    0x44  Code  Lc  Icm20948Transport.o [1]
+inv_icm20948_serif_write_reg
+                        0x08012d15    0x44  Code  Lc  Icm20948Transport.o [1]
+inv_icm20948_set_accel_divider
+                        0x080169e5    0x22  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_accel_fullscale
+                        0x08016bbb    0x30  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_bias   0x080110ed    0x9e  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_set_chip_power_state
+                        0x080165bf    0xca  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_chip_to_body
+                        0x0801428f     0x8  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_set_chip_to_body_axis_quaternion
+                        0x080143ad    0xa8  Code  Gb  Icm20948DataConverter.o [1]
+inv_icm20948_set_dmp_address
+                        0x0801671b    0x38  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_fsr    0x08010feb    0x7c  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_set_gyro_divider
+                        0x080169bb    0x12  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_gyro_fullscale
+                        0x08016ad5    0x20  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_gyro_sf
+                        0x08016a0d    0xb2  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_gyro_sf::lLastGyroSf
+                        0x2000d9e4     0x4  Data  Lc  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_icm20948_accel_fullscale
+                        0x08016bf1    0xae  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_icm20948_gyro_fullscale
+                        0x08016afb    0xc0  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_lowpower_or_highperformance
+                        0x0801122b    0x12  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_set_matrix
+                        0x08011259    0xb4  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_set_odr    0x080153b9   0x2d2  Code  Gb  Icm20948DataBaseControl.o [1]
+inv_icm20948_set_secondary
+                        0x08016753    0x32  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_secondary::lIsInited
+                        0x2000d9f4     0x1  Data  Lc  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_secondary_divider
+                        0x080169d1    0x10  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_set_sensor_period
+                        0x0801137b    0x42  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_set_slave_compass_id
+                        0x08016975    0x46  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_setup_compass_akm
+                        0x080127ed    0x9c  Code  Gb  Icm20948AuxCompassAkm.o [1]
+inv_icm20948_sleep_100us
+                        0x08012d61     0x8  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_sleep_mems
+                        0x080166f5    0x26  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_sleep_us   0x0800883d     0x4  Code  Gb  example.o [1]
+inv_icm20948_soft_reset
+                        0x08011325    0x18  Code  Gb  Icm20948Setup.o [1]
+inv_icm20948_suspend_akm
+                        0x08012aa1    0x34  Code  Gb  Icm20948AuxCompassAkm.o [1]
+inv_icm20948_transport_init
+                        0x08012d69     0xe  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_updateTs   0x08011405   0x1c2  Code  Lc  Icm20948Setup.o [1]
+inv_icm20948_wakeup_mems
+                        0x0801668d    0x68  Code  Gb  Icm20948DataBaseDriver.o [1]
+inv_icm20948_write_mems
+                        0x08013103    0xd4  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_write_mems_reg
+                        0x08012ded    0xa4  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_write_reg  0x08012d5f     0x2  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_write_secondary
+                        0x08018075    0x5c  Code  Gb  Icm20948AuxTransport.o [1]
+inv_icm20948_write_single_mems_reg
+                        0x08012e91    0x70  Code  Gb  Icm20948Transport.o [1]
+inv_icm20948_write_single_mems_reg_core
+                        0x080131d7    0x26  Code  Gb  Icm20948Transport.o [1]
+inv_msg                 0x0800f2eb    0x24  Code  Gb  Message.o [1]
+inv_msg_setup           0x0800f2d1    0x1a  Code  Gb  Message.o [1]
+inv_reGenerate_sensorControl
+                        0x0801568d    0x46  Code  Lc  Icm20948DataBaseControl.o [1]
+inv_recover_setting     0x08012125   0x112  Code  Lc  Icm20948SelfTest.o [1]
+inv_rotation_to_quaternion
+                        0x08014359    0x54  Code  Lc  Icm20948DataConverter.o [1]
+inv_save_setting        0x08012025   0x100  Code  Lc  Icm20948SelfTest.o [1]
+inv_selftest_read_samples
+                        0x08012401    0x74  Code  Lc  Icm20948SelfTest.o [1]
+inv_sensor_listener_notify
+                        0x0800f361    0x10  Code  Lc  DeviceIcm20948.o [1]
+inv_sensor_str          0x0800fedd    0x38  Code  Gb  Sensor.o [1]
+inv_sensor_str::sensor_str
+                        0x20000014   0x208  Data  Lc  Sensor.o [1]
+inv_set_bank            0x08012da7    0x46  Code  Lc  Icm20948Transport.o [1]
+inv_set_hw_smplrt_dmp_odrs
+                        0x08014fc1   0x36e  Code  Lc  Icm20948DataBaseControl.o [1]
+inv_setup_selftest      0x080122b5   0x148  Code  Lc  Icm20948SelfTest.o [1]
+invn_convert_inv_sqrt_q15_fxp
+                        0x08014a07    0x92  Code  Lc  Icm20948DataConverter.o [1]
+invn_convert_inverse_q15_fxp
+                        0x08014a99    0x3a  Code  Lc  Icm20948DataConverter.o [1]
+invn_convert_mult_q15_fxp
+                        0x080149fb     0xc  Code  Lc  Icm20948DataConverter.o [1]
+invn_convert_mult_q29_fxp
+                        0x08014915     0xc  Code  Lc  Icm20948DataConverter.o [1]
+invn_convert_quat_invert_fxp
+                        0x08014187    0x18  Code  Lc  Icm20948DataConverter.o [1]
+invn_convert_quat_mult_fxp
+                        0x080140d5    0xb2  Code  Lc  Icm20948DataConverter.o [1]
+irq_channel_premption_priority
+                        0x200002a4     0x4  Data  Lc  uart.o [1]
+irq_channel_subpriority
+                        0x200002a8     0x4  Data  Lc  uart.o [1]
+irq_from_device         0x20009570     0x4  Data  Lc  example.o [1]
+last_irq_time           0x20009578     0x4  Data  Lc  example.o [1]
+m_second                0x2000d9c0     0x8  Data  Gb  sys_timer.o [1]
+main                    0x08008541   0x218  Code  Gb  example.o [1]
+memchr                  0x080181a9          Code  Gb  memchr.o [5]
+msg_level               0x2000d9d4     0x4  Data  Lc  Message.o [1]
+msg_printer             0x08008865    0x76  Code  Lc  example.o [1]
+msg_printer             0x2000d9d8     0x4  Data  Lc  Message.o [1]
+msg_printer::out_str    0x2000d674   0x100  Data  Lc  example.o [1]
+printf                  0x080100a5    0x24  Code  Gb  printf.o [3]
+protocol                0x2000a67c   0x118  Data  Lc  example.o [1]
+putchar                 0x0801a613    0x28  Code  Gb  putchar.o [3]
+rtc_config_state        0x2000d988    0x10  Data  Lc  rtc_timer.o [1]
+sContext                0x2000d9a4     0x4  Data  Lc  gpio.o [1]
+sContext                0x2000d91c     0x4  Data  Lc  timer.o [1]
+sDisableIntCount        0x2000d9dc     0x4  Data  Lc  common.o [1]
+sEnd_of_TX_cb           0x2000d9ec     0x4  Data  Lc  spi_slave.o [1]
+sEnd_of_frame_cb        0x2000d99c     0x4  Data  Lc  gpio.o [1]
+sInterrupt_cb           0x2000d9a0     0x4  Data  Lc  gpio.o [1]
+sInterrupt_cb           0x2000d918     0x4  Data  Lc  timer.o [1]
+sRtc_irq_handler_cb     0x2000d998     0x4  Data  Lc  rtc_timer.o [1]
+sSPIBufferReceived      0x2000bdc4   0x804  Data  Lc  spi_slave.o [1]
+sSPIBufferTransmit      0x2000c5c8   0x804  Data  Lc  spi_slave.o [1]
+sSelfTestEquation       0x080125c0   0x200  Data  Lc  Icm20948SelfTest.o [1]
+sSystick_irq_handler_cb
+                        0x2000d9c8     0x4  Data  Lc  sys_timer.o [1]
+sUART1BufferRx          0x200002bc     0xc  Data  Lc  uart.o [1]
+sUART1BufferTx          0x200002b0     0xc  Data  Lc  uart.o [1]
+sUART2BufferRx          0x200002c8     0xc  Data  Lc  uart.o [1]
+sUART2BufferTx          0x200002d4     0xc  Data  Lc  uart.o [1]
+sUART6BufferRx          0x200002ec     0xc  Data  Lc  uart.o [1]
+sUART6BufferTx          0x200002e0     0xc  Data  Lc  uart.o [1]
+sensor_event_cb         0x08008777    0xc6  Code  Lc  example.o [1]
+sensor_event_cb{1}{2}::async_edata
+                        0x2000d7fc    0x84  Data  Lc  example.o [1]
+sensor_listener         0x08008758     0x8  Data  Lc  example.o [1]
+sensor_needs_bac_algo   0x08015f4d    0x1e  Code  Lc  Icm20948DataBaseControl.o [1]
+sensor_needs_compass    0x08015f25    0x28  Code  Lc  Icm20948DataBaseControl.o [1]
+sensor_type_2_android_sensor
+                        0x08010e01    0x70  Code  Lc  Icm20948Setup.o [1]
+serif_instance_spi      0x0800f340    0x20  Data  Lc  idd_io_hal.o [1]
+sinf                    0x080189cf     0x6  Code  Gb  sinf.o [4]
+skip_sensor             0x08010eff    0x20  Code  Lc  Icm20948Setup.o [1]
+snprintf                0x0800fe5d    0x44  Code  Gb  snprintf.o [3]
+spi_master_get_cs_pin   0x08010aa9    0x1a  Code  Lc  spi_master.o [1]
+spi_master_get_cs_port  0x08010a8b    0x1e  Code  Lc  spi_master.o [1]
+spi_master_get_instance
+                        0x08010a73    0x18  Code  Lc  spi_master.o [1]
+spi_master_get_prescaler
+                        0x08010b21    0x18  Code  Lc  spi_master.o [1]
+spi_master_get_prescaler_spi1
+                        0x08010ac5    0x30  Code  Lc  spi_master.o [1]
+spi_master_get_prescaler_spi2
+                        0x08010af5    0x2c  Code  Lc  spi_master.o [1]
+spi_master_init         0x08010b3b    0xb6  Code  Gb  spi_master.o [1]
+spi_master_init_gpio_spi1
+                        0x080109b1    0x60  Code  Lc  spi_master.o [1]
+spi_master_init_gpio_spi2
+                        0x08010a11    0x62  Code  Lc  spi_master.o [1]
+spi_master_read_register
+                        0x08010ce5    0xfa  Code  Gb  spi_master.o [1]
+spi_master_write_register
+                        0x08010bf1    0xf4  Code  Gb  spi_master.o [1]
+sqrtf                   0x080189d5          Code  Gb  sqrtf.o [4]
+start_sector_address    0x2000d9cc     0x4  Data  Lc  flash_manager.o [1]
+start_timer             0x0800caf9     0xe  Code  Lc  delay.o [1]
+stop_timer              0x0800cb07     0xa  Code  Lc  delay.o [1]
+store_offsets           0x0800c893    0x86  Code  Lc  example.o [1]
+strchr                  0x08018159          Code  Gb  strchr.o [5]
+strlen                  0x08018171          Code  Gb  strlen.o [5]
+timer2_initied          0x2000d9f6     0x1  Data  Lc  timer.o [1]
+timer2_state            0x2000d8e4    0x34  Data  Lc  timer.o [1]
+timer3_state            0x2000d920    0x34  Data  Lc  timer.o [1]
+timer4_state            0x2000d954    0x34  Data  Lc  timer.o [1]
+timer_configure_timebase
+                        0x0800ece7    0xd6  Code  Gb  timer.o [1]
+timer_enable            0x0800ecbd    0x2a  Code  Gb  timer.o [1]
+timer_get_counter       0x0800edbd    0x18  Code  Gb  timer.o [1]
+tmpCC4                  0x2000d9b4     0x4  Data  Lc  rtc_timer.o [1]
+transport               0x2000a794    0x10  Data  Lc  example.o [1]
+uart_available          0x0800d463    0x28  Code  Gb  uart.o [1]
+uart_dma_do_rx          0x0800d5e7    0x7a  Code  Gb  uart.o [1]
+uart_dma_do_tx          0x0800d51f    0x64  Code  Lc  uart.o [1]
+uart_dma_rx_abort       0x0800d661    0x78  Code  Gb  uart.o [1]
+uart_dma_rx_buffers_struct
+                        0x2000acd8   0x8ac  Data  Lc  uart.o [1]
+uart_dma_rx_config      0x0800ceed   0x16c  Code  Lc  uart.o [1]
+uart_dma_rx_config_uartid
+                        0x0800ce7d    0x70  Code  Lc  uart.o [1]
+uart_dma_tx             0x0800d583    0x64  Code  Gb  uart.o [1]
+uart_dma_tx_buffers_struct
+                        0x20000b00  0x8a0c  Data  Lc  uart.o [1]
+uart_dma_tx_config      0x0800cd2f   0x14e  Code  Lc  uart.o [1]
+uart_dma_tx_config_uartid
+                        0x0800cccb    0x64  Code  Lc  uart.o [1]
+uart_dma_tx_release_buffer
+                        0x0800d4d7    0x48  Code  Gb  uart.o [1]
+uart_dma_tx_take_buffer
+                        0x0800d495    0x42  Code  Gb  uart.o [1]
+uart_get_hw_flow_control_configuration
+                        0x0800d48b     0xa  Code  Gb  uart.o [1]
+uart_get_instance       0x0800cca1    0x22  Code  Lc  uart.o [1]
+uart_get_uart_for_printf
+                        0x0800ccc3     0x8  Code  Gb  uart.o [1]
+uart_getc               0x0800d417    0x4c  Code  Gb  uart.o [1]
+uart_init               0x0800d059   0x354  Code  Gb  uart.o [1]
+uart_logTx_buffer       0x2000957c  0x1000  Data  Lc  example.o [1]
+uart_mainRx_buffer      0x2000a57c   0x100  Data  Lc  example.o [1]
+uart_putc               0x0800d3ad    0x6a  Code  Gb  uart.o [1]
+usart_for_printf        0x200002ac     0x4  Data  Lc  uart.o [1]
+vsnprintf               0x0800fea1    0x3c  Code  Gb  vsnprint.o [3]
+
+
+[1] = C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+[2] = command line
+[3] = dl7M_tln.a
+[4] = m7M_tls.a
+[5] = rt7M_tl.a
+
+  71 800 bytes of readonly  code memory
+   4 790 bytes of readonly  data memory
+  55 795 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

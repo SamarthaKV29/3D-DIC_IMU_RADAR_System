@@ -1,0 +1,205 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:31
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  C:\Users\prasa\Documents\1.0.0\sources\board-hal\led.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\led.c -D IAR_COMPILER
+#        -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO -D
+#        USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\led.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\led.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\led.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2016-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "led.h"
+     25          
+     26          #include <stdio.h>
+     27          
+     28          #include "stm32f4xx.h"
+     29          #include "stm32f4xx_gpio.h" 
+     30          #include "stm32f4xx_rcc.h"
+     31          
+     32          /********************************* Defines ************************************/
+     33          
+     34          /********************************* Globals ************************************/
+     35          
+     36          /********************************* Prototypes *********************************/
+     37          
+
+   \                                 In section .text, align 2, keep-with-next
+     38          void led_init(void)
+     39          {
+   \                     led_init: (+1)
+   \   00000000   0xB500             PUSH     {LR}
+   \   00000002   0xB083             SUB      SP,SP,#+12
+     40          	GPIO_InitTypeDef GPIO_InitStructure;
+     41          
+     42          	/* GPIOA Peripheral clock enable */
+     43          	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+   \   00000004   0x2101             MOVS     R1,#+1
+   \   00000006   0x4608             MOV      R0,R1
+   \   00000008   0x.... 0x....      BL       RCC_AHB1PeriphClockCmd
+     44          
+     45          	/* Configure PA5 in output pushpull mode */
+     46          	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 ;
+   \   0000000C   0x2020             MOVS     R0,#+32
+   \   0000000E   0x9000             STR      R0,[SP, #+0]
+     47          	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+   \   00000010   0x2001             MOVS     R0,#+1
+   \   00000012   0xF88D 0x0004      STRB     R0,[SP, #+4]
+     48          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   \   00000016   0x2000             MOVS     R0,#+0
+   \   00000018   0xF88D 0x0006      STRB     R0,[SP, #+6]
+     49          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+   \   0000001C   0x2003             MOVS     R0,#+3
+   \   0000001E   0xF88D 0x0005      STRB     R0,[SP, #+5]
+     50          	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+   \   00000022   0x2000             MOVS     R0,#+0
+   \   00000024   0xF88D 0x0007      STRB     R0,[SP, #+7]
+     51          	GPIO_Init(GPIOA, &GPIO_InitStructure);
+   \   00000028   0x4669             MOV      R1,SP
+   \   0000002A   0x....             LDR.N    R0,??DataTable3  ;; 0x40020000
+   \   0000002C   0x.... 0x....      BL       GPIO_Init
+     52          }
+   \   00000030   0xBD07             POP      {R0-R2,PC}       ;; return
+     53          
+
+   \                                 In section .text, align 2, keep-with-next
+     54          void led_on(void)
+     55          {
+     56          	GPIOA->BSRRL = GPIO_Pin_5;
+   \                     led_on: (+1)
+   \   00000000   0x2020             MOVS     R0,#+32
+   \   00000002   0x....             LDR.N    R1,??DataTable3_1  ;; 0x40020018
+   \   00000004   0x8008             STRH     R0,[R1, #+0]
+     57          }
+   \   00000006   0x4770             BX       LR               ;; return
+     58          
+
+   \                                 In section .text, align 2, keep-with-next
+     59          void led_off(void)
+     60          {
+     61          	GPIOA->BSRRH = GPIO_Pin_5;
+   \                     led_off: (+1)
+   \   00000000   0x2020             MOVS     R0,#+32
+   \   00000002   0x....             LDR.N    R1,??DataTable3_2  ;; 0x4002001a
+   \   00000004   0x8008             STRH     R0,[R1, #+0]
+     62          }
+   \   00000006   0x4770             BX       LR               ;; return
+     63          
+
+   \                                 In section .text, align 2, keep-with-next
+     64          void led_toggle(void)
+     65          {
+     66          	GPIOA->ODR ^= GPIO_Pin_5;
+   \                     led_toggle: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable3_3  ;; 0x40020014
+   \   00000002   0x6801             LDR      R1,[R0, #+0]
+   \   00000004   0xF081 0x0120      EOR      R1,R1,#0x20
+   \   00000008   0x6001             STR      R1,[R0, #+0]
+     67          }
+   \   0000000A   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3:
+   \   00000000   0x40020000         DC32     0x40020000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_1:
+   \   00000000   0x40020018         DC32     0x40020018
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_2:
+   \   00000000   0x4002001A         DC32     0x4002001a
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_3:
+   \   00000000   0x40020014         DC32     0x40020014
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   led_init
+        16   -> GPIO_Init
+        16   -> RCC_AHB1PeriphClockCmd
+       0   led_off
+       0   led_on
+       0   led_toggle
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable3
+       4  ??DataTable3_1
+       4  ??DataTable3_2
+       4  ??DataTable3_3
+      50  led_init
+       8  led_off
+       8  led_on
+      12  led_toggle
+
+ 
+ 94 bytes in section .text
+ 
+ 94 bytes of CODE memory
+
+Errors: none
+Warnings: none

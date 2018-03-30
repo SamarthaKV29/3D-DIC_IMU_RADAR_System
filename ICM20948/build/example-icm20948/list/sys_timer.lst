@@ -1,0 +1,273 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:40
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\sys_timer.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\sys_timer.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\sys_timer.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\sys_timer.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\sys_timer.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2016-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "sys_timer.h"
+     25          
+     26          #include "stm32f4xx.h"
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void NVIC_SetPriority(IRQn_Type, uint32_t)
+   \                     NVIC_SetPriority: (+1)
+   \   00000000   0x0109             LSLS     R1,R1,#+4
+   \   00000002   0x0002             MOVS     R2,R0
+   \   00000004   0xD506             BPL.N    ??NVIC_SetPriority_0
+   \   00000006   0x....             LDR.N    R0,??DataTable4  ;; 0xe000ed18
+   \   00000008   0xF002 0x020F      AND      R2,R2,#0xF
+   \   0000000C   0x4410             ADD      R0,R0,R2
+   \   0000000E   0xF800 0x1C04      STRB     R1,[R0, #-4]
+   \   00000012   0x4770             BX       LR
+   \                     ??NVIC_SetPriority_0: (+1)
+   \   00000014   0x....             LDR.N    R0,??DataTable4_1  ;; 0xe000e400
+   \   00000016   0x5481             STRB     R1,[R0, R2]
+   \   00000018   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp uint32_t SysTick_Config(uint32_t)
+   \                     SysTick_Config: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x1E40             SUBS     R0,R0,#+1
+   \   00000004   0xF1B0 0x7F80      CMP      R0,#+16777216
+   \   00000008   0xD301             BCC.N    ??SysTick_Config_0
+   \   0000000A   0x2001             MOVS     R0,#+1
+   \   0000000C   0xBD10             POP      {R4,PC}
+   \                     ??SysTick_Config_0: (+1)
+   \   0000000E   0x....             LDR.N    R4,??DataTable4_2  ;; 0xe000e010
+   \   00000010   0x6060             STR      R0,[R4, #+4]
+   \   00000012   0x210F             MOVS     R1,#+15
+   \   00000014   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000018   0x.... 0x....      BL       NVIC_SetPriority
+   \   0000001C   0x2000             MOVS     R0,#+0
+   \   0000001E   0x60A0             STR      R0,[R4, #+8]
+   \   00000020   0x2007             MOVS     R0,#+7
+   \   00000022   0x6020             STR      R0,[R4, #+0]
+   \   00000024   0x2000             MOVS     R0,#+0
+   \   00000026   0xBD10             POP      {R4,PC}          ;; return
+     27          #include <stddef.h>
+     28          
+     29          /*
+     30           * Callback for Systick handler
+     31           */
+
+   \                                 In section .bss, align 8
+     32          static void (*sSystick_irq_handler_cb)(void);
+     33          
+     34          volatile uint64_t m_second = 0;
+   \                     m_second:
+   \   00000000                      DS8 8
+   \   00000008                      DS8 4
+     35          
+
+   \                                 In section .text, align 2, keep-with-next
+     36          void sys_timer_init(void (*systick_handler)(void), uint32_t wake_period_ms)
+     37          {
+     38          	sSystick_irq_handler_cb = systick_handler;
+   \                     sys_timer_init: (+1)
+   \   00000000   0x....             LDR.N    R2,??DataTable4_3
+   \   00000002   0x6090             STR      R0,[R2, #+8]
+     39          
+     40          	// Configure the Systick
+     41          	// To adjust the SysTick time base, use the following formula:
+     42          	// Reload Value = SysTick Counter Clock (Hz) x  Desired Time base (s)
+     43          
+     44          	// - Reload Value is the parameter to be passed for SysTick_Config() function
+     45          	// - Reload Value should not exceed 0xFFFFFF
+     46          	
+     47          	if(wake_period_ms < 1000)
+   \   00000004   0x....             LDR.N    R0,??DataTable4_4
+   \   00000006   0x6800             LDR      R0,[R0, #+0]
+   \   00000008   0xF5B1 0x7F7A      CMP      R1,#+1000
+   \   0000000C   0xF44F 0x727A      MOV      R2,#+1000
+   \   00000010   0xD204             BCS.N    ??sys_timer_init_0
+     48          		SysTick_Config(SystemCoreClock / (1000 / wake_period_ms));
+   \   00000012   0xFBB2 0xF1F1      UDIV     R1,R2,R1
+   \   00000016   0xFBB0 0xF0F1      UDIV     R0,R0,R1
+   \   0000001A   0x....             B.N      SysTick_Config
+     49          	else 
+     50          		SysTick_Config(SystemCoreClock * (wake_period_ms / 1000));
+   \                     ??sys_timer_init_0: (+1)
+   \   0000001C   0xFBB1 0xF1F2      UDIV     R1,R1,R2
+   \   00000020   0x4348             MULS     R0,R1,R0
+   \   00000022   0x....             B.N      SysTick_Config
+     51          
+     52          }
+     53          
+
+   \                                 In section .text, align 2, keep-with-next
+     54          uint32_t sys_timer_get_timestamp_ms(void)
+   \                     sys_timer_get_timestamp_ms: (+1)
+   \   00000000   0xBF00             Nop      
+     55          {
+     56              return (sys_timer_get_timestamp() & UINT32_MAX) * SYS_TIMER_RES_MS;
+   \   00000002                      REQUIRE sys_timer_get_timestamp
+   \   00000002                      ;; // Fall through to label sys_timer_get_timestamp
+     57          }
+     58          
+
+   \                                 In section .text, align 2, keep-with-next
+     59          uint64_t sys_timer_get_timestamp(void)
+     60          {
+     61          	return m_second;
+   \                     sys_timer_get_timestamp: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable4_3
+   \   00000002   0xE9D0 0x0100      LDRD     R0,R1,[R0, #+0]
+   \   00000006   0x4770             BX       LR               ;; return
+     62          }
+     63          
+     64          /* Interrupt management ------------------------------------------------------*/
+     65            
+     66          /**
+     67            * @brief  This function handles SysTick Handler.
+     68            * @param  None
+     69            * @retval None
+     70            */
+
+   \                                 In section .text, align 2, keep-with-next
+     71          void SysTick_Handler(void)
+     72          {
+     73          	++m_second;
+   \                     SysTick_Handler: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable4_3
+   \   00000002   0xE9D0 0x2300      LDRD     R2,R3,[R0, #+0]
+   \   00000006   0x1C52             ADDS     R2,R2,#+1
+   \   00000008   0xF163 0x33FF      SBC      R3,R3,#-1
+   \   0000000C   0xE9C0 0x2300      STRD     R2,R3,[R0, #+0]
+     74          
+     75          	if(sSystick_irq_handler_cb != NULL)
+   \   00000010   0x6880             LDR      R0,[R0, #+8]
+   \   00000012   0x0001             MOVS     R1,R0
+   \   00000014   0xD000             BEQ.N    ??SysTick_Handler_0
+     76          		sSystick_irq_handler_cb();
+   \   00000016   0x4700             BX       R0
+     77          }
+   \                     ??SysTick_Handler_0: (+1)
+   \   00000018   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable4:
+   \   00000000   0xE000ED18         DC32     0xe000ed18
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable4_1:
+   \   00000000   0xE000E400         DC32     0xe000e400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable4_2:
+   \   00000000   0xE000E010         DC32     0xe000e010
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable4_3:
+   \   00000000   0x........         DC32     m_second
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable4_4:
+   \   00000000   0x........         DC32     SystemCoreClock
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   NVIC_SetPriority
+       8   SysTick_Config
+         8   -> NVIC_SetPriority
+       0   SysTick_Handler
+         0   -- Indirect call
+       0   sys_timer_get_timestamp
+       0   sys_timer_get_timestamp_ms
+         0   -> sys_timer_get_timestamp
+       0   sys_timer_init
+         0   -> SysTick_Config
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable4
+       4  ??DataTable4_1
+       4  ??DataTable4_2
+       4  ??DataTable4_3
+       4  ??DataTable4_4
+      26  NVIC_SetPriority
+      40  SysTick_Config
+      26  SysTick_Handler
+      12  m_second
+          sSystick_irq_handler_cb
+       8  sys_timer_get_timestamp
+       2  sys_timer_get_timestamp_ms
+      36  sys_timer_init
+
+ 
+  12 bytes in section .bss
+ 158 bytes in section .text
+ 
+ 158 bytes of CODE memory
+  12 bytes of DATA memory
+
+Errors: none
+Warnings: none

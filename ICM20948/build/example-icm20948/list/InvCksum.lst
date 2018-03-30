@@ -1,0 +1,114 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:30
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvCksum.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvCksum.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\InvCksum.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\InvCksum.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\InvCksum.c
+      1          /*
+      2              Copyright (c) 2014-2015 InvenSense Inc. Portions Copyright (c) 2014-2015 Movea. All rights reserved.
+      3          
+      4              This software, related documentation and any modifications thereto (collectively "Software") is subject
+      5              to InvenSense and its licensors' intellectual property rights under U.S. and international copyright and
+      6              other intellectual property rights laws.
+      7          
+      8              InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+      9              and any use, reproduction, disclosure or distribution of the Software without an express license
+     10              agreement from InvenSense is strictly prohibited.
+     11          */
+     12          
+     13          #include "InvCksum.h"
+     14          
+
+   \                                 In section .text, align 2, keep-with-next
+     15          uint16_t InvCksum_compute(const void *data, unsigned long len)
+     16          {
+   \                     InvCksum_compute: (+1)
+   \   00000000   0xB410             PUSH     {R4}
+     17          	uint16_t chk = 1;
+   \   00000002   0x2201             MOVS     R2,#+1
+     18          	unsigned long i;
+     19          	const uint8_t *pdata = data;
+     20          
+     21          	for (i = 0; i < len; ++i) {
+   \   00000004   0x2300             MOVS     R3,#+0
+   \   00000006   0xE005             B.N      ??InvCksum_compute_0
+     22          		chk = (chk << 1) + chk + pdata[i];
+   \                     ??InvCksum_compute_1: (+1)
+   \   00000008   0xEB02 0x0242      ADD      R2,R2,R2, LSL #+1
+   \   0000000C   0x5CC4             LDRB     R4,[R0, R3]
+   \   0000000E   0x1912             ADDS     R2,R2,R4
+   \   00000010   0xB292             UXTH     R2,R2
+     23          	}
+   \   00000012   0x1C5B             ADDS     R3,R3,#+1
+   \                     ??InvCksum_compute_0: (+1)
+   \   00000014   0x428B             CMP      R3,R1
+   \   00000016   0xD3F7             BCC.N    ??InvCksum_compute_1
+     24          
+     25          	return chk;
+   \   00000018   0x4610             MOV      R0,R2
+   \   0000001A   0xBC10             POP      {R4}
+   \   0000001C   0x4770             BX       LR               ;; return
+     26          }
+     27          
+     28          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       4   InvCksum_compute
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      30  InvCksum_compute
+
+ 
+ 30 bytes in section .text
+ 
+ 30 bytes of CODE memory
+
+Errors: none
+Warnings: none

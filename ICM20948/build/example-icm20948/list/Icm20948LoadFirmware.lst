@@ -1,0 +1,237 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:29
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948LoadFirmware.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948LoadFirmware.c
+#        -D IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D
+#        NUCLEO -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000
+#        -D STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\Icm20948LoadFirmware.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Icm20948LoadFirmware.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\Devices\Drivers\Icm20948\Icm20948LoadFirmware.c
+      1          /*
+      2          * ________________________________________________________________________________________________________
+      3          * Copyright © 2014-2015 InvenSense Inc. Portions Copyright © 2014-2015 Movea. All rights reserved.
+      4          * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      5          * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright and
+      6          * other intellectual property rights laws.
+      7          * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+      8          * and any use, reproduction, disclosure or distribution of the Software without an express license
+      9          * agreement from InvenSense is strictly prohibited.
+     10          * ________________________________________________________________________________________________________
+     11          */
+     12          
+     13          #include "Icm20948.h"
+     14          #include "Icm20948LoadFirmware.h"
+     15          #include "Icm20948Defs.h"
+     16          #include "Icm20948DataBaseDriver.h"
+     17          
+
+   \                                 In section .text, align 2, keep-with-next
+     18          int inv_icm20948_firmware_load(struct inv_icm20948 * s, const unsigned char *data_start, unsigned short size_start, unsigned short load_addr)
+     19          { 
+   \                     inv_icm20948_firmware_load: (+1)
+   \   00000000   0xE92D 0x4FF0      PUSH     {R4-R11,LR}
+   \   00000004   0xB085             SUB      SP,SP,#+20
+   \   00000006   0x4604             MOV      R4,R0
+   \   00000008   0x460D             MOV      R5,R1
+   \   0000000A   0x4692             MOV      R10,R2
+   \   0000000C   0x469B             MOV      R11,R3
+     20              int write_size;
+     21              int result;
+     22              unsigned short memaddr;
+     23              const unsigned char *data;
+     24              unsigned short size;
+     25              unsigned char data_cmp[INV_MAX_SERIAL_READ];
+     26              int flag = 0;
+     27          
+     28          	if(s->base_state.firmware_loaded)
+   \   0000000E   0xF894 0x0026      LDRB     R0,[R4, #+38]
+   \   00000012   0xF3C0 0x0040      UBFX     R0,R0,#+1,#+1
+   \   00000016   0x2800             CMP      R0,#+0
+   \   00000018   0xD150             BNE.N    ??inv_icm20948_firmware_load_0
+     29          		return 0;
+     30          		
+     31              // Write DMP memory
+     32              data = data_start;
+   \   0000001A   0x462E             MOV      R6,R5
+     33              size = size_start;
+   \   0000001C   0x4657             MOV      R7,R10
+     34              memaddr = load_addr;
+   \   0000001E   0x46D8             MOV      R8,R11
+   \   00000020   0xE006             B.N      ??inv_icm20948_firmware_load_1
+     35              while (size > 0) {
+     36                  write_size = min(size, INV_MAX_SERIAL_WRITE);
+     37                  if ((memaddr & 0xff) + write_size > 0x100) {
+     38                      // Moved across a bank
+     39                      write_size = (memaddr & 0xff) + write_size - 0x100;
+     40                  }
+     41                  result = inv_icm20948_write_mems(s, memaddr, write_size, (unsigned char *)data);
+     42                  if (result)  
+     43                      return result;
+     44                  data += write_size;
+   \                     ??inv_icm20948_firmware_load_2: (+1)
+   \   00000022   0x444E             ADD      R6,R6,R9
+     45                  size -= write_size;
+   \   00000024   0xEBA7 0x0709      SUB      R7,R7,R9
+   \   00000028   0xB2BF             UXTH     R7,R7
+     46                  memaddr += write_size;
+   \   0000002A   0x44C8             ADD      R8,R9,R8
+   \   0000002C   0xFA1F 0xF888      UXTH     R8,R8
+   \                     ??inv_icm20948_firmware_load_1: (+1)
+   \   00000030   0x2F00             CMP      R7,#+0
+   \   00000032   0xD017             BEQ.N    ??inv_icm20948_firmware_load_3
+   \   00000034   0xF04F 0x0910      MOV      R9,#+16
+   \   00000038   0x2F10             CMP      R7,#+16
+   \   0000003A   0xDC00             BGT.N    ??inv_icm20948_firmware_load_4
+   \   0000003C   0x46B9             MOV      R9,R7
+   \                     ??inv_icm20948_firmware_load_4: (+1)
+   \   0000003E   0xF008 0x00FF      AND      R0,R8,#0xFF
+   \   00000042   0xEB09 0x0100      ADD      R1,R9,R0
+   \   00000046   0xF5B1 0x7F80      CMP      R1,#+256
+   \   0000004A   0xDD02             BLE.N    ??inv_icm20948_firmware_load_5
+   \   0000004C   0xF5A0 0x7080      SUB      R0,R0,#+256
+   \   00000050   0x4481             ADD      R9,R0,R9
+   \                     ??inv_icm20948_firmware_load_5: (+1)
+   \   00000052   0x4633             MOV      R3,R6
+   \   00000054   0x464A             MOV      R2,R9
+   \   00000056   0x4641             MOV      R1,R8
+   \   00000058   0x4620             MOV      R0,R4
+   \   0000005A   0x.... 0x....      BL       inv_icm20948_write_mems
+   \   0000005E   0x2800             CMP      R0,#+0
+   \   00000060   0xD0DF             BEQ.N    ??inv_icm20948_firmware_load_2
+   \   00000062   0xE02C             B.N      ??inv_icm20948_firmware_load_6
+     47              }
+     48          
+     49              // Verify DMP memory
+     50          
+     51              data = data_start;
+   \                     ??inv_icm20948_firmware_load_3: (+1)
+   \   00000064   0x462E             MOV      R6,R5
+     52              size = size_start;
+   \   00000066   0x4657             MOV      R7,R10
+     53              memaddr = load_addr;
+   \   00000068   0x46D8             MOV      R8,R11
+   \   0000006A   0xE006             B.N      ??inv_icm20948_firmware_load_7
+     54              while (size > 0) {
+     55                  write_size = min(size, INV_MAX_SERIAL_READ);
+     56                  if ((memaddr & 0xff) + write_size > 0x100) {
+     57                      // Moved across a bank
+     58                      write_size = (memaddr & 0xff) + write_size - 0x100;
+     59                  }
+     60                  result = inv_icm20948_read_mems(s, memaddr, write_size, data_cmp);
+     61                  if (result)
+     62                      flag++; // Error, DMP not written correctly
+     63                  if (memcmp(data_cmp, data, write_size))
+     64                      return -1;
+     65                  data += write_size;
+   \                     ??inv_icm20948_firmware_load_8: (+1)
+   \   0000006C   0x444E             ADD      R6,R6,R9
+     66                  size -= write_size;
+   \   0000006E   0xEBA7 0x0709      SUB      R7,R7,R9
+   \   00000072   0xB2BF             UXTH     R7,R7
+     67                  memaddr += write_size;
+   \   00000074   0x44C8             ADD      R8,R9,R8
+   \   00000076   0xFA1F 0xF888      UXTH     R8,R8
+   \                     ??inv_icm20948_firmware_load_7: (+1)
+   \   0000007A   0x2F00             CMP      R7,#+0
+   \   0000007C   0xD01E             BEQ.N    ??inv_icm20948_firmware_load_0
+   \   0000007E   0xF04F 0x0910      MOV      R9,#+16
+   \   00000082   0x2F10             CMP      R7,#+16
+   \   00000084   0xDC00             BGT.N    ??inv_icm20948_firmware_load_9
+   \   00000086   0x46B9             MOV      R9,R7
+   \                     ??inv_icm20948_firmware_load_9: (+1)
+   \   00000088   0xF008 0x00FF      AND      R0,R8,#0xFF
+   \   0000008C   0xEB09 0x0100      ADD      R1,R9,R0
+   \   00000090   0xF5B1 0x7F80      CMP      R1,#+256
+   \   00000094   0xDD02             BLE.N    ??inv_icm20948_firmware_load_10
+   \   00000096   0xF5A0 0x7080      SUB      R0,R0,#+256
+   \   0000009A   0x4481             ADD      R9,R0,R9
+   \                     ??inv_icm20948_firmware_load_10: (+1)
+   \   0000009C   0x466B             MOV      R3,SP
+   \   0000009E   0x464A             MOV      R2,R9
+   \   000000A0   0x4641             MOV      R1,R8
+   \   000000A2   0x4620             MOV      R0,R4
+   \   000000A4   0x.... 0x....      BL       inv_icm20948_read_mems
+   \   000000A8   0x464A             MOV      R2,R9
+   \   000000AA   0x4631             MOV      R1,R6
+   \   000000AC   0x4668             MOV      R0,SP
+   \   000000AE   0x.... 0x....      BL       memcmp
+   \   000000B2   0x2800             CMP      R0,#+0
+   \   000000B4   0xD0DA             BEQ.N    ??inv_icm20948_firmware_load_8
+   \   000000B6   0xF04F 0x30FF      MOV      R0,#-1
+   \   000000BA   0xE000             B.N      ??inv_icm20948_firmware_load_6
+     68              }
+     69          
+     70          #if defined(WIN32)   
+     71              //if(!flag)
+     72                // inv_log("DMP Firmware was updated successfully..\r\n");
+     73          #endif
+     74          
+     75              return 0;
+   \                     ??inv_icm20948_firmware_load_0: (+1)
+   \   000000BC   0x2000             MOVS     R0,#+0
+   \                     ??inv_icm20948_firmware_load_6: (+1)
+   \   000000BE   0xB005             ADD      SP,SP,#+20
+   \   000000C0   0xE8BD 0x8FF0      POP      {R4-R11,PC}      ;; return
+     76          }
+     77          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      56   inv_icm20948_firmware_load
+        56   -> inv_icm20948_read_mems
+        56   -> inv_icm20948_write_mems
+        56   -> memcmp
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     196  inv_icm20948_firmware_load
+
+ 
+ 196 bytes in section .text
+ 
+ 196 bytes of CODE memory
+
+Errors: none
+Warnings: none

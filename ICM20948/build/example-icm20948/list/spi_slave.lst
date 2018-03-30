@@ -1,0 +1,519 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:33
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\spi_slave.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\spi_slave.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\spi_slave.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\spi_slave.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\spi_slave.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2016-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITHé& THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "spi_slave.h"
+     25          #include "gpio.h"
+     26          
+     27          #include "nvic_config.h"
+     28          
+     29          #include "stm32f4xx.h"
+     30          #include "stm32f4xx_gpio.h" 
+     31          #include "stm32f4xx_spi.h" 
+     32          #include "stm32f4xx_rcc.h"
+     33          
+     34          #include <stddef.h>
+     35          
+     36          /********************************* Defines ************************************/
+     37          
+     38          #define SPI_SLAVE_GPIO_PORT              GPIOB
+     39          #define SPI_SLAVE_GPIO_CLK               RCC_AHB1Periph_GPIOB
+     40          
+     41          #define SPI_SLAVE_SCK_GPIO_PIN           GPIO_Pin_13
+     42          #define SPI_SLAVE_SCK_GPIO_PINSOURCE     GPIO_PinSource13
+     43          #define SPI_SLAVE_MISO_GPIO_PIN          GPIO_Pin_14
+     44          #define SPI_SLAVE_MISO_GPIO_PINSOURCE    GPIO_PinSource14
+     45          #define SPI_SLAVE_MOSI_GPIO_PIN          GPIO_Pin_15
+     46          #define SPI_SLAVE_MOSI_GPIO_PINSOURCE    GPIO_PinSource15
+     47          
+     48          #define SPI_SLAVE                        SPI2
+     49          #define GPIO_AF_SPI                      GPIO_AF_SPI2
+     50          #define SPI_SLAVE_RCC_CLK                RCC_APB1Periph_SPI2
+     51                  
+     52          
+     53          /********************************* Globals ************************************/
+     54          #include "Invn/EmbUtils/RingBuffer.h"
+
+   \                                 In section .bss, align 4
+     55          static RINGBUFFER(sSPIBufferReceived, 2048, uint8_t);
+   \                     sSPIBufferReceived:
+   \   00000000                      DS8 2052
+
+   \                                 In section .bss, align 4
+     56          static RINGBUFFER(sSPIBufferTransmit, 2048, uint8_t);
+   \                     sSPIBufferTransmit:
+   \   00000000                      DS8 2052
+
+   \                                 In section .bss, align 1
+     57          static uint8_t IsInited = 0;
+   \                     IsInited:
+   \   00000000                      DS8 1
+     58          
+     59          /*
+     60           * Callback for End of TX transfer interruption
+     61           */
+
+   \                                 In section .bss, align 4
+     62          static void (*sEnd_of_TX_cb)(void);
+   \                     sEnd_of_TX_cb:
+   \   00000000                      DS8 4
+     63          
+     64          /********************************* Prototypes *********************************/
+     65          
+
+   \                                 In section .text, align 2, keep-with-next
+     66          static void spi_slave_init_peripheral(void)
+     67          {
+   \                     spi_slave_init_peripheral: (+1)
+   \   00000000   0xB530             PUSH     {R4,R5,LR}
+   \   00000002   0xB087             SUB      SP,SP,#+28
+     68          	GPIO_InitTypeDef GPIO_InitStructure;
+     69          	SPI_InitTypeDef  SPI_InitStructure;
+     70          
+     71          	if(IsInited != 0)
+   \   00000004   0x....             LDR.N    R4,??DataTable5
+   \   00000006   0x7820             LDRB     R0,[R4, #+0]
+   \   00000008   0x2800             CMP      R0,#+0
+   \   0000000A   0xD13B             BNE.N    ??spi_slave_init_peripheral_0
+     72          		return;
+     73          
+     74          	/* Enable SPIx clock */
+     75          	RCC_APB1PeriphClockCmd(SPI_SLAVE_RCC_CLK, ENABLE);
+   \   0000000C   0x2101             MOVS     R1,#+1
+   \   0000000E   0xF44F 0x4080      MOV      R0,#+16384
+   \   00000012   0x.... 0x....      BL       RCC_APB1PeriphClockCmd
+     76          
+     77          	/* Enable SPI GPIO clock */
+     78          	RCC_AHB1PeriphClockCmd(SPI_SLAVE_GPIO_CLK, ENABLE);
+   \   00000016   0x2101             MOVS     R1,#+1
+   \   00000018   0x2002             MOVS     R0,#+2
+   \   0000001A   0x.... 0x....      BL       RCC_AHB1PeriphClockCmd
+     79          
+     80          	/* Configure SPIx pin: SCK, MOSI and MISO -------------------------*/
+     81          	GPIO_InitStructure.GPIO_Pin =  SPI_SLAVE_SCK_GPIO_PIN | SPI_SLAVE_MISO_GPIO_PIN | SPI_SLAVE_MOSI_GPIO_PIN; 
+   \   0000001E   0xF44F 0x4060      MOV      R0,#+57344
+   \   00000022   0x9000             STR      R0,[SP, #+0]
+     82          	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+   \   00000024   0x2002             MOVS     R0,#+2
+   \   00000026   0xF88D 0x0004      STRB     R0,[SP, #+4]
+     83          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \   0000002A   0xF88D 0x0005      STRB     R0,[SP, #+5]
+     84          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   \   0000002E   0x2000             MOVS     R0,#+0
+   \   00000030   0xF8AD 0x0006      STRH     R0,[SP, #+6]
+     85          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+     86          	GPIO_Init(SPI_SLAVE_GPIO_PORT, &GPIO_InitStructure);
+   \   00000034   0x....             LDR.N    R5,??DataTable5_1  ;; 0x40020400
+   \   00000036   0x4669             MOV      R1,SP
+   \   00000038   0x4628             MOV      R0,R5
+   \   0000003A   0x.... 0x....      BL       GPIO_Init
+     87          
+     88          	/* Connect SPIx pins to AF5 */
+     89          	GPIO_PinAFConfig(SPI_SLAVE_GPIO_PORT, SPI_SLAVE_SCK_GPIO_PINSOURCE, GPIO_AF_SPI);  
+   \   0000003E   0x2205             MOVS     R2,#+5
+   \   00000040   0x210D             MOVS     R1,#+13
+   \   00000042   0x4628             MOV      R0,R5
+   \   00000044   0x.... 0x....      BL       GPIO_PinAFConfig
+     90          	GPIO_PinAFConfig(SPI_SLAVE_GPIO_PORT, SPI_SLAVE_MISO_GPIO_PINSOURCE, GPIO_AF_SPI);  
+   \   00000048   0x2205             MOVS     R2,#+5
+   \   0000004A   0x210E             MOVS     R1,#+14
+   \   0000004C   0x4628             MOV      R0,R5
+   \   0000004E   0x.... 0x....      BL       GPIO_PinAFConfig
+     91          	GPIO_PinAFConfig(SPI_SLAVE_GPIO_PORT, SPI_SLAVE_MOSI_GPIO_PINSOURCE, GPIO_AF_SPI);  
+   \   00000052   0x2205             MOVS     R2,#+5
+   \   00000054   0x210F             MOVS     R1,#+15
+   \   00000056   0x4628             MOV      R0,R5
+   \   00000058   0x.... 0x....      BL       GPIO_PinAFConfig
+     92          
+     93          	/* Initialize the SPI peripheral */
+     94          	SPI_InitStructure.SPI_Mode = SPI_Mode_Slave;
+   \   0000005C   0x2000             MOVS     R0,#+0
+     95          	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
+   \   0000005E   0x9002             STR      R0,[SP, #+8]
+     96          	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
+   \   00000060   0xF8AD 0x000C      STRH     R0,[SP, #+12]
+     97          	SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;
+   \   00000064   0x2002             MOVS     R0,#+2
+   \   00000066   0xF8AD 0x000E      STRH     R0,[SP, #+14]
+     98          	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;
+   \   0000006A   0x2001             MOVS     R0,#+1
+   \   0000006C   0xF8AD 0x0010      STRH     R0,[SP, #+16]
+     99          	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
+   \   00000070   0x2000             MOVS     R0,#+0
+    100          	SPI_InitStructure.SPI_NSS = SPI_NSS_Hard;
+   \   00000072   0xF8AD 0x0012      STRH     R0,[SP, #+18]
+    101          	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
+   \   00000076   0x9005             STR      R0,[SP, #+20]
+    102          	SPI_Init(SPI_SLAVE, &SPI_InitStructure);
+   \   00000078   0xA902             ADD      R1,SP,#+8
+   \   0000007A   0x....             LDR.N    R0,??DataTable5_2  ;; 0x40003800
+   \   0000007C   0x.... 0x....      BL       SPI_Init
+    103          
+    104          	IsInited = 1;
+   \   00000080   0x2001             MOVS     R0,#+1
+   \   00000082   0x7020             STRB     R0,[R4, #+0]
+    105          }
+   \                     ??spi_slave_init_peripheral_0: (+1)
+   \   00000084   0xB007             ADD      SP,SP,#+28
+   \   00000086   0xBD30             POP      {R4,R5,PC}       ;; return
+    106          
+
+   \                                 In section .text, align 2, keep-with-next
+    107          void spi_slave_set_end_of_frame_callback(void (*end_of_frame_cb)(void))
+    108          {
+    109          	/* Configure the CS line to detect the end of the frame transferred */
+    110          	gpio_init_spi_slave_cs_as_int(end_of_frame_cb);
+   \                     spi_slave_set_end_of_frame_callback: (+1)
+   \   00000000   0x.... 0x....      B.W      gpio_init_spi_slave_cs_as_int
+    111          }
+    112          
+
+   \                                 In section .text, align 2, keep-with-next
+    113          void spi_slave_init(void(*end_of_tx_cb)(void))
+    114          {
+   \                     spi_slave_init: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0xB082             SUB      SP,SP,#+8
+    115          	NVIC_InitTypeDef  NVIC_InitStructure;
+    116          
+    117          	/* Set callback to be called after each end of TX transfer */
+    118          	sEnd_of_TX_cb = end_of_tx_cb;
+   \   00000004   0x....             LDR.N    R1,??DataTable5_3
+   \   00000006   0x6008             STR      R0,[R1, #+0]
+    119          
+    120          	spi_slave_init_peripheral();
+   \   00000008   0x.... 0x....      BL       spi_slave_init_peripheral
+    121          
+    122          	/* Configure NVIC interrupt to SPI slave */
+    123          	NVIC_InitStructure.NVIC_IRQChannel = SPI2_IRQn;
+   \   0000000C   0x2024             MOVS     R0,#+36
+   \   0000000E   0xF88D 0x0000      STRB     R0,[SP, #+0]
+    124          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = NVIC_PRIORITY_SPI_SLAVE;
+   \   00000012   0x2007             MOVS     R0,#+7
+   \   00000014   0xF88D 0x0001      STRB     R0,[SP, #+1]
+    125          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+   \   00000018   0x2000             MOVS     R0,#+0
+   \   0000001A   0xF88D 0x0002      STRB     R0,[SP, #+2]
+    126          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+   \   0000001E   0x2001             MOVS     R0,#+1
+   \   00000020   0xF88D 0x0003      STRB     R0,[SP, #+3]
+    127          	NVIC_Init(&NVIC_InitStructure);
+   \   00000024   0x4668             MOV      R0,SP
+   \   00000026   0x.... 0x....      BL       NVIC_Init
+    128          
+    129          	/* Enable the Rx buffer not empty interrupt */
+    130          	SPI_I2S_ITConfig(SPI_SLAVE, SPI_I2S_IT_RXNE, ENABLE);
+   \   0000002A   0x....             LDR.N    R4,??DataTable5_2  ;; 0x40003800
+   \   0000002C   0x2201             MOVS     R2,#+1
+   \   0000002E   0x2160             MOVS     R1,#+96
+   \   00000030   0x4620             MOV      R0,R4
+   \   00000032   0x.... 0x....      BL       SPI_I2S_ITConfig
+    131          
+    132          	/* Enable the SPI peripheral */
+    133          	SPI_Cmd(SPI_SLAVE, ENABLE);  
+   \   00000036   0x2101             MOVS     R1,#+1
+   \   00000038   0x4620             MOV      R0,R4
+   \   0000003A   0x.... 0x....      BL       SPI_Cmd
+    134          }
+   \   0000003E   0xBD13             POP      {R0,R1,R4,PC}    ;; return
+    135          
+
+   \                                 In section .text, align 2, keep-with-next
+    136          void spi_slave_deinit(void)
+    137          {
+   \                     spi_slave_deinit: (+1)
+   \   00000000   0xB580             PUSH     {R7,LR}
+    138          	SPI_Cmd(SPI_SLAVE, DISABLE);
+   \   00000002   0x2100             MOVS     R1,#+0
+   \   00000004   0x....             LDR.N    R0,??DataTable5_2  ;; 0x40003800
+   \   00000006   0x.... 0x....      BL       SPI_Cmd
+    139          	IsInited = 0;
+   \   0000000A   0x2000             MOVS     R0,#+0
+   \   0000000C   0x....             LDR.N    R1,??DataTable5
+   \   0000000E   0x7008             STRB     R0,[R1, #+0]
+    140          }
+   \   00000010   0xBD01             POP      {R0,PC}          ;; return
+    141          
+
+   \                                 In section .text, align 2, keep-with-next
+    142          void spi_slave_rx(uint8_t *value)
+    143          {
+    144          	if (!RINGBUFFER_EMPTY(&sSPIBufferReceived))
+   \                     spi_slave_rx: (+1)
+   \   00000000   0x....             LDR.N    R1,??DataTable5_4
+   \   00000002   0x880A             LDRH     R2,[R1, #+0]
+   \   00000004   0x884B             LDRH     R3,[R1, #+2]
+   \   00000006   0x1A9B             SUBS     R3,R3,R2
+   \   00000008   0xB29B             UXTH     R3,R3
+   \   0000000A   0x2B00             CMP      R3,#+0
+   \   0000000C   0xD007             BEQ.N    ??spi_slave_rx_0
+    145          	{
+    146          		RINGBUFFER_POP(&sSPIBufferReceived, value);
+   \   0000000E   0xF3C2 0x020A      UBFX     R2,R2,#+0,#+11
+   \   00000012   0x440A             ADD      R2,R1,R2
+   \   00000014   0x7912             LDRB     R2,[R2, #+4]
+   \   00000016   0x7002             STRB     R2,[R0, #+0]
+   \   00000018   0x8808             LDRH     R0,[R1, #+0]
+   \   0000001A   0x1C40             ADDS     R0,R0,#+1
+   \   0000001C   0x8008             STRH     R0,[R1, #+0]
+    147          	}
+    148          }
+   \                     ??spi_slave_rx_0: (+1)
+   \   0000001E   0x4770             BX       LR               ;; return
+    149          
+
+   \                                 In section .text, align 2, keep-with-next
+    150          void spi_slave_tx(uint8_t *value)
+    151          {
+    152          	if (!RINGBUFFER_FULL(&sSPIBufferTransmit))
+   \                     spi_slave_tx: (+1)
+   \   00000000   0x....             LDR.N    R1,??DataTable5_5
+   \   00000002   0x884A             LDRH     R2,[R1, #+2]
+   \   00000004   0x880B             LDRH     R3,[R1, #+0]
+   \   00000006   0x1AD3             SUBS     R3,R2,R3
+   \   00000008   0xB29B             UXTH     R3,R3
+   \   0000000A   0xF5B3 0x6F00      CMP      R3,#+2048
+   \   0000000E   0xD007             BEQ.N    ??spi_slave_tx_0
+    153          	{
+    154          		RINGBUFFER_PUSH(&sSPIBufferTransmit, value);
+   \   00000010   0x7800             LDRB     R0,[R0, #+0]
+   \   00000012   0xF3C2 0x020A      UBFX     R2,R2,#+0,#+11
+   \   00000016   0x440A             ADD      R2,R1,R2
+   \   00000018   0x7110             STRB     R0,[R2, #+4]
+   \   0000001A   0x8848             LDRH     R0,[R1, #+2]
+   \   0000001C   0x1C40             ADDS     R0,R0,#+1
+   \   0000001E   0x8048             STRH     R0,[R1, #+2]
+    155          	}
+    156          }
+   \                     ??spi_slave_tx_0: (+1)
+   \   00000020   0x4770             BX       LR               ;; return
+    157          
+    158          /* Interrupt management ------------------------------------------------------*/
+    159          
+
+   \                                 In section .text, align 2, keep-with-next
+    160          void SPI2_IRQHandler(void)
+    161          {
+   \                     SPI2_IRQHandler: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+    162          	if (SPI_I2S_GetITStatus(SPI_SLAVE, SPI_I2S_IT_RXNE) == SET)
+   \   00000002   0x....             LDR.N    R4,??DataTable5_2  ;; 0x40003800
+   \   00000004   0x2160             MOVS     R1,#+96
+   \   00000006   0x4620             MOV      R0,R4
+   \   00000008   0x.... 0x....      BL       SPI_I2S_GetITStatus
+   \   0000000C   0x2801             CMP      R0,#+1
+   \   0000000E   0xD12F             BNE.N    ??SPI2_IRQHandler_0
+    163          	{
+    164          		if (!RINGBUFFER_FULL(&sSPIBufferReceived))
+   \   00000010   0x....             LDR.N    R5,??DataTable5_4
+   \   00000012   0x8868             LDRH     R0,[R5, #+2]
+   \   00000014   0x8829             LDRH     R1,[R5, #+0]
+   \   00000016   0x1A40             SUBS     R0,R0,R1
+   \   00000018   0xB280             UXTH     R0,R0
+   \   0000001A   0xF5B0 0x6F00      CMP      R0,#+2048
+   \   0000001E   0xD00F             BEQ.N    ??SPI2_IRQHandler_1
+    165          		{
+    166          			uint8_t lRxByte = SPI_I2S_ReceiveData(SPI_SLAVE);
+   \   00000020   0x4620             MOV      R0,R4
+   \   00000022   0x.... 0x....      BL       SPI_I2S_ReceiveData
+    167          			RINGBUFFER_PUSH(&sSPIBufferReceived, &lRxByte);
+   \   00000026   0x8869             LDRH     R1,[R5, #+2]
+   \   00000028   0xF3C1 0x010A      UBFX     R1,R1,#+0,#+11
+   \   0000002C   0x4429             ADD      R1,R5,R1
+   \   0000002E   0x7108             STRB     R0,[R1, #+4]
+   \   00000030   0x8868             LDRH     R0,[R5, #+2]
+   \   00000032   0x1C40             ADDS     R0,R0,#+1
+   \   00000034   0x8068             STRH     R0,[R5, #+2]
+    168          
+    169          			if(sEnd_of_TX_cb != NULL)
+   \   00000036   0x....             LDR.N    R0,??DataTable5_3
+   \   00000038   0x6800             LDR      R0,[R0, #+0]
+   \   0000003A   0x0001             MOVS     R1,R0
+   \   0000003C   0xD000             BEQ.N    ??SPI2_IRQHandler_1
+    170          				sEnd_of_TX_cb();
+   \   0000003E   0x4780             BLX      R0
+    171          		}
+    172          
+    173          		if ((SPI_I2S_GetFlagStatus(SPI_SLAVE, SPI_I2S_FLAG_BSY) == RESET)
+    174                      && (!RINGBUFFER_EMPTY(&sSPIBufferTransmit)))
+   \                     ??SPI2_IRQHandler_1: (+1)
+   \   00000040   0x2180             MOVS     R1,#+128
+   \   00000042   0x4620             MOV      R0,R4
+   \   00000044   0x.... 0x....      BL       SPI_I2S_GetFlagStatus
+   \   00000048   0x2800             CMP      R0,#+0
+   \   0000004A   0xD111             BNE.N    ??SPI2_IRQHandler_0
+   \   0000004C   0x....             LDR.N    R0,??DataTable5_5
+   \   0000004E   0x8802             LDRH     R2,[R0, #+0]
+   \   00000050   0x8841             LDRH     R1,[R0, #+2]
+   \   00000052   0x1A89             SUBS     R1,R1,R2
+   \   00000054   0xB289             UXTH     R1,R1
+   \   00000056   0x2900             CMP      R1,#+0
+   \   00000058   0xD00A             BEQ.N    ??SPI2_IRQHandler_0
+    175          		{
+    176          			uint8_t lTxByte;
+    177          			RINGBUFFER_POP(&sSPIBufferTransmit, &lTxByte);
+   \   0000005A   0xF3C2 0x010A      UBFX     R1,R2,#+0,#+11
+   \   0000005E   0x4401             ADD      R1,R0,R1
+   \   00000060   0x7909             LDRB     R1,[R1, #+4]
+   \   00000062   0x1C52             ADDS     R2,R2,#+1
+   \   00000064   0x8002             STRH     R2,[R0, #+0]
+    178          			SPI_I2S_SendData(SPI_SLAVE, lTxByte);
+   \   00000066   0x4620             MOV      R0,R4
+   \   00000068   0xE8BD 0x4034      POP      {R2,R4,R5,LR}
+   \   0000006C   0x.... 0x....      B.W      SPI_I2S_SendData
+    179          		}
+    180          	}
+    181          }
+   \                     ??SPI2_IRQHandler_0: (+1)
+   \   00000070   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5:
+   \   00000000   0x........         DC32     IsInited
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_1:
+   \   00000000   0x40020400         DC32     0x40020400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_2:
+   \   00000000   0x40003800         DC32     0x40003800
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_3:
+   \   00000000   0x........         DC32     sEnd_of_TX_cb
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_4:
+   \   00000000   0x........         DC32     sSPIBufferReceived
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_5:
+   \   00000000   0x........         DC32     sSPIBufferTransmit
+    182          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   SPI2_IRQHandler
+        16   -- Indirect call
+        16   -> SPI_I2S_GetFlagStatus
+        16   -> SPI_I2S_GetITStatus
+        16   -> SPI_I2S_ReceiveData
+         0   -> SPI_I2S_SendData
+       8   spi_slave_deinit
+         8   -> SPI_Cmd
+      16   spi_slave_init
+        16   -> NVIC_Init
+        16   -> SPI_Cmd
+        16   -> SPI_I2S_ITConfig
+        16   -> spi_slave_init_peripheral
+      40   spi_slave_init_peripheral
+        40   -> GPIO_Init
+        40   -> GPIO_PinAFConfig
+        40   -> RCC_AHB1PeriphClockCmd
+        40   -> RCC_APB1PeriphClockCmd
+        40   -> SPI_Init
+       0   spi_slave_rx
+       0   spi_slave_set_end_of_frame_callback
+         0   -> gpio_init_spi_slave_cs_as_int
+       0   spi_slave_tx
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable5_2
+       4  ??DataTable5_3
+       4  ??DataTable5_4
+       4  ??DataTable5_5
+       1  IsInited
+     114  SPI2_IRQHandler
+       4  sEnd_of_TX_cb
+    2052  sSPIBufferReceived
+    2052  sSPIBufferTransmit
+      18  spi_slave_deinit
+      64  spi_slave_init
+     136  spi_slave_init_peripheral
+      32  spi_slave_rx
+       4  spi_slave_set_end_of_frame_callback
+      34  spi_slave_tx
+
+ 
+ 4 109 bytes in section .bss
+   426 bytes in section .text
+ 
+   426 bytes of CODE memory
+ 4 109 bytes of DATA memory
+
+Errors: none
+Warnings: none

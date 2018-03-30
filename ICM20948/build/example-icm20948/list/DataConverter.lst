@@ -1,0 +1,304 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:24
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\DataConverter.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\DataConverter.c
+#        -D IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D
+#        NUCLEO -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000
+#        -D STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\DataConverter.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\DataConverter.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\DataConverter.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2015-2015 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "DataConverter.h"
+     25          
+
+   \                                 In section .text, align 2, keep-with-next
+     26          uint8_t * inv_dc_int32_to_little8(int32_t x, uint8_t * little8)
+     27          {
+     28          	little8[3] = (uint8_t)((x >> 24) & 0xff);
+   \                     inv_dc_int32_to_little8: (+1)
+   \   00000000   0x1602             ASRS     R2,R0,#+24
+   \   00000002   0x70CA             STRB     R2,[R1, #+3]
+     29          	little8[2] = (uint8_t)((x >> 16) & 0xff);
+   \   00000004   0x1402             ASRS     R2,R0,#+16
+   \   00000006   0x708A             STRB     R2,[R1, #+2]
+     30          	little8[1] = (uint8_t)((x >> 8) & 0xff);
+   \   00000008   0x1202             ASRS     R2,R0,#+8
+   \   0000000A   0x704A             STRB     R2,[R1, #+1]
+     31          	little8[0] = (uint8_t)(x & 0xff);
+   \   0000000C   0x7008             STRB     R0,[R1, #+0]
+     32          
+     33          	return little8;
+   \   0000000E   0x4608             MOV      R0,R1
+   \   00000010   0x4770             BX       LR               ;; return
+     34          }
+     35          
+
+   \                                 In section .text, align 2, keep-with-next
+     36          uint8_t * inv_dc_int16_to_little8(int16_t x, uint8_t * little8)
+     37          {
+     38          	little8[0] = (uint8_t)(x & 0xff);
+   \                     inv_dc_int16_to_little8: (+1)
+   \   00000000   0x7008             STRB     R0,[R1, #+0]
+     39          	little8[1] = (uint8_t)((x >> 8) & 0xff);
+   \   00000002   0x1200             ASRS     R0,R0,#+8
+   \   00000004   0x7048             STRB     R0,[R1, #+1]
+     40          
+     41          	return little8;
+   \   00000006   0x4608             MOV      R0,R1
+   \   00000008   0x4770             BX       LR               ;; return
+     42          }
+     43          
+
+   \                                 In section .text, align 2, keep-with-next
+     44          uint8_t * inv_dc_int32_to_big8(int32_t x, uint8_t * big8)
+     45          {
+     46          	big8[0] = (uint8_t)((x >> 24) & 0xff);
+   \                     inv_dc_int32_to_big8: (+1)
+   \   00000000   0x1602             ASRS     R2,R0,#+24
+   \   00000002   0x700A             STRB     R2,[R1, #+0]
+     47          	big8[1] = (uint8_t)((x >> 16) & 0xff);
+   \   00000004   0x1402             ASRS     R2,R0,#+16
+   \   00000006   0x704A             STRB     R2,[R1, #+1]
+     48          	big8[2] = (uint8_t)((x >> 8) & 0xff);
+   \   00000008   0x1202             ASRS     R2,R0,#+8
+   \   0000000A   0x708A             STRB     R2,[R1, #+2]
+     49          	big8[3] = (uint8_t)(x & 0xff);
+   \   0000000C   0x70C8             STRB     R0,[R1, #+3]
+     50          
+     51          	return big8;
+   \   0000000E   0x4608             MOV      R0,R1
+   \   00000010   0x4770             BX       LR               ;; return
+     52          }
+     53          
+
+   \                                 In section .text, align 2, keep-with-next
+     54          int32_t inv_dc_little8_to_int32(const uint8_t * little8)
+     55          {
+     56          	int32_t x = 0;
+     57          
+     58          	x |= ((int32_t)little8[3] << 24);
+     59          	x |= ((int32_t)little8[2] << 16);
+     60          	x |= ((int32_t)little8[1] << 8);
+     61          	x |= ((int32_t)little8[0]);
+     62          
+     63          	return x;
+   \                     inv_dc_little8_to_int32: (+1)
+   \   00000000   0x78C1             LDRB     R1,[R0, #+3]
+   \   00000002   0x7882             LDRB     R2,[R0, #+2]
+   \   00000004   0x0412             LSLS     R2,R2,#+16
+   \   00000006   0xEA42 0x6101      ORR      R1,R2,R1, LSL #+24
+   \   0000000A   0x7842             LDRB     R2,[R0, #+1]
+   \   0000000C   0xEA41 0x2102      ORR      R1,R1,R2, LSL #+8
+   \   00000010   0x7800             LDRB     R0,[R0, #+0]
+   \   00000012   0x4308             ORRS     R0,R0,R1
+   \   00000014   0x4770             BX       LR               ;; return
+     64          }
+     65          
+
+   \                                 In section .text, align 2, keep-with-next
+     66          int16_t inv_dc_big16_to_int16(uint8_t * data)
+     67          {
+     68          	int16_t result;
+     69          
+     70          	result  = (*data << 8);
+     71          	data++;
+     72          	result |= *data;
+     73          
+     74          	return result;
+   \                     inv_dc_big16_to_int16: (+1)
+   \   00000000   0x7801             LDRB     R1,[R0, #+0]
+   \   00000002   0x7840             LDRB     R0,[R0, #+1]
+   \   00000004   0xEA40 0x2001      ORR      R0,R0,R1, LSL #+8
+   \   00000008   0xB200             SXTH     R0,R0
+   \   0000000A   0x4770             BX       LR               ;; return
+     75          }
+     76          
+
+   \                                 In section .text, align 2, keep-with-next
+     77          int16_t inv_dc_le_to_int16(const uint8_t * little8)
+     78          {
+     79          	uint16_t x = 0;
+     80          
+     81          	x |= ((uint16_t)little8[0]);
+     82          	x |= ((uint16_t)little8[1] << 8);
+     83          
+     84          	return (int16_t)x;
+   \                     inv_dc_le_to_int16: (+1)
+   \   00000000   0x7801             LDRB     R1,[R0, #+0]
+   \   00000002   0x7840             LDRB     R0,[R0, #+1]
+   \   00000004   0xEA41 0x2000      ORR      R0,R1,R0, LSL #+8
+   \   00000008   0xB200             SXTH     R0,R0
+   \   0000000A   0x4770             BX       LR               ;; return
+     85          }
+     86          
+
+   \                                 In section .text, align 2, keep-with-next
+     87          void inv_dc_sfix32_to_float(const int32_t * in, uint32_t len, uint8_t qx, float * out)
+     88          {
+   \                     inv_dc_sfix32_to_float: (+1)
+   \   00000000   0xB430             PUSH     {R4,R5}
+     89          	uint8_t i;
+     90          
+     91          	for(i = 0; i < len; ++i) {
+   \   00000002   0x2400             MOVS     R4,#+0
+   \   00000004   0xE013             B.N      ??inv_dc_sfix32_to_float_0
+     92          		out[i] = (float)in[i] / (1 << qx);
+   \                     ??inv_dc_sfix32_to_float_1: (+1)
+   \   00000006   0xEB00 0x0584      ADD      R5,R0,R4, LSL #+2
+   \   0000000A   0xED95 0x0A00      VLDR     S0,[R5, #0]
+   \   0000000E   0xEEB8 0x0AC0      VCVT.F32.S32 S0,S0
+   \   00000012   0x2501             MOVS     R5,#+1
+   \   00000014   0x4095             LSLS     R5,R5,R2
+   \   00000016   0xEE00 0x5A90      VMOV     S1,R5
+   \   0000001A   0xEEF8 0x0AE0      VCVT.F32.S32 S1,S1
+   \   0000001E   0xEE80 0x0A20      VDIV.F32 S0,S0,S1
+   \   00000022   0xEB03 0x0584      ADD      R5,R3,R4, LSL #+2
+   \   00000026   0xED85 0x0A00      VSTR     S0,[R5, #0]
+     93          	}
+   \   0000002A   0x1C64             ADDS     R4,R4,#+1
+   \   0000002C   0xB2E4             UXTB     R4,R4
+   \                     ??inv_dc_sfix32_to_float_0: (+1)
+   \   0000002E   0x428C             CMP      R4,R1
+   \   00000030   0xD3E9             BCC.N    ??inv_dc_sfix32_to_float_1
+     94          }
+   \   00000032   0xBC30             POP      {R4,R5}
+   \   00000034   0x4770             BX       LR               ;; return
+     95          
+
+   \                                 In section .text, align 2, keep-with-next
+     96          void inv_dc_float_to_sfix32(const float * in, uint32_t len, uint8_t qx, int32_t * out)
+     97          {
+   \                     inv_dc_float_to_sfix32: (+1)
+   \   00000000   0xB470             PUSH     {R4-R6}
+     98          	uint8_t i;
+     99          
+    100          	for(i = 0; i < len; ++i) {
+   \   00000002   0x2400             MOVS     R4,#+0
+   \   00000004   0xE018             B.N      ??inv_dc_float_to_sfix32_0
+    101          		out[i] = (int32_t)((in[i] * (1 << qx)) + ((in[i] >= 0) - 0.5f));
+   \                     ??inv_dc_float_to_sfix32_1: (+1)
+   \   00000006   0x2500             MOVS     R5,#+0
+   \                     ??inv_dc_float_to_sfix32_2: (+1)
+   \   00000008   0x2601             MOVS     R6,#+1
+   \   0000000A   0x4096             LSLS     R6,R6,R2
+   \   0000000C   0xEE00 0x6A90      VMOV     S1,R6
+   \   00000010   0xEEF8 0x0AE0      VCVT.F32.S32 S1,S1
+   \   00000014   0xEE01 0x5A10      VMOV     S2,R5
+   \   00000018   0xEEB8 0x1A41      VCVT.F32.U32 S2,S2
+   \   0000001C   0xEEFE 0x1A00      VMOV.F32 S3,#-0.5
+   \   00000020   0xEE31 0x1A21      VADD.F32 S2,S2,S3
+   \   00000024   0xEE00 0x1A80      VMLA.F32 S2,S1,S0
+   \   00000028   0xEEBD 0x0AC1      VCVT.S32.F32 S0,S2
+   \   0000002C   0xEB03 0x0584      ADD      R5,R3,R4, LSL #+2
+   \   00000030   0xED85 0x0A00      VSTR     S0,[R5, #0]
+   \   00000034   0x1C64             ADDS     R4,R4,#+1
+   \   00000036   0xB2E4             UXTB     R4,R4
+   \                     ??inv_dc_float_to_sfix32_0: (+1)
+   \   00000038   0x428C             CMP      R4,R1
+   \   0000003A   0xD20A             BCS.N    ??inv_dc_float_to_sfix32_3
+   \   0000003C   0xEB00 0x0584      ADD      R5,R0,R4, LSL #+2
+   \   00000040   0xED95 0x0A00      VLDR     S0,[R5, #0]
+   \   00000044   0xEEB5 0x0A40      VCMP.F32 S0,#0.0
+   \   00000048   0xEEF1 0xFA10      FMSTAT   
+   \   0000004C   0xDBDB             BLT.N    ??inv_dc_float_to_sfix32_1
+   \   0000004E   0x2501             MOVS     R5,#+1
+   \   00000050   0xE7DA             B.N      ??inv_dc_float_to_sfix32_2
+    102          	}
+    103          }
+   \                     ??inv_dc_float_to_sfix32_3: (+1)
+   \   00000052   0xBC70             POP      {R4-R6}
+   \   00000054   0x4770             BX       LR               ;; return
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   inv_dc_big16_to_int16
+      12   inv_dc_float_to_sfix32
+       0   inv_dc_int16_to_little8
+       0   inv_dc_int32_to_big8
+       0   inv_dc_int32_to_little8
+       0   inv_dc_le_to_int16
+       0   inv_dc_little8_to_int32
+       8   inv_dc_sfix32_to_float
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      12  inv_dc_big16_to_int16
+      86  inv_dc_float_to_sfix32
+      10  inv_dc_int16_to_little8
+      18  inv_dc_int32_to_big8
+      18  inv_dc_int32_to_little8
+      12  inv_dc_le_to_int16
+      22  inv_dc_little8_to_int32
+      54  inv_dc_sfix32_to_float
+
+ 
+ 232 bytes in section .text
+ 
+ 232 bytes of CODE memory
+
+Errors: none
+Warnings: none

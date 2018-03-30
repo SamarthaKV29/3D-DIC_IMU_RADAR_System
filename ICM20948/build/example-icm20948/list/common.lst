@@ -1,0 +1,148 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:24
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  C:\Users\prasa\Documents\1.0.0\sources\board-hal\common.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\common.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\common.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\common.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\common.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2016-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "common.h"
+     25          #include "stm32f4xx.h"
+     26          
+     27          /* This variable contains the number of nested calls to disable_irq */
+
+   \                                 In section .bss, align 4
+     28          static uint32_t sDisableIntCount = 0;
+   \                     sDisableIntCount:
+   \   00000000                      DS8 4
+     29          
+     30          
+
+   \                                 In section .text, align 2, keep-with-next
+     31          void disable_irq(void)
+     32          {
+     33          	if(sDisableIntCount == 0) {
+   \                     disable_irq: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable1
+   \   00000002   0x6801             LDR      R1,[R0, #+0]
+   \   00000004   0x2900             CMP      R1,#+0
+   \   00000006   0xD100             BNE.N    ??disable_irq_0
+     34          		__disable_irq();
+   \   00000008   0xB672             CPSID    I
+     35          	}
+     36          	sDisableIntCount ++;
+   \                     ??disable_irq_0: (+1)
+   \   0000000A   0x1C49             ADDS     R1,R1,#+1
+   \   0000000C   0x6001             STR      R1,[R0, #+0]
+     37          }
+   \   0000000E   0x4770             BX       LR               ;; return
+     38          
+
+   \                                 In section .text, align 2, keep-with-next
+     39          void enable_irq(void)
+     40          {
+     41          	sDisableIntCount --;
+   \                     enable_irq: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable1
+   \   00000002   0x6801             LDR      R1,[R0, #+0]
+   \   00000004   0x1E49             SUBS     R1,R1,#+1
+   \   00000006   0x6001             STR      R1,[R0, #+0]
+     42          	if(sDisableIntCount == 0) {
+   \   00000008   0xD100             BNE.N    ??enable_irq_0
+     43          		__enable_irq();
+   \   0000000A   0xB662             CPSIE    I
+     44          	}
+     45          }
+   \                     ??enable_irq_0: (+1)
+   \   0000000C   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   0x........         DC32     sDisableIntCount
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   disable_irq
+       0   enable_irq
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+      16  disable_irq
+      14  enable_irq
+       4  sDisableIntCount
+
+ 
+  4 bytes in section .bss
+ 34 bytes in section .text
+ 
+ 34 bytes of CODE memory
+  4 bytes of DATA memory
+
+Errors: none
+Warnings: none

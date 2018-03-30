@@ -1,0 +1,213 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:31
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\Message.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\Message.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\Message.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\Message.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\Invn\EmbUtils\Message.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2015-2015 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "Message.h"
+     25          
+     26          #include <stdio.h>
+     27          #include <stdlib.h>
+     28          
+
+   \                                 In section .bss, align 4
+     29          static int               msg_level;
+   \                     msg_level:
+   \   00000000                      DS8 4
+   \   00000004                      DS8 4
+     30          static inv_msg_printer_t msg_printer;
+     31          
+
+   \                                 In section .text, align 2, keep-with-next
+     32          void inv_msg_printer_default(int level, const char * str, va_list ap)
+     33          {
+     34          #if !defined(__ICCARM__)
+     35          	const char * s[INV_MSG_LEVEL_MAX] = {
+     36          		"",    // INV_MSG_LEVEL_OFF
+     37          		" [E] ", // INV_MSG_LEVEL_ERROR
+     38          		" [W] ", // INV_MSG_LEVEL_WARNING
+     39          		" [I] ", // INV_MSG_LEVEL_INFO
+     40          		" [V] ", // INV_MSG_LEVEL_VERBOSE
+     41          		" [D] ", // INV_MSG_LEVEL_DEBUG
+     42          	};
+     43          
+     44          	fprintf(stderr, "%s", s[level]);	
+     45          	vfprintf(stderr, str, ap);
+     46          	fprintf(stderr, "\n");
+     47          #else
+     48          	(void)level, (void)str, (void)ap;
+     49          #endif
+     50          }
+   \                     inv_msg_printer_default: (+1)
+   \   00000000   0x4770             BX       LR               ;; return
+     51          
+
+   \                                 In section .text, align 2, keep-with-next
+     52          void inv_msg_setup(int level, inv_msg_printer_t printer)
+     53          {
+     54          	msg_level   = level;
+   \                     inv_msg_setup: (+1)
+   \   00000000   0x....             LDR.N    R2,??DataTable2
+   \   00000002   0x6010             STR      R0,[R2, #+0]
+     55          	if (level < INV_MSG_LEVEL_OFF)
+   \   00000004   0x2800             CMP      R0,#+0
+   \   00000006   0xD502             BPL.N    ??inv_msg_setup_0
+     56          		msg_level = INV_MSG_LEVEL_OFF;
+   \   00000008   0x2000             MOVS     R0,#+0
+   \   0000000A   0x6010             STR      R0,[R2, #+0]
+   \   0000000C   0xE003             B.N      ??inv_msg_setup_1
+     57          	else if (level > INV_MSG_LEVEL_MAX)
+   \                     ??inv_msg_setup_0: (+1)
+   \   0000000E   0x2807             CMP      R0,#+7
+   \   00000010   0xDB01             BLT.N    ??inv_msg_setup_1
+     58          		msg_level = INV_MSG_LEVEL_MAX;
+   \   00000012   0x2006             MOVS     R0,#+6
+   \   00000014   0x6010             STR      R0,[R2, #+0]
+     59          	msg_printer = printer;
+   \                     ??inv_msg_setup_1: (+1)
+   \   00000016   0x6051             STR      R1,[R2, #+4]
+     60          }
+   \   00000018   0x4770             BX       LR               ;; return
+     61          
+
+   \                                 In section .text, align 2, keep-with-next
+     62          void inv_msg(int level, const char * str, ...)
+     63          {
+     64          	if(level && level <= msg_level && msg_printer) {
+   \                     inv_msg: (+1)
+   \   00000000   0x2800             CMP      R0,#+0
+   \   00000002   0xD100             BNE.N    ??inv_msg_0
+   \   00000004   0x4770             BX       LR
+   \                     ??inv_msg_0: (+1)
+   \   00000006   0xB40C             PUSH     {R2,R3}
+   \   00000008   0xB580             PUSH     {R7,LR}
+   \   0000000A   0x....             LDR.N    R3,??DataTable2
+   \   0000000C   0x681A             LDR      R2,[R3, #+0]
+   \   0000000E   0x4282             CMP      R2,R0
+   \   00000010   0xDB05             BLT.N    ??inv_msg_1
+   \   00000012   0x685A             LDR      R2,[R3, #+4]
+   \   00000014   0x2A00             CMP      R2,#+0
+   \   00000016   0xD002             BEQ.N    ??inv_msg_1
+     65          		va_list ap;
+     66          		va_start(ap, str);
+   \   00000018   0xAA02             ADD      R2,SP,#+8
+     67          		msg_printer(level, str, ap);
+   \   0000001A   0x685B             LDR      R3,[R3, #+4]
+   \   0000001C   0x4798             BLX      R3
+     68          		va_end(ap);
+     69          	}
+     70          }
+   \                     ??inv_msg_1: (+1)
+   \   0000001E   0xBC01             POP      {R0}
+   \   00000020   0xF85D 0xFB0C      LDR      PC,[SP], #+12    ;; return
+     71          
+
+   \                                 In section .text, align 2, keep-with-next
+     72          int inv_msg_get_level(void)
+     73          {
+     74          	return msg_level;
+   \                     inv_msg_get_level: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable2
+   \   00000002   0x6800             LDR      R0,[R0, #+0]
+   \   00000004   0x4770             BX       LR               ;; return
+     75          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2:
+   \   00000000   0x........         DC32     msg_level
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   inv_msg
+        16   -- Indirect call
+       0   inv_msg_get_level
+       0   inv_msg_printer_default
+       0   inv_msg_setup
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable2
+      36  inv_msg
+       6  inv_msg_get_level
+       2  inv_msg_printer_default
+      26  inv_msg_setup
+       8  msg_level
+          msg_printer
+
+ 
+  8 bytes in section .bss
+ 74 bytes in section .text
+ 
+ 74 bytes of CODE memory
+  8 bytes of DATA memory
+
+Errors: none
+Warnings: none

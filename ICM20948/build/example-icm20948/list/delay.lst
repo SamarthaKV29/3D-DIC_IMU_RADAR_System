@@ -1,0 +1,317 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:25
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  C:\Users\prasa\Documents\1.0.0\sources\board-hal\delay.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\board-hal\delay.c -D
+#        IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D NUCLEO
+#        -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000 -D
+#        STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\delay.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\delay.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\board-hal\delay.c
+      1          /*
+      2           * ________________________________________________________________________________________________________
+      3           * Copyright (c) 2016-2016 InvenSense Inc. All rights reserved.
+      4           *
+      5           * This software, related documentation and any modifications thereto (collectively “Software”) is subject
+      6           * to InvenSense and its licensors' intellectual property rights under U.S. and international copyright
+      7           * and other intellectual property rights laws.
+      8           *
+      9           * InvenSense and its licensors retain all intellectual property and proprietary rights in and to the Software
+     10           * and any use, reproduction, disclosure or distribution of the Software without an express license agreement
+     11           * from InvenSense is strictly prohibited.
+     12           *
+     13           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, THE SOFTWARE IS
+     14           * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     15           * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+     16           * EXCEPT AS OTHERWISE PROVIDED IN A LICENSE AGREEMENT BETWEEN THE PARTIES, IN NO EVENT SHALL
+     17           * INVENSENSE BE LIABLE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR ANY
+     18           * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+     19           * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     20           * OF THE SOFTWARE.
+     21           * ________________________________________________________________________________________________________
+     22           */
+     23          
+     24          #include "delay.h"
+     25          #include "timer.h"
+     26          
+     27          #include "stm32f4xx.h"
+     28          
+     29          #include <stdint.h>
+     30          
+
+   \                                 In section .bss, align 4
+     31          static TIM_TypeDef* TIMx;
+   \                     TIMx:
+   \   00000000                      DS8 4
+     32          
+
+   \                                 In section .text, align 2, keep-with-next
+     33          static void start_timer(void) 
+     34          {
+     35          	TIMx->CNT = 0;
+   \                     start_timer: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable3
+   \   00000002   0x6800             LDR      R0,[R0, #+0]
+   \   00000004   0x2100             MOVS     R1,#+0
+   \   00000006   0x6241             STR      R1,[R0, #+36]
+     36          	TIM_Cmd(TIMx, ENABLE);
+   \   00000008   0x2101             MOVS     R1,#+1
+   \   0000000A   0x.... 0x....      B.W      TIM_Cmd
+     37          }
+     38          
+
+   \                                 In section .text, align 2, keep-with-next
+     39          static void stop_timer(void) 
+     40          {
+     41          	TIM_Cmd(TIMx, DISABLE);
+   \                     stop_timer: (+1)
+   \   00000000   0x2100             MOVS     R1,#+0
+   \   00000002   0x....             LDR.N    R0,??DataTable3
+   \   00000004   0x6800             LDR      R0,[R0, #+0]
+   \   00000006   0x.... 0x....      B.W      TIM_Cmd
+     42          }
+     43          
+
+   \                                 In section .text, align 2, keep-with-next
+     44          static void internal_delay(uint16_t us)
+     45          {
+   \                     internal_delay: (+1)
+   \   00000000   0xB410             PUSH     {R4}
+     46          	const uint16_t start = TIMx->CNT;
+   \   00000002   0x....             LDR.N    R1,??DataTable3
+   \   00000004   0x6809             LDR      R1,[R1, #+0]
+   \   00000006   0x6A4A             LDR      R2,[R1, #+36]
+   \   00000008   0xB292             UXTH     R2,R2
+     47          
+     48          	uint32_t now, prev = 0;
+   \   0000000A   0x2300             MOVS     R3,#+0
+     49          	do{
+     50          		now = TIMx->CNT;
+   \                     ??internal_delay_0: (+1)
+   \   0000000C   0x6A4C             LDR      R4,[R1, #+36]
+     51          
+     52          		/* handle rollover */
+     53          		if(now < prev)
+   \   0000000E   0x429C             CMP      R4,R3
+   \   00000010   0xD202             BCS.N    ??internal_delay_1
+     54          			now = UINT16_MAX + now;
+   \   00000012   0xF504 0x447F      ADD      R4,R4,#+65280
+   \   00000016   0x34FF             ADDS     R4,R4,#+255
+     55          		prev = now;
+   \                     ??internal_delay_1: (+1)
+   \   00000018   0x4623             MOV      R3,R4
+     56          
+     57          	}while((now - start) <= us);
+   \   0000001A   0x1AA4             SUBS     R4,R4,R2
+   \   0000001C   0x42A0             CMP      R0,R4
+   \   0000001E   0xD2F5             BCS.N    ??internal_delay_0
+     58          }
+   \   00000020   0xBC10             POP      {R4}
+   \   00000022   0x4770             BX       LR               ;; return
+     59          
+
+   \                                 In section .text, align 2, keep-with-next
+     60          int delay_init(unsigned tim_num)
+     61          {
+   \                     delay_init: (+1)
+   \   00000000   0xB580             PUSH     {R7,LR}
+     62          	if(tim_num == TIMER2)
+   \   00000002   0x2800             CMP      R0,#+0
+   \   00000004   0xD108             BNE.N    ??delay_init_0
+     63          		TIMx = TIM2;
+   \   00000006   0xF04F 0x4180      MOV      R1,#+1073741824
+   \   0000000A   0x....             LDR.N    R2,??DataTable3
+   \   0000000C   0x6011             STR      R1,[R2, #+0]
+     64          	else if(tim_num == TIMER3)
+     65          		TIMx = TIM3;
+     66          	else if(tim_num == TIMER4)
+     67          		TIMx = TIM4;
+     68          	else 
+     69          		return -1;
+     70          
+     71          	/* Timer configuration at 1MHz frequency */
+     72          	timer_configure_timebase(tim_num, 1000000);
+   \                     ??delay_init_1: (+1)
+   \   0000000E   0x....             LDR.N    R1,??DataTable3_1  ;; 0xf4240
+   \   00000010   0x.... 0x....      BL       timer_configure_timebase
+     73          
+     74          	return 0;
+   \   00000014   0x2000             MOVS     R0,#+0
+   \   00000016   0xBD02             POP      {R1,PC}          ;; return
+   \                     ??delay_init_0: (+1)
+   \   00000018   0x2801             CMP      R0,#+1
+   \   0000001A   0xD103             BNE.N    ??delay_init_2
+   \   0000001C   0x....             LDR.N    R1,??DataTable3_2  ;; 0x40000400
+   \   0000001E   0x....             LDR.N    R2,??DataTable3
+   \   00000020   0x6011             STR      R1,[R2, #+0]
+   \   00000022   0xE7F4             B.N      ??delay_init_1
+   \                     ??delay_init_2: (+1)
+   \   00000024   0x2802             CMP      R0,#+2
+   \   00000026   0xD103             BNE.N    ??delay_init_3
+   \   00000028   0x....             LDR.N    R1,??DataTable3_3  ;; 0x40000800
+   \   0000002A   0x....             LDR.N    R2,??DataTable3
+   \   0000002C   0x6011             STR      R1,[R2, #+0]
+   \   0000002E   0xE7EE             B.N      ??delay_init_1
+   \                     ??delay_init_3: (+1)
+   \   00000030   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000034   0xBD02             POP      {R1,PC}
+     75          }
+     76          
+
+   \                                 In section .text, align 2, keep-with-next
+     77          void delay_us(uint32_t us)
+     78          {
+   \                     delay_us: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+     79          	uint32_t i;
+     80          
+     81          	start_timer();
+   \   00000004   0x.... 0x....      BL       start_timer
+     82          
+     83          	/* in case the delay is up to UINT16_MAX */
+     84          	if(us >= UINT16_MAX) {
+   \   00000008   0xF64F 0x75FF      MOVW     R5,#+65535
+   \   0000000C   0x42AC             CMP      R4,R5
+   \   0000000E   0xD311             BCC.N    ??delay_us_0
+     85          		/* go to the loop as the internal_delay function only support uint16_t argument type */
+     86          		for(i = 0; i < (us / UINT16_MAX); i++)
+   \   00000010   0x2600             MOVS     R6,#+0
+   \   00000012   0xE003             B.N      ??delay_us_1
+     87          			internal_delay(UINT16_MAX);
+   \                     ??delay_us_2: (+1)
+   \   00000014   0x4628             MOV      R0,R5
+   \   00000016   0x.... 0x....      BL       internal_delay
+   \   0000001A   0x1C76             ADDS     R6,R6,#+1
+   \                     ??delay_us_1: (+1)
+   \   0000001C   0x4628             MOV      R0,R5
+   \   0000001E   0xFBB4 0xF0F0      UDIV     R0,R4,R0
+   \   00000022   0x4286             CMP      R6,R0
+   \   00000024   0xD3F6             BCC.N    ??delay_us_2
+     88          		internal_delay(us % UINT16_MAX);
+   \   00000026   0xEBC0 0x4000      RSB      R0,R0,R0, LSL #+16
+   \   0000002A   0x1A20             SUBS     R0,R4,R0
+   \   0000002C   0xB280             UXTH     R0,R0
+   \   0000002E   0x.... 0x....      BL       internal_delay
+   \   00000032   0xE003             B.N      ??delay_us_3
+     89          	}
+     90          	else
+     91          		internal_delay(us);
+   \                     ??delay_us_0: (+1)
+   \   00000034   0x4620             MOV      R0,R4
+   \   00000036   0xB280             UXTH     R0,R0
+   \   00000038   0x.... 0x....      BL       internal_delay
+     92          
+     93          	stop_timer();
+   \                     ??delay_us_3: (+1)
+   \   0000003C   0xE8BD 0x4070      POP      {R4-R6,LR}
+   \   00000040   0x....             B.N      stop_timer
+     94          }
+     95          
+
+   \                                 In section .text, align 2, keep-with-next
+     96          void delay_ms(uint32_t ms)
+     97          {
+     98          	delay_us(ms * 1000);
+   \                     delay_ms: (+1)
+   \   00000000   0xF44F 0x717A      MOV      R1,#+1000
+   \   00000004   0x4348             MULS     R0,R1,R0
+   \   00000006   0x....             B.N      delay_us
+     99          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3:
+   \   00000000   0x........         DC32     TIMx
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_1:
+   \   00000000   0x000F4240         DC32     0xf4240
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_2:
+   \   00000000   0x40000400         DC32     0x40000400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_3:
+   \   00000000   0x40000800         DC32     0x40000800
+    100          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   delay_init
+         8   -> timer_configure_timebase
+       0   delay_ms
+         0   -> delay_us
+      16   delay_us
+        16   -> internal_delay
+        16   -> start_timer
+         0   -> stop_timer
+       4   internal_delay
+       0   start_timer
+         0   -> TIM_Cmd
+       0   stop_timer
+         0   -> TIM_Cmd
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable3
+       4  ??DataTable3_1
+       4  ??DataTable3_2
+       4  ??DataTable3_3
+       4  TIMx
+      54  delay_init
+       8  delay_ms
+      66  delay_us
+      36  internal_delay
+      14  start_timer
+      10  stop_timer
+
+ 
+   4 bytes in section .bss
+ 204 bytes in section .text
+ 
+ 204 bytes of CODE memory
+   4 bytes of DATA memory
+
+Errors: none
+Warnings: none

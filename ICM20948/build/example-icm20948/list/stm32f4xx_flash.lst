@@ -1,0 +1,2524 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.70.2.11706/W32 for ARM       22/Dec/2017  10:34:35
+# Copyright 1999-2016 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\stm32f4x\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.c
+#    Command line =  
+#        C:\Users\prasa\Documents\1.0.0\sources\stm32f4x\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.c
+#        -D IAR_COMPILER -D __inline=inline -D INV_MSG_ENABLE -D ASSERT -D
+#        NUCLEO -D USE_STDPERIPH_DRIVER -D USE_HSE_BYPASS -D HSE_VALUE=8000000
+#        -D STM32F411xE -lC
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list
+#        --diag_suppress Pa050 -o
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 --silent --warnings_are_errors -e
+#        --char_is_signed --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        7.5\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../board-hal\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Core\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/CMSIS/Device\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../stm32f4x/STM32F4xx_StdPeriph_Driver/inc\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/Images\
+#        -I
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948/../../Invn/DynamicProtocol\
+#        -Om --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 7.5\arm\CMSIS\Include\"
+#    Locale       =  English_United States.1252
+#    List file    =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\list\stm32f4xx_flash.lst
+#    Object file  =  
+#        C:\Users\prasa\Documents\1.0.0\sources\examples\example-icm20948\build\example-icm20948\obj\stm32f4xx_flash.o
+#
+###############################################################################
+
+C:\Users\prasa\Documents\1.0.0\sources\stm32f4x\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f4xx_flash.c
+      4            * @author  MCD Application Team
+      5            * @version V1.6.1
+      6            * @date    21-October-2015
+      7            * @brief   This file provides firmware functions to manage the following 
+      8            *          functionalities of the FLASH peripheral:
+      9            *            + FLASH Interface configuration
+     10            *            + FLASH Memory Programming
+     11            *            + Option Bytes Programming
+     12            *            + Interrupts and flags management
+     13            *  
+     14           @verbatim    
+     15           ===============================================================================
+     16                                  ##### How to use this driver #####
+     17           ===============================================================================
+     18              [..]                             
+     19                This driver provides functions to configure and program the FLASH memory 
+     20                of all STM32F4xx devices. These functions are split in 4 groups:
+     21             
+     22                (#) FLASH Interface configuration functions: this group includes the
+     23                    management of the following features:
+     24                  (++) Set the latency
+     25                  (++) Enable/Disable the prefetch buffer
+     26                  (++) Enable/Disable the Instruction cache and the Data cache
+     27                  (++) Reset the Instruction cache and the Data cache
+     28              
+     29                (#) FLASH Memory Programming functions: this group includes all needed
+     30                    functions to erase and program the main memory:
+     31                  (++) Lock and Unlock the FLASH interface
+     32                  (++) Erase function: Erase sector, erase all sectors
+     33                  (++) Program functions: byte, half word, word and double word
+     34              
+     35                (#) Option Bytes Programming functions: this group includes all needed
+     36                    functions to manage the Option Bytes:
+     37                  (++) Set/Reset the write protection
+     38                  (++) Set the Read protection Level
+     39                  (++) Set the BOR level
+     40                  (++) Program the user Option Bytes
+     41                  (++) Launch the Option Bytes loader
+     42              
+     43                (#) Interrupts and flags management functions: this group 
+     44                    includes all needed functions to:
+     45                  (++) Enable/Disable the FLASH interrupt sources
+     46                  (++) Get flags status
+     47                  (++) Clear flags
+     48                  (++) Get FLASH operation status
+     49                  (++) Wait for last FLASH operation   
+     50           @endverbatim
+     51            ******************************************************************************
+     52            * @attention
+     53            *
+     54            * <h2><center>&copy; COPYRIGHT 2015 STMicroelectronics</center></h2>
+     55            *
+     56            * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+     57            * You may not use this file except in compliance with the License.
+     58            * You may obtain a copy of the License at:
+     59            *
+     60            *        http://www.st.com/software_license_agreement_liberty_v2
+     61            *
+     62            * Unless required by applicable law or agreed to in writing, software 
+     63            * distributed under the License is distributed on an "AS IS" BASIS, 
+     64            * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     65            * See the License for the specific language governing permissions and
+     66            * limitations under the License.
+     67            *
+     68            ******************************************************************************
+     69            */
+     70          
+     71          /* Includes ------------------------------------------------------------------*/
+     72          #include "stm32f4xx_flash.h"
+     73          
+     74          /** @addtogroup STM32F4xx_StdPeriph_Driver
+     75            * @{
+     76            */
+     77          
+     78          /** @defgroup FLASH 
+     79            * @brief FLASH driver modules
+     80            * @{
+     81            */ 
+     82          
+     83          /* Private typedef -----------------------------------------------------------*/
+     84          /* Private define ------------------------------------------------------------*/ 
+     85          #define SECTOR_MASK               ((uint32_t)0xFFFFFF07)
+     86          
+     87          /* Private macro -------------------------------------------------------------*/
+     88          /* Private variables ---------------------------------------------------------*/
+     89          /* Private function prototypes -----------------------------------------------*/
+     90          /* Private functions ---------------------------------------------------------*/
+     91          
+     92          /** @defgroup FLASH_Private_Functions
+     93            * @{
+     94            */ 
+     95          
+     96          /** @defgroup FLASH_Group1 FLASH Interface configuration functions
+     97            *  @brief   FLASH Interface configuration functions 
+     98           *
+     99          
+    100          @verbatim   
+    101           ===============================================================================
+    102                        ##### FLASH Interface configuration functions #####
+    103           ===============================================================================
+    104              [..]
+    105                This group includes the following functions:
+    106                (+) void FLASH_SetLatency(uint32_t FLASH_Latency)
+    107                    To correctly read data from FLASH memory, the number of wait states (LATENCY) 
+    108                    must be correctly programmed according to the frequency of the CPU clock 
+    109                    (HCLK) and the supply voltage of the device.
+    110              [..]      
+    111                For STM32F405xx/07xx and STM32F415xx/17xx devices
+    112           +-------------------------------------------------------------------------------------+
+    113           | Latency       |                HCLK clock frequency (MHz)                           |
+    114           |               |---------------------------------------------------------------------|
+    115           |               | voltage range  | voltage range  | voltage range   | voltage range   |
+    116           |               | 2.7 V - 3.6 V  | 2.4 V - 2.7 V  | 2.1 V - 2.4 V   | 1.8 V - 2.1 V   |
+    117           |---------------|----------------|----------------|-----------------|-----------------|
+    118           |0WS(1CPU cycle)|0 < HCLK <= 30  |0 < HCLK <= 24  |0 < HCLK <= 22   |0 < HCLK <= 20   |
+    119           |---------------|----------------|----------------|-----------------|-----------------|
+    120           |1WS(2CPU cycle)|30 < HCLK <= 60 |24 < HCLK <= 48 |22 < HCLK <= 44  |20 < HCLK <= 40  |
+    121           |---------------|----------------|----------------|-----------------|-----------------|
+    122           |2WS(3CPU cycle)|60 < HCLK <= 90 |48 < HCLK <= 72 |44 < HCLK <= 66  |40 < HCLK <= 60  |
+    123           |---------------|----------------|----------------|-----------------|-----------------|
+    124           |3WS(4CPU cycle)|90 < HCLK <= 120|72 < HCLK <= 96 |66 < HCLK <= 88  |60 < HCLK <= 80  |
+    125           |---------------|----------------|----------------|-----------------|-----------------|
+    126           |4WS(5CPU cycle)|120< HCLK <= 150|96 < HCLK <= 120|88 < HCLK <= 110 |80 < HCLK <= 100 |
+    127           |---------------|----------------|----------------|-----------------|-----------------|
+    128           |5WS(6CPU cycle)|150< HCLK <= 168|120< HCLK <= 144|110 < HCLK <= 132|100 < HCLK <= 120|
+    129           |---------------|----------------|----------------|-----------------|-----------------|
+    130           |6WS(7CPU cycle)|      NA        |144< HCLK <= 168|132 < HCLK <= 154|120 < HCLK <= 140|
+    131           |---------------|----------------|----------------|-----------------|-----------------|
+    132           |7WS(8CPU cycle)|      NA        |      NA        |154 < HCLK <= 168|140 < HCLK <= 160|
+    133           +---------------|----------------|----------------|-----------------|-----------------+
+    134          
+    135              [..]      
+    136                For STM32F42xxx/43xxx devices
+    137           +-------------------------------------------------------------------------------------+
+    138           | Latency       |                HCLK clock frequency (MHz)                           |
+    139           |               |---------------------------------------------------------------------|
+    140           |               | voltage range  | voltage range  | voltage range   | voltage range   |
+    141           |               | 2.7 V - 3.6 V  | 2.4 V - 2.7 V  | 2.1 V - 2.4 V   | 1.8 V - 2.1 V   |
+    142           |---------------|----------------|----------------|-----------------|-----------------|
+    143           |0WS(1CPU cycle)|0 < HCLK <= 30  |0 < HCLK <= 24  |0 < HCLK <= 22   |0 < HCLK <= 20   |
+    144           |---------------|----------------|----------------|-----------------|-----------------|
+    145           |1WS(2CPU cycle)|30 < HCLK <= 60 |24 < HCLK <= 48 |22 < HCLK <= 44  |20 < HCLK <= 40  |
+    146           |---------------|----------------|----------------|-----------------|-----------------|
+    147           |2WS(3CPU cycle)|60 < HCLK <= 90 |48 < HCLK <= 72 |44 < HCLK <= 66  |40 < HCLK <= 60  |
+    148           |---------------|----------------|----------------|-----------------|-----------------|
+    149           |3WS(4CPU cycle)|90 < HCLK <= 120|72 < HCLK <= 96 |66 < HCLK <= 88  |60 < HCLK <= 80  |
+    150           |---------------|----------------|----------------|-----------------|-----------------|
+    151           |4WS(5CPU cycle)|120< HCLK <= 150|96 < HCLK <= 120|88 < HCLK <= 110 |80 < HCLK <= 100 |
+    152           |---------------|----------------|----------------|-----------------|-----------------|
+    153           |5WS(6CPU cycle)|120< HCLK <= 180|120< HCLK <= 144|110 < HCLK <= 132|100 < HCLK <= 120|
+    154           |---------------|----------------|----------------|-----------------|-----------------|
+    155           |6WS(7CPU cycle)|      NA        |144< HCLK <= 168|132 < HCLK <= 154|120 < HCLK <= 140|
+    156           |---------------|----------------|----------------|-----------------|-----------------|
+    157           |7WS(8CPU cycle)|      NA        |168< HCLK <= 180|154 < HCLK <= 176|140 < HCLK <= 160|
+    158           |---------------|----------------|----------------|-----------------|-----------------|
+    159           |8WS(9CPU cycle)|      NA        |      NA        |176 < HCLK <= 180|160 < HCLK <= 168|
+    160           +-------------------------------------------------------------------------------------+
+    161             
+    162              [..]
+    163              For STM32F401x devices
+    164           +-------------------------------------------------------------------------------------+
+    165           | Latency       |                HCLK clock frequency (MHz)                           |
+    166           |               |---------------------------------------------------------------------|
+    167           |               | voltage range  | voltage range  | voltage range   | voltage range   |
+    168           |               | 2.7 V - 3.6 V  | 2.4 V - 2.7 V  | 2.1 V - 2.4 V   | 1.8 V - 2.1 V   |
+    169           |---------------|----------------|----------------|-----------------|-----------------|
+    170           |0WS(1CPU cycle)|0 < HCLK <= 30  |0 < HCLK <= 24  |0 < HCLK <= 22   |0 < HCLK <= 20   |
+    171           |---------------|----------------|----------------|-----------------|-----------------|
+    172           |1WS(2CPU cycle)|30 < HCLK <= 60 |24 < HCLK <= 48 |22 < HCLK <= 44  |20 < HCLK <= 40  |
+    173           |---------------|----------------|----------------|-----------------|-----------------|
+    174           |2WS(3CPU cycle)|60 < HCLK <= 84 |48 < HCLK <= 72 |44 < HCLK <= 66  |40 < HCLK <= 60  |
+    175           |---------------|----------------|----------------|-----------------|-----------------|
+    176           |3WS(4CPU cycle)|      NA        |72 < HCLK <= 84 |66 < HCLK <= 84  |60 < HCLK <= 80  |
+    177           |---------------|----------------|----------------|-----------------|-----------------|
+    178           |4WS(5CPU cycle)|      NA        |      NA        |      NA         |80 < HCLK <= 84  |
+    179           +-------------------------------------------------------------------------------------+
+    180          
+    181              [..]
+    182              For STM32F410xx/STM32F411xE devices
+    183           +-------------------------------------------------------------------------------------+
+    184           | Latency       |                HCLK clock frequency (MHz)                           |
+    185           |               |---------------------------------------------------------------------|
+    186           |               | voltage range  | voltage range  | voltage range   | voltage range   |
+    187           |               | 2.7 V - 3.6 V  | 2.4 V - 2.7 V  | 2.1 V - 2.4 V   | 1.8 V - 2.1 V   |
+    188           |---------------|----------------|----------------|-----------------|-----------------|
+    189           |0WS(1CPU cycle)|0 < HCLK <= 30  |0 < HCLK <= 24  |0 < HCLK <= 18   |0 < HCLK <= 16   |
+    190           |---------------|----------------|----------------|-----------------|-----------------|
+    191           |1WS(2CPU cycle)|30 < HCLK <= 64 |24 < HCLK <= 48 |18 < HCLK <= 36  |16 < HCLK <= 32  |
+    192           |---------------|----------------|----------------|-----------------|-----------------|
+    193           |2WS(3CPU cycle)|64 < HCLK <= 90 |48 < HCLK <= 72 |36 < HCLK <= 54  |32 < HCLK <= 48  |
+    194           |---------------|----------------|----------------|-----------------|-----------------|
+    195           |3WS(4CPU cycle)|90 < HCLK <= 100|72 < HCLK <= 96 |54 < HCLK <= 72  |48 < HCLK <= 64  |
+    196           |---------------|----------------|----------------|-----------------|-----------------|
+    197           |4WS(5CPU cycle)|      NA        |96 < HCLK <= 100|72 < HCLK <= 90  |64 < HCLK <= 80  |
+    198           |---------------|----------------|----------------|-----------------|-----------------|
+    199           |5WS(6CPU cycle)|      NA        |       NA       |90 < HCLK <= 100 |80 < HCLK <= 96  |
+    200           |---------------|----------------|----------------|-----------------|-----------------|
+    201           |6WS(7CPU cycle)|      NA        |       NA       |        NA       |96 < HCLK <= 100 |
+    202           +-------------------------------------------------------------------------------------+
+    203           
+    204           [..]
+    205           +-------------------------------------------------------------------------------------------------------------------+
+    206           |               | voltage range  | voltage range  | voltage range   | voltage range   | voltage range 2.7 V - 3.6 V |
+    207           |               | 2.7 V - 3.6 V  | 2.4 V - 2.7 V  | 2.1 V - 2.4 V   | 1.8 V - 2.1 V   | with External Vpp = 9V      |
+    208           |---------------|----------------|----------------|-----------------|-----------------|-----------------------------|
+    209           |Max Parallelism|      x32       |               x16                |       x8        |          x64                |
+    210           |---------------|----------------|----------------|-----------------|-----------------|-----------------------------|
+    211           |PSIZE[1:0]     |      10        |               01                 |       00        |           11                |
+    212           +-------------------------------------------------------------------------------------------------------------------+
+    213          
+    214                -@- On STM32F405xx/407xx and STM32F415xx/417xx devices: 
+    215                     (++) when VOS = '0' Scale 2 mode, the maximum value of fHCLK = 144MHz. 
+    216                     (++) when VOS = '1' Scale 1 mode, the maximum value of fHCLK = 168MHz. 
+    217                    [..] 
+    218                    On STM32F42xxx/43xxx devices:
+    219                     (++) when VOS[1:0] = '0x01' Scale 3 mode, the maximum value of fHCLK is 120MHz.
+    220                     (++) when VOS[1:0] = '0x10' Scale 2 mode, the maximum value of fHCLK is 144MHz if OverDrive OFF and 168MHz if OverDrive ON.
+    221                     (++) when VOS[1:0] = '0x11' Scale 1 mode, the maximum value of fHCLK is 168MHz if OverDrive OFF and 180MHz if OverDrive ON. 
+    222                    [..]
+    223                    On STM32F401x devices:
+    224                     (++) when VOS[1:0] = '0x01' Scale 3 mode, the maximum value of fHCLK is 60MHz.
+    225                     (++) when VOS[1:0] = '0x10' Scale 2 mode, the maximum value of fHCLK is 84MHz.
+    226                    [..]  
+    227                    On STM32F410xx/STM32F411xE devices:
+    228                     (++) when VOS[1:0] = '0x01' Scale 3 mode, the maximum value of fHCLK is 64MHz.
+    229                     (++) when VOS[1:0] = '0x10' Scale 2 mode, the maximum value of fHCLK is 84MHz.
+    230                     (++) when VOS[1:0] = '0x11' Scale 1 mode, the maximum value of fHCLK is 100MHz.
+    231          
+    232                  For more details please refer product DataSheet 
+    233                     You can use PWR_MainRegulatorModeConfig() function to control VOS bits.
+    234          
+    235                (+) void FLASH_PrefetchBufferCmd(FunctionalState NewState)
+    236                (+) void FLASH_InstructionCacheCmd(FunctionalState NewState)
+    237                (+) void FLASH_DataCacheCmd(FunctionalState NewState)
+    238                (+) void FLASH_InstructionCacheReset(void)
+    239                (+) void FLASH_DataCacheReset(void)
+    240                
+    241              [..]   
+    242                The unlock sequence is not needed for these functions.
+    243           
+    244          @endverbatim
+    245            * @{
+    246            */
+    247           
+    248          /**
+    249            * @brief  Sets the code latency value.  
+    250            * @param  FLASH_Latency: specifies the FLASH Latency value.
+    251            *          This parameter can be one of the following values:
+    252            *            @arg FLASH_Latency_0: FLASH Zero Latency cycle
+    253            *            @arg FLASH_Latency_1: FLASH One Latency cycle
+    254            *            @arg FLASH_Latency_2: FLASH Two Latency cycles
+    255            *            @arg FLASH_Latency_3: FLASH Three Latency cycles
+    256            *            @arg FLASH_Latency_4: FLASH Four Latency cycles 
+    257            *            @arg FLASH_Latency_5: FLASH Five Latency cycles 
+    258            *            @arg FLASH_Latency_6: FLASH Six Latency cycles
+    259            *            @arg FLASH_Latency_7: FLASH Seven Latency cycles 
+    260            *            @arg FLASH_Latency_8: FLASH Eight Latency cycles
+    261            *            @arg FLASH_Latency_9: FLASH Nine Latency cycles
+    262            *            @arg FLASH_Latency_10: FLASH Teen Latency cycles 
+    263            *            @arg FLASH_Latency_11: FLASH Eleven Latency cycles 
+    264            *            @arg FLASH_Latency_12: FLASH Twelve Latency cycles
+    265            *            @arg FLASH_Latency_13: FLASH Thirteen Latency cycles
+    266            *            @arg FLASH_Latency_14: FLASH Fourteen Latency cycles
+    267            *            @arg FLASH_Latency_15: FLASH Fifteen Latency cycles 
+    268            *              
+    269            * @note For STM32F405xx/407xx, STM32F415xx/417xx and STM32F401xx/411xE devices this parameter
+    270            *       can be a value between FLASH_Latency_0 and FLASH_Latency_7.
+    271            *
+    272            * @note For STM32F42xxx/43xxx devices this parameter can be a value between 
+    273            *       FLASH_Latency_0 and FLASH_Latency_15. 
+    274            *         
+    275            * @retval None
+    276            */
+
+   \                                 In section .text, align 2, keep-with-next
+    277          void FLASH_SetLatency(uint32_t FLASH_Latency)
+    278          {
+    279            /* Check the parameters */
+    280            assert_param(IS_FLASH_LATENCY(FLASH_Latency));
+    281            
+    282            /* Perform Byte access to FLASH_ACR[8:0] to set the Latency value */
+    283            *(__IO uint8_t *)ACR_BYTE0_ADDRESS = (uint8_t)FLASH_Latency;
+   \                     FLASH_SetLatency: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R1,??DataTable38  ;; 0x40023c00
+   \   00000004   0x7008             STRB     R0,[R1, #+0]
+    284          }
+   \   00000006   0x4770             BX       LR               ;; return
+    285          
+    286          /**
+    287            * @brief  Enables or disables the Prefetch Buffer.
+    288            * @param  NewState: new state of the Prefetch Buffer.
+    289            *          This parameter  can be: ENABLE or DISABLE.
+    290            * @retval None
+    291            */
+
+   \                                 In section .text, align 2, keep-with-next
+    292          void FLASH_PrefetchBufferCmd(FunctionalState NewState)
+    293          {
+    294            /* Check the parameters */
+    295            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    296            
+    297            /* Enable or disable the Prefetch Buffer */
+    298            if(NewState != DISABLE)
+   \                     FLASH_PrefetchBufferCmd: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R1,??DataTable38  ;; 0x40023c00
+   \   00000004   0x2800             CMP      R0,#+0
+   \   00000006   0x6808             LDR      R0,[R1, #+0]
+   \   00000008   0xD003             BEQ.N    ??FLASH_PrefetchBufferCmd_0
+    299            {
+    300              FLASH->ACR |= FLASH_ACR_PRFTEN;
+   \   0000000A   0xF440 0x7080      ORR      R0,R0,#0x100
+   \   0000000E   0x6008             STR      R0,[R1, #+0]
+   \   00000010   0x4770             BX       LR
+    301            }
+    302            else
+    303            {
+    304              FLASH->ACR &= (~FLASH_ACR_PRFTEN);
+   \                     ??FLASH_PrefetchBufferCmd_0: (+1)
+   \   00000012   0xF420 0x7080      BIC      R0,R0,#0x100
+   \   00000016   0x6008             STR      R0,[R1, #+0]
+    305            }
+    306          }
+   \   00000018   0x4770             BX       LR               ;; return
+    307          
+    308          /**
+    309            * @brief  Enables or disables the Instruction Cache feature.
+    310            * @param  NewState: new state of the Instruction Cache.
+    311            *          This parameter  can be: ENABLE or DISABLE.
+    312            * @retval None
+    313            */
+
+   \                                 In section .text, align 2, keep-with-next
+    314          void FLASH_InstructionCacheCmd(FunctionalState NewState)
+    315          {
+    316            /* Check the parameters */
+    317            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    318            
+    319            if(NewState != DISABLE)
+   \                     FLASH_InstructionCacheCmd: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R1,??DataTable38  ;; 0x40023c00
+   \   00000004   0x2800             CMP      R0,#+0
+   \   00000006   0x6808             LDR      R0,[R1, #+0]
+   \   00000008   0xD003             BEQ.N    ??FLASH_InstructionCacheCmd_0
+    320            {
+    321              FLASH->ACR |= FLASH_ACR_ICEN;
+   \   0000000A   0xF440 0x7000      ORR      R0,R0,#0x200
+   \   0000000E   0x6008             STR      R0,[R1, #+0]
+   \   00000010   0x4770             BX       LR
+    322            }
+    323            else
+    324            {
+    325              FLASH->ACR &= (~FLASH_ACR_ICEN);
+   \                     ??FLASH_InstructionCacheCmd_0: (+1)
+   \   00000012   0xF420 0x7000      BIC      R0,R0,#0x200
+   \   00000016   0x6008             STR      R0,[R1, #+0]
+    326            }
+    327          }
+   \   00000018   0x4770             BX       LR               ;; return
+    328          
+    329          /**
+    330            * @brief  Enables or disables the Data Cache feature.
+    331            * @param  NewState: new state of the Data Cache.
+    332            *          This parameter  can be: ENABLE or DISABLE.
+    333            * @retval None
+    334            */
+
+   \                                 In section .text, align 2, keep-with-next
+    335          void FLASH_DataCacheCmd(FunctionalState NewState)
+    336          {
+    337            /* Check the parameters */
+    338            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    339            
+    340            if(NewState != DISABLE)
+   \                     FLASH_DataCacheCmd: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R1,??DataTable38  ;; 0x40023c00
+   \   00000004   0x2800             CMP      R0,#+0
+   \   00000006   0x6808             LDR      R0,[R1, #+0]
+   \   00000008   0xD003             BEQ.N    ??FLASH_DataCacheCmd_0
+    341            {
+    342              FLASH->ACR |= FLASH_ACR_DCEN;
+   \   0000000A   0xF440 0x6080      ORR      R0,R0,#0x400
+   \   0000000E   0x6008             STR      R0,[R1, #+0]
+   \   00000010   0x4770             BX       LR
+    343            }
+    344            else
+    345            {
+    346              FLASH->ACR &= (~FLASH_ACR_DCEN);
+   \                     ??FLASH_DataCacheCmd_0: (+1)
+   \   00000012   0xF420 0x6080      BIC      R0,R0,#0x400
+   \   00000016   0x6008             STR      R0,[R1, #+0]
+    347            }
+    348          }
+   \   00000018   0x4770             BX       LR               ;; return
+    349          
+    350          /**
+    351            * @brief  Resets the Instruction Cache.
+    352            * @note   This function must be used only when the Instruction Cache is disabled.  
+    353            * @param  None
+    354            * @retval None
+    355            */
+
+   \                                 In section .text, align 2, keep-with-next
+    356          void FLASH_InstructionCacheReset(void)
+    357          {
+    358            FLASH->ACR |= FLASH_ACR_ICRST;
+   \                     FLASH_InstructionCacheReset: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R0,??DataTable38  ;; 0x40023c00
+   \   00000004   0x6801             LDR      R1,[R0, #+0]
+   \   00000006   0xF441 0x6100      ORR      R1,R1,#0x800
+   \   0000000A   0x6001             STR      R1,[R0, #+0]
+    359          }
+   \   0000000C   0x4770             BX       LR               ;; return
+    360          
+    361          /**
+    362            * @brief  Resets the Data Cache.
+    363            * @note   This function must be used only when the Data Cache is disabled.  
+    364            * @param  None
+    365            * @retval None
+    366            */
+
+   \                                 In section .text, align 2, keep-with-next
+    367          void FLASH_DataCacheReset(void)
+    368          {
+    369            FLASH->ACR |= FLASH_ACR_DCRST;
+   \                     FLASH_DataCacheReset: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R0,??DataTable38  ;; 0x40023c00
+   \   00000004   0x6801             LDR      R1,[R0, #+0]
+   \   00000006   0xF441 0x5180      ORR      R1,R1,#0x1000
+   \   0000000A   0x6001             STR      R1,[R0, #+0]
+    370          }
+   \   0000000C   0x4770             BX       LR               ;; return
+    371          
+    372          /**
+    373            * @}
+    374            */
+    375          
+    376          /** @defgroup FLASH_Group2 FLASH Memory Programming functions
+    377           *  @brief   FLASH Memory Programming functions
+    378           *
+    379          @verbatim   
+    380           ===============================================================================
+    381                          ##### FLASH Memory Programming functions #####
+    382           ===============================================================================   
+    383              [..]
+    384                This group includes the following functions:
+    385                (+) void FLASH_Unlock(void)
+    386                (+) void FLASH_Lock(void)
+    387                (+) FLASH_Status FLASH_EraseSector(uint32_t FLASH_Sector, uint8_t VoltageRange)
+    388                (+) FLASH_Status FLASH_EraseAllSectors(uint8_t VoltageRange)       
+    389                (+) FLASH_Status FLASH_ProgramDoubleWord(uint32_t Address, uint64_t Data)
+    390                (+) FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
+    391                (+) FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
+    392                (+) FLASH_Status FLASH_ProgramByte(uint32_t Address, uint8_t Data)
+    393                    The following functions can be used only for STM32F42xxx/43xxx devices. 
+    394                (+) FLASH_Status FLASH_EraseAllBank1Sectors(uint8_t VoltageRange)
+    395                (+) FLASH_Status FLASH_EraseAllBank2Sectors(uint8_t VoltageRange)    
+    396              [..]   
+    397                Any operation of erase or program should follow these steps:
+    398                (#) Call the FLASH_Unlock() function to enable the FLASH control register access
+    399          
+    400                (#) Call the desired function to erase sector(s) or program data
+    401          
+    402                (#) Call the FLASH_Lock() function to disable the FLASH control register access
+    403                    (recommended to protect the FLASH memory against possible unwanted operation)
+    404              
+    405          @endverbatim
+    406            * @{
+    407            */
+    408          
+    409          /**
+    410            * @brief  Unlocks the FLASH control register access
+    411            * @param  None
+    412            * @retval None
+    413            */
+
+   \                                 In section .text, align 2, keep-with-next
+    414          void FLASH_Unlock(void)
+    415          {
+    416            if((FLASH->CR & FLASH_CR_LOCK) != RESET)
+   \                     FLASH_Unlock: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R0,??DataTable38_1  ;; 0x40023c04
+   \   00000004   0x68C1             LDR      R1,[R0, #+12]
+   \   00000006   0x2900             CMP      R1,#+0
+   \   00000008   0xD505             BPL.N    ??FLASH_Unlock_0
+    417            {
+    418              /* Authorize the FLASH Registers access */
+    419              FLASH->KEYR = FLASH_KEY1;
+   \   0000000A   0x.... 0x....      LDR.W    R1,??DataTable38_2  ;; 0x45670123
+   \   0000000E   0x6001             STR      R1,[R0, #+0]
+    420              FLASH->KEYR = FLASH_KEY2;
+   \   00000010   0x.... 0x....      LDR.W    R1,??DataTable38_3  ;; 0xcdef89ab
+   \   00000014   0x6001             STR      R1,[R0, #+0]
+    421            }  
+    422          }
+   \                     ??FLASH_Unlock_0: (+1)
+   \   00000016   0x4770             BX       LR               ;; return
+    423          
+    424          /**
+    425            * @brief  Locks the FLASH control register access
+    426            * @param  None
+    427            * @retval None
+    428            */
+
+   \                                 In section .text, align 2, keep-with-next
+    429          void FLASH_Lock(void)
+    430          {
+    431            /* Set the LOCK Bit to lock the FLASH Registers access */
+    432            FLASH->CR |= FLASH_CR_LOCK;
+   \                     FLASH_Lock: (+1)
+   \   00000000   0x.... 0x....      LDR.W    R0,??DataTable38_4  ;; 0x40023c10
+   \   00000004   0x6801             LDR      R1,[R0, #+0]
+   \   00000006   0xF041 0x4100      ORR      R1,R1,#0x80000000
+   \   0000000A   0x6001             STR      R1,[R0, #+0]
+    433          }
+   \   0000000C   0x4770             BX       LR               ;; return
+    434          
+    435          /**
+    436            * @brief  Erases a specified FLASH Sector.
+    437            *
+    438            * @note   If an erase and a program operations are requested simultaneously,    
+    439            *         the erase operation is performed before the program one.
+    440            *
+    441            * @param  FLASH_Sector: The Sector number to be erased.
+    442            *
+    443            *  @note  For STM32F405xx/407xx and STM32F415xx/417xx devices this parameter can 
+    444            *         be a value between FLASH_Sector_0 and FLASH_Sector_11.
+    445            *
+    446            *         For STM32F42xxx/43xxx devices this parameter can be a value between 
+    447            *         FLASH_Sector_0 and FLASH_Sector_23.
+    448            *
+    449            *         For STM32F401xx devices this parameter can be a value between 
+    450            *         FLASH_Sector_0 and FLASH_Sector_5.
+    451            *
+    452            *         For STM32F411xE devices this parameter can be a value between 
+    453            *         FLASH_Sector_0 and FLASH_Sector_7.
+    454            *
+    455            *         For STM32F410xx devices this parameter can be a value between 
+    456            *         FLASH_Sector_0 and FLASH_Sector_4.
+    457            *
+    458            * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
+    459            *          This parameter can be one of the following values:
+    460            *            @arg VoltageRange_1: when the device voltage range is 1.8V to 2.1V, 
+    461            *                                  the operation will be done by byte (8-bit) 
+    462            *            @arg VoltageRange_2: when the device voltage range is 2.1V to 2.7V,
+    463            *                                  the operation will be done by half word (16-bit)
+    464            *            @arg VoltageRange_3: when the device voltage range is 2.7V to 3.6V,
+    465            *                                  the operation will be done by word (32-bit)
+    466            *            @arg VoltageRange_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+    467            *                                  the operation will be done by double word (64-bit)
+    468            *       
+    469            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    470            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    471            */
+
+   \                                 In section .text, align 2, keep-with-next
+    472          FLASH_Status FLASH_EraseSector(uint32_t FLASH_Sector, uint8_t VoltageRange)
+    473          {
+   \                     FLASH_EraseSector: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    474            uint32_t tmp_psize = 0x0;
+   \   00000004   0x2600             MOVS     R6,#+0
+    475            FLASH_Status status = FLASH_COMPLETE;
+    476          
+    477            /* Check the parameters */
+    478            assert_param(IS_FLASH_SECTOR(FLASH_Sector));
+    479            assert_param(IS_VOLTAGERANGE(VoltageRange));
+    480            
+    481            if(VoltageRange == VoltageRange_1)
+   \   00000006   0x0008             MOVS     R0,R1
+   \   00000008   0xD00B             BEQ.N    ??FLASH_EraseSector_0
+    482            {
+    483               tmp_psize = FLASH_PSIZE_BYTE;
+    484            }
+    485            else if(VoltageRange == VoltageRange_2)
+   \   0000000A   0x2901             CMP      R1,#+1
+   \   0000000C   0xD102             BNE.N    ??FLASH_EraseSector_1
+    486            {
+    487              tmp_psize = FLASH_PSIZE_HALF_WORD;
+   \   0000000E   0xF44F 0x7680      MOV      R6,#+256
+   \   00000012   0xE006             B.N      ??FLASH_EraseSector_0
+    488            }
+    489            else if(VoltageRange == VoltageRange_3)
+   \                     ??FLASH_EraseSector_1: (+1)
+   \   00000014   0x2902             CMP      R1,#+2
+   \   00000016   0xD102             BNE.N    ??FLASH_EraseSector_2
+    490            {
+    491              tmp_psize = FLASH_PSIZE_WORD;
+   \   00000018   0xF44F 0x7600      MOV      R6,#+512
+   \   0000001C   0xE001             B.N      ??FLASH_EraseSector_0
+    492            }
+    493            else
+    494            {
+    495              tmp_psize = FLASH_PSIZE_DOUBLE_WORD;
+   \                     ??FLASH_EraseSector_2: (+1)
+   \   0000001E   0xF44F 0x7640      MOV      R6,#+768
+    496            }
+    497            /* Wait for last operation to be completed */
+    498            status = FLASH_WaitForLastOperation();
+   \                     ??FLASH_EraseSector_0: (+1)
+   \   00000022   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    499            
+    500            if(status == FLASH_COMPLETE)
+   \   00000026   0x2809             CMP      R0,#+9
+   \   00000028   0xD11F             BNE.N    ??FLASH_EraseSector_3
+    501            { 
+    502              /* if the previous operation is completed, proceed to erase the sector */
+    503              FLASH->CR &= CR_PSIZE_MASK;
+   \   0000002A   0x.... 0x....      LDR.W    R5,??DataTable38_4  ;; 0x40023c10
+   \   0000002E   0x6828             LDR      R0,[R5, #+0]
+   \   00000030   0xF420 0x7040      BIC      R0,R0,#0x300
+   \   00000034   0x6028             STR      R0,[R5, #+0]
+    504              FLASH->CR |= tmp_psize;
+   \   00000036   0x6828             LDR      R0,[R5, #+0]
+   \   00000038   0x4330             ORRS     R0,R6,R0
+   \   0000003A   0x6028             STR      R0,[R5, #+0]
+    505              FLASH->CR &= SECTOR_MASK;
+   \   0000003C   0x6828             LDR      R0,[R5, #+0]
+   \   0000003E   0xF020 0x00F8      BIC      R0,R0,#0xF8
+   \   00000042   0x6028             STR      R0,[R5, #+0]
+    506              FLASH->CR |= FLASH_CR_SER | FLASH_Sector;
+   \   00000044   0x6828             LDR      R0,[R5, #+0]
+   \   00000046   0xF044 0x0102      ORR      R1,R4,#0x2
+   \   0000004A   0x4308             ORRS     R0,R1,R0
+   \   0000004C   0x6028             STR      R0,[R5, #+0]
+    507              FLASH->CR |= FLASH_CR_STRT;
+   \   0000004E   0x6828             LDR      R0,[R5, #+0]
+   \   00000050   0xF440 0x3080      ORR      R0,R0,#0x10000
+   \   00000054   0x6028             STR      R0,[R5, #+0]
+    508              
+    509              /* Wait for last operation to be completed */
+    510              status = FLASH_WaitForLastOperation();
+   \   00000056   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    511              
+    512              /* if the erase operation is completed, disable the SER Bit */
+    513              FLASH->CR &= (~FLASH_CR_SER);
+   \   0000005A   0x6829             LDR      R1,[R5, #+0]
+   \   0000005C   0xF021 0x0102      BIC      R1,R1,#0x2
+   \   00000060   0x6029             STR      R1,[R5, #+0]
+    514              FLASH->CR &= SECTOR_MASK; 
+   \   00000062   0x6829             LDR      R1,[R5, #+0]
+   \   00000064   0xF021 0x01F8      BIC      R1,R1,#0xF8
+   \   00000068   0x6029             STR      R1,[R5, #+0]
+    515            }
+    516            /* Return the Erase Status */
+    517            return status;
+   \                     ??FLASH_EraseSector_3: (+1)
+   \   0000006A   0xBD70             POP      {R4-R6,PC}       ;; return
+    518          }
+    519          
+    520          /**
+    521            * @brief  Erases all FLASH Sectors.
+    522            *
+    523            * @note   If an erase and a program operations are requested simultaneously,    
+    524            *         the erase operation is performed before the program one.
+    525            *  
+    526            * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
+    527            *          This parameter can be one of the following values:
+    528            *            @arg VoltageRange_1: when the device voltage range is 1.8V to 2.1V, 
+    529            *                                  the operation will be done by byte (8-bit) 
+    530            *            @arg VoltageRange_2: when the device voltage range is 2.1V to 2.7V,
+    531            *                                  the operation will be done by half word (16-bit)
+    532            *            @arg VoltageRange_3: when the device voltage range is 2.7V to 3.6V,
+    533            *                                  the operation will be done by word (32-bit)
+    534            *            @arg VoltageRange_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+    535            *                                  the operation will be done by double word (64-bit)
+    536            *       
+    537            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    538            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    539            */
+
+   \                                 In section .text, align 2, keep-with-next
+    540          FLASH_Status FLASH_EraseAllSectors(uint8_t VoltageRange)
+    541          {
+   \                     FLASH_EraseAllSectors: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    542            uint32_t tmp_psize = 0x0;
+   \   00000004   0x2500             MOVS     R5,#+0
+    543            FLASH_Status status = FLASH_COMPLETE;
+    544            
+    545            /* Wait for last operation to be completed */
+    546            status = FLASH_WaitForLastOperation();
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    547            assert_param(IS_VOLTAGERANGE(VoltageRange));
+    548            
+    549            if(VoltageRange == VoltageRange_1)
+   \   0000000A   0x0021             MOVS     R1,R4
+   \   0000000C   0xD00B             BEQ.N    ??FLASH_EraseAllSectors_0
+    550            {
+    551               tmp_psize = FLASH_PSIZE_BYTE;
+    552            }
+    553            else if(VoltageRange == VoltageRange_2)
+   \   0000000E   0x2C01             CMP      R4,#+1
+   \   00000010   0xD102             BNE.N    ??FLASH_EraseAllSectors_1
+    554            {
+    555              tmp_psize = FLASH_PSIZE_HALF_WORD;
+   \   00000012   0xF44F 0x7580      MOV      R5,#+256
+   \   00000016   0xE006             B.N      ??FLASH_EraseAllSectors_0
+    556            }
+    557            else if(VoltageRange == VoltageRange_3)
+   \                     ??FLASH_EraseAllSectors_1: (+1)
+   \   00000018   0x2C02             CMP      R4,#+2
+   \   0000001A   0xD102             BNE.N    ??FLASH_EraseAllSectors_2
+    558            {
+    559              tmp_psize = FLASH_PSIZE_WORD;
+   \   0000001C   0xF44F 0x7500      MOV      R5,#+512
+   \   00000020   0xE001             B.N      ??FLASH_EraseAllSectors_0
+    560            }
+    561            else
+    562            {
+    563              tmp_psize = FLASH_PSIZE_DOUBLE_WORD;
+   \                     ??FLASH_EraseAllSectors_2: (+1)
+   \   00000022   0xF44F 0x7540      MOV      R5,#+768
+    564            }  
+    565            if(status == FLASH_COMPLETE)
+   \                     ??FLASH_EraseAllSectors_0: (+1)
+   \   00000026   0x2809             CMP      R0,#+9
+   \   00000028   0xD116             BNE.N    ??FLASH_EraseAllSectors_3
+    566            {
+    567              /* if the previous operation is completed, proceed to erase all sectors */
+    568          #if defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F469_479xx)     
+    569              FLASH->CR &= CR_PSIZE_MASK;
+    570              FLASH->CR |= tmp_psize;
+    571              FLASH->CR |= (FLASH_CR_MER1 | FLASH_CR_MER2);
+    572              FLASH->CR |= FLASH_CR_STRT;
+    573              
+    574              /* Wait for last operation to be completed */
+    575              status = FLASH_WaitForLastOperation();
+    576          
+    577              /* if the erase operation is completed, disable the MER Bit */
+    578              FLASH->CR &= ~(FLASH_CR_MER1 | FLASH_CR_MER2);
+    579          #endif /* STM32F427_437xx ||  STM32F429_439xx ||  STM32F469_479xx */
+    580          
+    581          #if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F410xx) || defined(STM32F411xE) || defined(STM32F446xx)
+    582              FLASH->CR &= CR_PSIZE_MASK;
+   \   0000002A   0x.... 0x....      LDR.W    R4,??DataTable38_4  ;; 0x40023c10
+   \   0000002E   0x6820             LDR      R0,[R4, #+0]
+   \   00000030   0xF420 0x7040      BIC      R0,R0,#0x300
+   \   00000034   0x6020             STR      R0,[R4, #+0]
+    583              FLASH->CR |= tmp_psize;
+   \   00000036   0x6820             LDR      R0,[R4, #+0]
+   \   00000038   0x4328             ORRS     R0,R5,R0
+   \   0000003A   0x6020             STR      R0,[R4, #+0]
+    584              FLASH->CR |= FLASH_CR_MER;
+   \   0000003C   0x6820             LDR      R0,[R4, #+0]
+   \   0000003E   0xF040 0x0004      ORR      R0,R0,#0x4
+   \   00000042   0x6020             STR      R0,[R4, #+0]
+    585              FLASH->CR |= FLASH_CR_STRT;
+   \   00000044   0x6820             LDR      R0,[R4, #+0]
+   \   00000046   0xF440 0x3080      ORR      R0,R0,#0x10000
+   \   0000004A   0x6020             STR      R0,[R4, #+0]
+    586              
+    587              /* Wait for last operation to be completed */
+    588              status = FLASH_WaitForLastOperation();
+   \   0000004C   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    589          
+    590              /* if the erase operation is completed, disable the MER Bit */
+    591              FLASH->CR &= (~FLASH_CR_MER);
+   \   00000050   0x6821             LDR      R1,[R4, #+0]
+   \   00000052   0xF021 0x0104      BIC      R1,R1,#0x4
+   \   00000056   0x6021             STR      R1,[R4, #+0]
+    592          #endif /* STM32F40_41xxx || STM32F401xx || STM32F410xx || STM32F411xE || STM32F446xx */
+    593          
+    594            }   
+    595            /* Return the Erase Status */
+    596            return status;
+   \                     ??FLASH_EraseAllSectors_3: (+1)
+   \   00000058   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    597          }
+    598          
+    599          /**
+    600            * @brief  Erases all FLASH Sectors in Bank 1.
+    601            *
+    602            * @note   This function can be used only for STM32F42xxx/43xxx devices.
+    603            *      
+    604            * @note   If an erase and a program operations are requested simultaneously,    
+    605            *         the erase operation is performed before the program one. 
+    606            *  
+    607            * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
+    608            *          This parameter can be one of the following values:
+    609            *            @arg VoltageRange_1: when the device voltage range is 1.8V to 2.1V, 
+    610            *                                  the operation will be done by byte (8-bit) 
+    611            *            @arg VoltageRange_2: when the device voltage range is 2.1V to 2.7V,
+    612            *                                  the operation will be done by half word (16-bit)
+    613            *            @arg VoltageRange_3: when the device voltage range is 2.7V to 3.6V,
+    614            *                                  the operation will be done by word (32-bit)
+    615            *            @arg VoltageRange_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+    616            *                                  the operation will be done by double word (64-bit)
+    617            *       
+    618            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    619            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    620            */
+
+   \                                 In section .text, align 2, keep-with-next
+    621          FLASH_Status FLASH_EraseAllBank1Sectors(uint8_t VoltageRange)
+    622          {
+   \                     FLASH_EraseAllBank1Sectors: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    623            uint32_t tmp_psize = 0x0;
+   \   00000004   0x2500             MOVS     R5,#+0
+    624            FLASH_Status status = FLASH_COMPLETE;
+    625            
+    626            /* Wait for last operation to be completed */
+    627            status = FLASH_WaitForLastOperation();
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    628            assert_param(IS_VOLTAGERANGE(VoltageRange));
+    629            
+    630            if(VoltageRange == VoltageRange_1)
+   \   0000000A   0x0021             MOVS     R1,R4
+   \   0000000C   0xD00B             BEQ.N    ??FLASH_EraseAllBank1Sectors_0
+    631            {
+    632               tmp_psize = FLASH_PSIZE_BYTE;
+    633            }
+    634            else if(VoltageRange == VoltageRange_2)
+   \   0000000E   0x2C01             CMP      R4,#+1
+   \   00000010   0xD102             BNE.N    ??FLASH_EraseAllBank1Sectors_1
+    635            {
+    636              tmp_psize = FLASH_PSIZE_HALF_WORD;
+   \   00000012   0xF44F 0x7580      MOV      R5,#+256
+   \   00000016   0xE006             B.N      ??FLASH_EraseAllBank1Sectors_0
+    637            }
+    638            else if(VoltageRange == VoltageRange_3)
+   \                     ??FLASH_EraseAllBank1Sectors_1: (+1)
+   \   00000018   0x2C02             CMP      R4,#+2
+   \   0000001A   0xD102             BNE.N    ??FLASH_EraseAllBank1Sectors_2
+    639            {
+    640              tmp_psize = FLASH_PSIZE_WORD;
+   \   0000001C   0xF44F 0x7500      MOV      R5,#+512
+   \   00000020   0xE001             B.N      ??FLASH_EraseAllBank1Sectors_0
+    641            }
+    642            else
+    643            {
+    644              tmp_psize = FLASH_PSIZE_DOUBLE_WORD;
+   \                     ??FLASH_EraseAllBank1Sectors_2: (+1)
+   \   00000022   0xF44F 0x7540      MOV      R5,#+768
+    645            }  
+    646            if(status == FLASH_COMPLETE)
+   \                     ??FLASH_EraseAllBank1Sectors_0: (+1)
+   \   00000026   0x2809             CMP      R0,#+9
+   \   00000028   0xD115             BNE.N    ??FLASH_EraseAllBank1Sectors_3
+    647            {
+    648              /* if the previous operation is completed, proceed to erase all sectors */
+    649               FLASH->CR &= CR_PSIZE_MASK;
+   \   0000002A   0x....             LDR.N    R4,??DataTable38_4  ;; 0x40023c10
+   \   0000002C   0x6820             LDR      R0,[R4, #+0]
+   \   0000002E   0xF420 0x7040      BIC      R0,R0,#0x300
+   \   00000032   0x6020             STR      R0,[R4, #+0]
+    650               FLASH->CR |= tmp_psize;
+   \   00000034   0x6820             LDR      R0,[R4, #+0]
+   \   00000036   0x4328             ORRS     R0,R5,R0
+   \   00000038   0x6020             STR      R0,[R4, #+0]
+    651               FLASH->CR |= FLASH_CR_MER1;
+   \   0000003A   0x6820             LDR      R0,[R4, #+0]
+   \   0000003C   0xF040 0x0004      ORR      R0,R0,#0x4
+   \   00000040   0x6020             STR      R0,[R4, #+0]
+    652               FLASH->CR |= FLASH_CR_STRT;
+   \   00000042   0x6820             LDR      R0,[R4, #+0]
+   \   00000044   0xF440 0x3080      ORR      R0,R0,#0x10000
+   \   00000048   0x6020             STR      R0,[R4, #+0]
+    653              
+    654              /* Wait for last operation to be completed */
+    655              status = FLASH_WaitForLastOperation();
+   \   0000004A   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    656          
+    657              /* if the erase operation is completed, disable the MER Bit */
+    658              FLASH->CR &= (~FLASH_CR_MER1);
+   \   0000004E   0x6821             LDR      R1,[R4, #+0]
+   \   00000050   0xF021 0x0104      BIC      R1,R1,#0x4
+   \   00000054   0x6021             STR      R1,[R4, #+0]
+    659          
+    660            }   
+    661            /* Return the Erase Status */
+    662            return status;
+   \                     ??FLASH_EraseAllBank1Sectors_3: (+1)
+   \   00000056   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    663          }
+    664          
+    665          
+    666          /**
+    667            * @brief  Erases all FLASH Sectors in Bank 2.
+    668            *
+    669            * @note   This function can be used only for STM32F42xxx/43xxx devices.
+    670            *     
+    671            * @note   If an erase and a program operations are requested simultaneously,    
+    672            *         the erase operation is performed before the program one.
+    673            *     
+    674            * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
+    675            *          This parameter can be one of the following values:
+    676            *            @arg VoltageRange_1: when the device voltage range is 1.8V to 2.1V, 
+    677            *                                  the operation will be done by byte (8-bit) 
+    678            *            @arg VoltageRange_2: when the device voltage range is 2.1V to 2.7V,
+    679            *                                  the operation will be done by half word (16-bit)
+    680            *            @arg VoltageRange_3: when the device voltage range is 2.7V to 3.6V,
+    681            *                                  the operation will be done by word (32-bit)
+    682            *            @arg VoltageRange_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+    683            *                                  the operation will be done by double word (64-bit)
+    684            *       
+    685            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    686            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    687            */
+
+   \                                 In section .text, align 2, keep-with-next
+    688          FLASH_Status FLASH_EraseAllBank2Sectors(uint8_t VoltageRange)
+    689          {
+   \                     FLASH_EraseAllBank2Sectors: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    690            uint32_t tmp_psize = 0x0;
+   \   00000004   0x2500             MOVS     R5,#+0
+    691            FLASH_Status status = FLASH_COMPLETE;
+    692            
+    693            /* Wait for last operation to be completed */
+    694            status = FLASH_WaitForLastOperation();
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    695            assert_param(IS_VOLTAGERANGE(VoltageRange));
+    696            
+    697            if(VoltageRange == VoltageRange_1)
+   \   0000000A   0x0021             MOVS     R1,R4
+   \   0000000C   0xD00B             BEQ.N    ??FLASH_EraseAllBank2Sectors_0
+    698            {
+    699               tmp_psize = FLASH_PSIZE_BYTE;
+    700            }
+    701            else if(VoltageRange == VoltageRange_2)
+   \   0000000E   0x2C01             CMP      R4,#+1
+   \   00000010   0xD102             BNE.N    ??FLASH_EraseAllBank2Sectors_1
+    702            {
+    703              tmp_psize = FLASH_PSIZE_HALF_WORD;
+   \   00000012   0xF44F 0x7580      MOV      R5,#+256
+   \   00000016   0xE006             B.N      ??FLASH_EraseAllBank2Sectors_0
+    704            }
+    705            else if(VoltageRange == VoltageRange_3)
+   \                     ??FLASH_EraseAllBank2Sectors_1: (+1)
+   \   00000018   0x2C02             CMP      R4,#+2
+   \   0000001A   0xD102             BNE.N    ??FLASH_EraseAllBank2Sectors_2
+    706            {
+    707              tmp_psize = FLASH_PSIZE_WORD;
+   \   0000001C   0xF44F 0x7500      MOV      R5,#+512
+   \   00000020   0xE001             B.N      ??FLASH_EraseAllBank2Sectors_0
+    708            }
+    709            else
+    710            {
+    711              tmp_psize = FLASH_PSIZE_DOUBLE_WORD;
+   \                     ??FLASH_EraseAllBank2Sectors_2: (+1)
+   \   00000022   0xF44F 0x7540      MOV      R5,#+768
+    712            }  
+    713            if(status == FLASH_COMPLETE)
+   \                     ??FLASH_EraseAllBank2Sectors_0: (+1)
+   \   00000026   0x2809             CMP      R0,#+9
+   \   00000028   0xD115             BNE.N    ??FLASH_EraseAllBank2Sectors_3
+    714            {
+    715              /* if the previous operation is completed, proceed to erase all sectors */
+    716               FLASH->CR &= CR_PSIZE_MASK;
+   \   0000002A   0x....             LDR.N    R4,??DataTable38_4  ;; 0x40023c10
+   \   0000002C   0x6820             LDR      R0,[R4, #+0]
+   \   0000002E   0xF420 0x7040      BIC      R0,R0,#0x300
+   \   00000032   0x6020             STR      R0,[R4, #+0]
+    717               FLASH->CR |= tmp_psize;
+   \   00000034   0x6820             LDR      R0,[R4, #+0]
+   \   00000036   0x4328             ORRS     R0,R5,R0
+   \   00000038   0x6020             STR      R0,[R4, #+0]
+    718               FLASH->CR |= FLASH_CR_MER2;
+   \   0000003A   0x6820             LDR      R0,[R4, #+0]
+   \   0000003C   0xF440 0x4000      ORR      R0,R0,#0x8000
+   \   00000040   0x6020             STR      R0,[R4, #+0]
+    719               FLASH->CR |= FLASH_CR_STRT;
+   \   00000042   0x6820             LDR      R0,[R4, #+0]
+   \   00000044   0xF440 0x3080      ORR      R0,R0,#0x10000
+   \   00000048   0x6020             STR      R0,[R4, #+0]
+    720              
+    721              /* Wait for last operation to be completed */
+    722              status = FLASH_WaitForLastOperation();
+   \   0000004A   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    723          
+    724              /* if the erase operation is completed, disable the MER Bit */
+    725              FLASH->CR &= (~FLASH_CR_MER2);
+   \   0000004E   0x6821             LDR      R1,[R4, #+0]
+   \   00000050   0xF421 0x4100      BIC      R1,R1,#0x8000
+   \   00000054   0x6021             STR      R1,[R4, #+0]
+    726          
+    727            }   
+    728            /* Return the Erase Status */
+    729            return status;
+   \                     ??FLASH_EraseAllBank2Sectors_3: (+1)
+   \   00000056   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    730          }
+    731          
+    732          /**
+    733            * @brief  Programs a double word (64-bit) at a specified address.
+    734            * @note   This function must be used when the device voltage range is from
+    735            *         2.7V to 3.6V and an External Vpp is present.
+    736            *
+    737            * @note   If an erase and a program operations are requested simultaneously,    
+    738            *         the erase operation is performed before the program one.
+    739            *  
+    740            * @param  Address: specifies the address to be programmed.
+    741            * @param  Data: specifies the data to be programmed.
+    742            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    743            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    744            */
+
+   \                                 In section .text, align 2, keep-with-next
+    745          FLASH_Status FLASH_ProgramDoubleWord(uint32_t Address, uint64_t Data)
+    746          {
+   \                     FLASH_ProgramDoubleWord: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4606             MOV      R6,R0
+   \   00000004   0x4614             MOV      R4,R2
+   \   00000006   0x461D             MOV      R5,R3
+    747            FLASH_Status status = FLASH_COMPLETE;
+    748          
+    749            /* Check the parameters */
+    750            assert_param(IS_FLASH_ADDRESS(Address));
+    751          
+    752            /* Wait for last operation to be completed */
+    753            status = FLASH_WaitForLastOperation();
+   \   00000008   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    754            
+    755            if(status == FLASH_COMPLETE)
+   \   0000000C   0x2809             CMP      R0,#+9
+   \   0000000E   0xD114             BNE.N    ??FLASH_ProgramDoubleWord_0
+    756            {
+    757              /* if the previous operation is completed, proceed to program the new data */
+    758              FLASH->CR &= CR_PSIZE_MASK;
+   \   00000010   0x....             LDR.N    R7,??DataTable38_4  ;; 0x40023c10
+   \   00000012   0x6838             LDR      R0,[R7, #+0]
+   \   00000014   0xF420 0x7040      BIC      R0,R0,#0x300
+   \   00000018   0x6038             STR      R0,[R7, #+0]
+    759              FLASH->CR |= FLASH_PSIZE_DOUBLE_WORD;
+   \   0000001A   0x6838             LDR      R0,[R7, #+0]
+   \   0000001C   0xF440 0x7040      ORR      R0,R0,#0x300
+   \   00000020   0x6038             STR      R0,[R7, #+0]
+    760              FLASH->CR |= FLASH_CR_PG;
+   \   00000022   0x6838             LDR      R0,[R7, #+0]
+   \   00000024   0xF040 0x0001      ORR      R0,R0,#0x1
+   \   00000028   0x6038             STR      R0,[R7, #+0]
+    761            
+    762              *(__IO uint64_t*)Address = Data;
+   \   0000002A   0xE9C6 0x4500      STRD     R4,R5,[R6, #+0]
+    763                  
+    764              /* Wait for last operation to be completed */
+    765              status = FLASH_WaitForLastOperation();
+   \   0000002E   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    766          
+    767              /* if the program operation is completed, disable the PG Bit */
+    768              FLASH->CR &= (~FLASH_CR_PG);
+   \   00000032   0x6839             LDR      R1,[R7, #+0]
+   \   00000034   0x0849             LSRS     R1,R1,#+1
+   \   00000036   0x0049             LSLS     R1,R1,#+1
+   \   00000038   0x6039             STR      R1,[R7, #+0]
+    769            } 
+    770            /* Return the Program Status */
+    771            return status;
+   \                     ??FLASH_ProgramDoubleWord_0: (+1)
+   \   0000003A   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+    772          }
+    773          
+    774          /**
+    775            * @brief  Programs a word (32-bit) at a specified address.
+    776            *
+    777            * @note   This function must be used when the device voltage range is from 2.7V to 3.6V. 
+    778            *
+    779            * @note   If an erase and a program operations are requested simultaneously,    
+    780            *         the erase operation is performed before the program one.
+    781            *  
+    782            * @param  Address: specifies the address to be programmed.
+    783            *         This parameter can be any address in Program memory zone or in OTP zone.  
+    784            * @param  Data: specifies the data to be programmed.
+    785            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    786            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    787            */
+
+   \                                 In section .text, align 2, keep-with-next
+    788          FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
+    789          {
+   \                     FLASH_ProgramWord: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+    790            FLASH_Status status = FLASH_COMPLETE;
+    791          
+    792            /* Check the parameters */
+    793            assert_param(IS_FLASH_ADDRESS(Address));
+    794          
+    795            /* Wait for last operation to be completed */
+    796            status = FLASH_WaitForLastOperation();
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    797            
+    798            if(status == FLASH_COMPLETE)
+   \   0000000A   0x2809             CMP      R0,#+9
+   \   0000000C   0xD113             BNE.N    ??FLASH_ProgramWord_0
+    799            {
+    800              /* if the previous operation is completed, proceed to program the new data */
+    801              FLASH->CR &= CR_PSIZE_MASK;
+   \   0000000E   0x....             LDR.N    R6,??DataTable38_4  ;; 0x40023c10
+   \   00000010   0x6830             LDR      R0,[R6, #+0]
+   \   00000012   0xF420 0x7040      BIC      R0,R0,#0x300
+   \   00000016   0x6030             STR      R0,[R6, #+0]
+    802              FLASH->CR |= FLASH_PSIZE_WORD;
+   \   00000018   0x6830             LDR      R0,[R6, #+0]
+   \   0000001A   0xF440 0x7000      ORR      R0,R0,#0x200
+   \   0000001E   0x6030             STR      R0,[R6, #+0]
+    803              FLASH->CR |= FLASH_CR_PG;
+   \   00000020   0x6830             LDR      R0,[R6, #+0]
+   \   00000022   0xF040 0x0001      ORR      R0,R0,#0x1
+   \   00000026   0x6030             STR      R0,[R6, #+0]
+    804            
+    805              *(__IO uint32_t*)Address = Data;
+   \   00000028   0x6025             STR      R5,[R4, #+0]
+    806                  
+    807              /* Wait for last operation to be completed */
+    808              status = FLASH_WaitForLastOperation();
+   \   0000002A   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    809          
+    810              /* if the program operation is completed, disable the PG Bit */
+    811              FLASH->CR &= (~FLASH_CR_PG);
+   \   0000002E   0x6831             LDR      R1,[R6, #+0]
+   \   00000030   0x0849             LSRS     R1,R1,#+1
+   \   00000032   0x0049             LSLS     R1,R1,#+1
+   \   00000034   0x6031             STR      R1,[R6, #+0]
+    812            } 
+    813            /* Return the Program Status */
+    814            return status;
+   \                     ??FLASH_ProgramWord_0: (+1)
+   \   00000036   0xBD70             POP      {R4-R6,PC}       ;; return
+    815          }
+    816          
+    817          /**
+    818            * @brief  Programs a half word (16-bit) at a specified address. 
+    819            * @note   This function must be used when the device voltage range is from 2.1V to 3.6V. 
+    820            *
+    821            * @note   If an erase and a program operations are requested simultaneously,    
+    822            *         the erase operation is performed before the program one.
+    823            * 
+    824            * @param  Address: specifies the address to be programmed.
+    825            *         This parameter can be any address in Program memory zone or in OTP zone.  
+    826            * @param  Data: specifies the data to be programmed.
+    827            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    828            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    829            */
+
+   \                                 In section .text, align 2, keep-with-next
+    830          FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
+    831          {
+   \                     FLASH_ProgramHalfWord: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+    832            FLASH_Status status = FLASH_COMPLETE;
+    833          
+    834            /* Check the parameters */
+    835            assert_param(IS_FLASH_ADDRESS(Address));
+    836          
+    837            /* Wait for last operation to be completed */
+    838            status = FLASH_WaitForLastOperation();
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    839            
+    840            if(status == FLASH_COMPLETE)
+   \   0000000A   0x2809             CMP      R0,#+9
+   \   0000000C   0xD113             BNE.N    ??FLASH_ProgramHalfWord_0
+    841            {
+    842              /* if the previous operation is completed, proceed to program the new data */
+    843              FLASH->CR &= CR_PSIZE_MASK;
+   \   0000000E   0x....             LDR.N    R6,??DataTable38_4  ;; 0x40023c10
+   \   00000010   0x6830             LDR      R0,[R6, #+0]
+   \   00000012   0xF420 0x7040      BIC      R0,R0,#0x300
+   \   00000016   0x6030             STR      R0,[R6, #+0]
+    844              FLASH->CR |= FLASH_PSIZE_HALF_WORD;
+   \   00000018   0x6830             LDR      R0,[R6, #+0]
+   \   0000001A   0xF440 0x7080      ORR      R0,R0,#0x100
+   \   0000001E   0x6030             STR      R0,[R6, #+0]
+    845              FLASH->CR |= FLASH_CR_PG;
+   \   00000020   0x6830             LDR      R0,[R6, #+0]
+   \   00000022   0xF040 0x0001      ORR      R0,R0,#0x1
+   \   00000026   0x6030             STR      R0,[R6, #+0]
+    846            
+    847              *(__IO uint16_t*)Address = Data;
+   \   00000028   0x8025             STRH     R5,[R4, #+0]
+    848                  
+    849              /* Wait for last operation to be completed */
+    850              status = FLASH_WaitForLastOperation();
+   \   0000002A   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    851          
+    852              /* if the program operation is completed, disable the PG Bit */
+    853              FLASH->CR &= (~FLASH_CR_PG);
+   \   0000002E   0x6831             LDR      R1,[R6, #+0]
+   \   00000030   0x0849             LSRS     R1,R1,#+1
+   \   00000032   0x0049             LSLS     R1,R1,#+1
+   \   00000034   0x6031             STR      R1,[R6, #+0]
+    854            } 
+    855            /* Return the Program Status */
+    856            return status;
+   \                     ??FLASH_ProgramHalfWord_0: (+1)
+   \   00000036   0xBD70             POP      {R4-R6,PC}       ;; return
+    857          }
+    858          
+    859          /**
+    860            * @brief  Programs a byte (8-bit) at a specified address.
+    861            * @note   This function can be used within all the device supply voltage ranges.  
+    862            *
+    863            * @note   If an erase and a program operations are requested simultaneously,    
+    864            *         the erase operation is performed before the program one.
+    865            * 
+    866            * @param  Address: specifies the address to be programmed.
+    867            *         This parameter can be any address in Program memory zone or in OTP zone.  
+    868            * @param  Data: specifies the data to be programmed.
+    869            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    870            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    871            */
+
+   \                                 In section .text, align 2, keep-with-next
+    872          FLASH_Status FLASH_ProgramByte(uint32_t Address, uint8_t Data)
+    873          {
+   \                     FLASH_ProgramByte: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4605             MOV      R5,R0
+   \   00000004   0x460E             MOV      R6,R1
+    874            FLASH_Status status = FLASH_COMPLETE;
+    875          
+    876            /* Check the parameters */
+    877            assert_param(IS_FLASH_ADDRESS(Address));
+    878          
+    879            /* Wait for last operation to be completed */
+    880            status = FLASH_WaitForLastOperation();
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    881            
+    882            if(status == FLASH_COMPLETE)
+   \   0000000A   0x2809             CMP      R0,#+9
+   \   0000000C   0xD111             BNE.N    ??FLASH_ProgramByte_0
+    883            {
+    884              /* if the previous operation is completed, proceed to program the new data */
+    885              FLASH->CR &= CR_PSIZE_MASK;
+   \   0000000E   0x....             LDR.N    R4,??DataTable38_4  ;; 0x40023c10
+   \   00000010   0x6820             LDR      R0,[R4, #+0]
+   \   00000012   0xF420 0x7040      BIC      R0,R0,#0x300
+   \   00000016   0x6020             STR      R0,[R4, #+0]
+    886              FLASH->CR |= FLASH_PSIZE_BYTE;
+   \   00000018   0x6820             LDR      R0,[R4, #+0]
+   \   0000001A   0x6020             STR      R0,[R4, #+0]
+    887              FLASH->CR |= FLASH_CR_PG;
+   \   0000001C   0x6820             LDR      R0,[R4, #+0]
+   \   0000001E   0xF040 0x0001      ORR      R0,R0,#0x1
+   \   00000022   0x6020             STR      R0,[R4, #+0]
+    888            
+    889              *(__IO uint8_t*)Address = Data;
+   \   00000024   0x702E             STRB     R6,[R5, #+0]
+    890                  
+    891              /* Wait for last operation to be completed */
+    892              status = FLASH_WaitForLastOperation();
+   \   00000026   0x.... 0x....      BL       FLASH_WaitForLastOperation
+    893          
+    894              /* if the program operation is completed, disable the PG Bit */
+    895              FLASH->CR &= (~FLASH_CR_PG);
+   \   0000002A   0x6821             LDR      R1,[R4, #+0]
+   \   0000002C   0x0849             LSRS     R1,R1,#+1
+   \   0000002E   0x0049             LSLS     R1,R1,#+1
+   \   00000030   0x6021             STR      R1,[R4, #+0]
+    896            } 
+    897          
+    898            /* Return the Program Status */
+    899            return status;
+   \                     ??FLASH_ProgramByte_0: (+1)
+   \   00000032   0xBD70             POP      {R4-R6,PC}       ;; return
+    900          }
+    901          
+    902          /**
+    903            * @}
+    904            */
+    905          
+    906          /** @defgroup FLASH_Group3 Option Bytes Programming functions
+    907           *  @brief   Option Bytes Programming functions 
+    908           *
+    909          @verbatim   
+    910           ===============================================================================
+    911                          ##### Option Bytes Programming functions #####
+    912           ===============================================================================  
+    913              [..]
+    914                This group includes the following functions:
+    915                (+) void FLASH_OB_Unlock(void)
+    916                (+) void FLASH_OB_Lock(void)
+    917                (+) void FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState)
+    918                (+) void FLASH_OB_WRP1Config(uint32_t OB_WRP, FunctionalState NewState)  
+    919                (+) void FLASH_OB_PCROPSelectionConfig(uint8_t OB_PCROPSelect)
+    920                (+) void FLASH_OB_PCROPConfig(uint32_t OB_PCROP, FunctionalState NewState)
+    921                (+) void FLASH_OB_PCROP1Config(uint32_t OB_PCROP, FunctionalState NewState) 
+    922                (+) void FLASH_OB_RDPConfig(uint8_t OB_RDP)
+    923                (+) void FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY)
+    924                (+) void FLASH_OB_BORConfig(uint8_t OB_BOR)
+    925                (+) FLASH_Status FLASH_ProgramOTP(uint32_t Address, uint32_t Data)
+    926                (+) FLASH_Status FLASH_OB_Launch(void)
+    927                (+) uint32_t FLASH_OB_GetUser(void)
+    928                (+) uint8_t FLASH_OB_GetWRP(void)
+    929                (+) uint8_t FLASH_OB_GetWRP1(void)
+    930                (+) uint8_t FLASH_OB_GetPCROP(void)
+    931                (+) uint8_t FLASH_OB_GetPCROP1(void)
+    932                (+) uint8_t FLASH_OB_GetRDP(void)
+    933                (+) uint8_t FLASH_OB_GetBOR(void)
+    934              [..]  
+    935                The following function can be used only for STM32F42xxx/43xxx devices. 
+    936                (+) void FLASH_OB_BootConfig(uint8_t OB_BOOT)
+    937              [..]   
+    938               Any operation of erase or program should follow these steps:
+    939                (#) Call the FLASH_OB_Unlock() function to enable the FLASH option control 
+    940                    register access
+    941          
+    942                (#) Call one or several functions to program the desired Option Bytes:
+    943                  (++) void FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState) 
+    944                       => to Enable/Disable the desired sector write protection
+    945                  (++) void FLASH_OB_RDPConfig(uint8_t OB_RDP) => to set the desired read 
+    946                       Protection Level
+    947                  (++) void FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY) 
+    948                       => to configure the user Option Bytes.
+    949                  (++) void FLASH_OB_BORConfig(uint8_t OB_BOR) => to set the BOR Level 			 
+    950          
+    951                (#) Once all needed Option Bytes to be programmed are correctly written, 
+    952                    call the FLASH_OB_Launch() function to launch the Option Bytes 
+    953                    programming process.
+    954               
+    955                -@- When changing the IWDG mode from HW to SW or from SW to HW, a system 
+    956                    reset is needed to make the change effective.  
+    957          
+    958                (#) Call the FLASH_OB_Lock() function to disable the FLASH option control 
+    959                    register access (recommended to protect the Option Bytes against 
+    960                    possible unwanted operations)
+    961              
+    962          @endverbatim
+    963            * @{
+    964            */
+    965          
+    966          /**
+    967            * @brief  Unlocks the FLASH Option Control Registers access.
+    968            * @param  None
+    969            * @retval None
+    970            */
+
+   \                                 In section .text, align 2, keep-with-next
+    971          void FLASH_OB_Unlock(void)
+    972          {
+    973            if((FLASH->OPTCR & FLASH_OPTCR_OPTLOCK) != RESET)
+   \                     FLASH_OB_Unlock: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_5  ;; 0x40023c08
+   \   00000002   0x68C1             LDR      R1,[R0, #+12]
+   \   00000004   0x07C9             LSLS     R1,R1,#+31
+   \   00000006   0xD503             BPL.N    ??FLASH_OB_Unlock_0
+    974            {
+    975              /* Authorizes the Option Byte register programming */
+    976              FLASH->OPTKEYR = FLASH_OPT_KEY1;
+   \   00000008   0x....             LDR.N    R1,??DataTable38_6  ;; 0x8192a3b
+   \   0000000A   0x6001             STR      R1,[R0, #+0]
+    977              FLASH->OPTKEYR = FLASH_OPT_KEY2;
+   \   0000000C   0x....             LDR.N    R1,??DataTable38_7  ;; 0x4c5d6e7f
+   \   0000000E   0x6001             STR      R1,[R0, #+0]
+    978            }  
+    979          }
+   \                     ??FLASH_OB_Unlock_0: (+1)
+   \   00000010   0x4770             BX       LR               ;; return
+    980          
+    981          /**
+    982            * @brief  Locks the FLASH Option Control Registers access.
+    983            * @param  None
+    984            * @retval None
+    985            */
+
+   \                                 In section .text, align 2, keep-with-next
+    986          void FLASH_OB_Lock(void)
+    987          {
+    988            /* Set the OPTLOCK Bit to lock the FLASH Option Byte Registers access */
+    989            FLASH->OPTCR |= FLASH_OPTCR_OPTLOCK;
+   \                     FLASH_OB_Lock: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_8  ;; 0x40023c14
+   \   00000002   0x6801             LDR      R1,[R0, #+0]
+   \   00000004   0xF041 0x0101      ORR      R1,R1,#0x1
+   \   00000008   0x6001             STR      R1,[R0, #+0]
+    990          }
+   \   0000000A   0x4770             BX       LR               ;; return
+    991          
+    992          /**
+    993            * @brief  Enables or disables the write protection of the desired sectors, for the first
+    994            *         1 Mb of the Flash  
+    995            *
+    996            * @note   When the memory read protection level is selected (RDP level = 1), 
+    997            *         it is not possible to program or erase the flash sector i if CortexM4  
+    998            *         debug features are connected or boot code is executed in RAM, even if nWRPi = 1 
+    999            * @note   Active value of nWRPi bits is inverted when PCROP mode is active (SPRMOD =1).   
+   1000            * 
+   1001            * @param  OB_WRP: specifies the sector(s) to be write protected or unprotected.
+   1002            *          This parameter can be one of the following values:
+   1003            *            @arg OB_WRP: A value between OB_WRP_Sector0 and OB_WRP_Sector11                      
+   1004            *            @arg OB_WRP_Sector_All
+   1005            * @param  Newstate: new state of the Write Protection.
+   1006            *          This parameter can be: ENABLE or DISABLE.
+   1007            * @retval None  
+   1008            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1009          void FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState)
+   1010          { 
+   \                     FLASH_OB_WRPConfig: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   1011            FLASH_Status status = FLASH_COMPLETE;
+   1012            
+   1013            /* Check the parameters */
+   1014            assert_param(IS_OB_WRP(OB_WRP));
+   1015            assert_param(IS_FUNCTIONAL_STATE(NewState));
+   1016              
+   1017            status = FLASH_WaitForLastOperation();
+   1018          
+   1019            if(status == FLASH_COMPLETE)
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+   \   0000000A   0x2809             CMP      R0,#+9
+   \   0000000C   0xD108             BNE.N    ??FLASH_OB_WRPConfig_0
+   1020            { 
+   1021              if(NewState != DISABLE)
+   \   0000000E   0x....             LDR.N    R0,??DataTable38_9  ;; 0x40023c16
+   \   00000010   0x2D00             CMP      R5,#+0
+   \   00000012   0x8801             LDRH     R1,[R0, #+0]
+   \   00000014   0xD002             BEQ.N    ??FLASH_OB_WRPConfig_1
+   1022              {
+   1023                *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~OB_WRP);
+   \   00000016   0x43A1             BICS     R1,R1,R4
+   \   00000018   0x8001             STRH     R1,[R0, #+0]
+   \   0000001A   0xBD31             POP      {R0,R4,R5,PC}
+   1024              }
+   1025              else
+   1026              {
+   1027                *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)OB_WRP;
+   \                     ??FLASH_OB_WRPConfig_1: (+1)
+   \   0000001C   0x4321             ORRS     R1,R4,R1
+   \   0000001E   0x8001             STRH     R1,[R0, #+0]
+   1028              }
+   1029            }
+   1030          }
+   \                     ??FLASH_OB_WRPConfig_0: (+1)
+   \   00000020   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+   1031          
+   1032          /**
+   1033            * @brief  Enables or disables the write protection of the desired sectors, for the second
+   1034            *         1 Mb of the Flash  
+   1035            *           
+   1036            * @note   This function can be used only for STM32F42xxx/43xxx devices.
+   1037            *   
+   1038            * @note   When the memory read out protection is selected (RDP level = 1), 
+   1039            *         it is not possible to program or erase the flash sector i if CortexM4  
+   1040            *         debug features are connected or boot code is executed in RAM, even if nWRPi = 1 
+   1041            * @note   Active value of nWRPi bits is inverted when PCROP mode is active (SPRMOD =1).      
+   1042            * 
+   1043            * @param  OB_WRP: specifies the sector(s) to be write protected or unprotected.
+   1044            *          This parameter can be one of the following values:
+   1045            *            @arg OB_WRP: A value between OB_WRP_Sector12 and OB_WRP_Sector23
+   1046            *            @arg OB_WRP_Sector_All                        
+   1047            * @param  Newstate: new state of the Write Protection.
+   1048            *          This parameter can be: ENABLE or DISABLE.
+   1049            * @retval None  
+   1050            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1051          void FLASH_OB_WRP1Config(uint32_t OB_WRP, FunctionalState NewState)
+   1052          { 
+   \                     FLASH_OB_WRP1Config: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   1053            FLASH_Status status = FLASH_COMPLETE;
+   1054            
+   1055            /* Check the parameters */
+   1056            assert_param(IS_OB_WRP(OB_WRP));
+   1057            assert_param(IS_FUNCTIONAL_STATE(NewState));
+   1058              
+   1059            status = FLASH_WaitForLastOperation();
+   1060          
+   1061            if(status == FLASH_COMPLETE)
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+   \   0000000A   0x2809             CMP      R0,#+9
+   \   0000000C   0xD108             BNE.N    ??FLASH_OB_WRP1Config_0
+   1062            { 
+   1063              if(NewState != DISABLE)
+   \   0000000E   0x....             LDR.N    R0,??DataTable38_10  ;; 0x40023c1a
+   \   00000010   0x2D00             CMP      R5,#+0
+   \   00000012   0x8801             LDRH     R1,[R0, #+0]
+   \   00000014   0xD002             BEQ.N    ??FLASH_OB_WRP1Config_1
+   1064              {
+   1065                *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~OB_WRP);
+   \   00000016   0x43A1             BICS     R1,R1,R4
+   \   00000018   0x8001             STRH     R1,[R0, #+0]
+   \   0000001A   0xBD31             POP      {R0,R4,R5,PC}
+   1066              }
+   1067              else
+   1068              {
+   1069                *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)OB_WRP;
+   \                     ??FLASH_OB_WRP1Config_1: (+1)
+   \   0000001C   0x4321             ORRS     R1,R4,R1
+   \   0000001E   0x8001             STRH     R1,[R0, #+0]
+   1070              }
+   1071            }
+   1072          }
+   \                     ??FLASH_OB_WRP1Config_0: (+1)
+   \   00000020   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+   1073          
+   1074          /**
+   1075            * @brief  Select the Protection Mode (SPRMOD). 
+   1076            * 
+   1077            * @note   This function can be used only for STM32F42xxx/43xxx and STM32F401xx/411xE devices.       
+   1078            * 
+   1079            * @note   After PCROP activation, Option Byte modification is not possible. 
+   1080            *         Exception made for the global Read Out Protection modification level (level1 to level0) 
+   1081            * @note   Once SPRMOD bit is active unprotection of a protected sector is not possible 
+   1082            *   
+   1083            * @note   Read a protected sector will set RDERR Flag and write a protected sector will set WRPERR Flag
+   1084            *   
+   1085            * @note   Some Precautions should be taken when activating the PCROP feature :
+   1086            *         The active value of nWRPi bits is inverted when PCROP mode is active, this means if SPRMOD = 1
+   1087            *         and WRPi = 1 (default value), then the user sector i is read/write protected.
+   1088            *         In order to avoid activation of PCROP Mode for undesired sectors, please follow the
+   1089            *         below safety sequence :       
+   1090            *         - Disable PCROP for all Sectors using FLASH_OB_PCROPConfig(OB_PCROP_Sector_All, DISABLE) function 
+   1091            *           for Bank1 or FLASH_OB_PCROP1Config(OB_PCROP_Sector_All, DISABLE) function for Bank2   
+   1092            *         - Enable PCROP for the desired Sector i using FLASH_OB_PCROPConfig(Sector i, ENABLE) function
+   1093            *         - Activate the PCROP Mode FLASH_OB_PCROPSelectionConfig() function. 
+   1094            * 
+   1095            * @param  OB_PCROP:  Select the Protection Mode of nWPRi bits 
+   1096            *          This parameter can be one of the following values:
+   1097            *            @arg OB_PcROP_Disable: nWRPi control the write protection of respective user sectors.
+   1098            *            @arg OB_PcROP_Enable: nWRPi control the  read&write protection (PCROP) of respective user sectors.
+   1099            * @retval None
+   1100            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1101          void FLASH_OB_PCROPSelectionConfig(uint8_t OB_PcROP)
+   1102          {  
+   1103            uint8_t optiontmp = 0xFF;
+   1104                
+   1105            /* Check the parameters */
+   1106            assert_param(IS_OB_PCROP_SELECT(OB_PcROP));
+   1107            
+   1108            /* Mask SPRMOD bit */
+   1109            optiontmp =  (uint8_t)((*(__IO uint8_t *)OPTCR_BYTE3_ADDRESS) & (uint8_t)0x7F); 
+   \                     FLASH_OB_PCROPSelectionConfig: (+1)
+   \   00000000   0x....             LDR.N    R1,??DataTable38_11  ;; 0x40023c17
+   \   00000002   0x780A             LDRB     R2,[R1, #+0]
+   \   00000004   0xF002 0x027F      AND      R2,R2,#0x7F
+   1110            /* Update Option Byte */
+   1111            *(__IO uint8_t *)OPTCR_BYTE3_ADDRESS = (uint8_t)(OB_PcROP | optiontmp); 
+   \   00000008   0x4310             ORRS     R0,R2,R0
+   \   0000000A   0x7008             STRB     R0,[R1, #+0]
+   1112              
+   1113          }
+   \   0000000C   0x4770             BX       LR               ;; return
+   1114          
+   1115          /**
+   1116            * @brief  Enables or disables the read/write protection (PCROP) of the desired 
+   1117            *         sectors, for the first 1 MB of the Flash.
+   1118            *           
+   1119            * @note   This function can be used only for STM32F42xxx/43xxx and STM32F401xx/411xE devices. 
+   1120            *   
+   1121            * @param  OB_PCROP: specifies the sector(s) to be read/write protected or unprotected.
+   1122            *          This parameter can be one of the following values:
+   1123            *            @arg OB_PCROP: A value between OB_PCROP_Sector0 and OB_PCROP_Sector11 for 
+   1124            *                           STM32F42xxx/43xxx devices and between OB_PCROP_Sector0 and 
+   1125            *                           OB_PCROP_Sector5 for STM32F401xx/411xE devices.
+   1126            *            @arg OB_PCROP_Sector_All
+   1127            * @param  Newstate: new state of the Write Protection.
+   1128            *          This parameter can be: ENABLE or DISABLE.
+   1129            * @retval None  
+   1130            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1131          void FLASH_OB_PCROPConfig(uint32_t OB_PCROP, FunctionalState NewState)
+   1132          { 
+   \                     FLASH_OB_PCROPConfig: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   1133            FLASH_Status status = FLASH_COMPLETE;
+   1134            
+   1135            /* Check the parameters */
+   1136            assert_param(IS_OB_PCROP(OB_PCROP));
+   1137            assert_param(IS_FUNCTIONAL_STATE(NewState));
+   1138              
+   1139            status = FLASH_WaitForLastOperation();
+   1140          
+   1141            if(status == FLASH_COMPLETE)
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+   \   0000000A   0x2809             CMP      R0,#+9
+   \   0000000C   0xD108             BNE.N    ??FLASH_OB_PCROPConfig_0
+   1142            { 
+   1143              if(NewState != DISABLE)
+   \   0000000E   0x....             LDR.N    R0,??DataTable38_9  ;; 0x40023c16
+   \   00000010   0x2D00             CMP      R5,#+0
+   \   00000012   0x8801             LDRH     R1,[R0, #+0]
+   \   00000014   0xD002             BEQ.N    ??FLASH_OB_PCROPConfig_1
+   1144              {
+   1145                *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)OB_PCROP;    
+   \   00000016   0x4321             ORRS     R1,R4,R1
+   \   00000018   0x8001             STRH     R1,[R0, #+0]
+   \   0000001A   0xBD31             POP      {R0,R4,R5,PC}
+   1146              }
+   1147              else
+   1148              {
+   1149                *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~OB_PCROP);
+   \                     ??FLASH_OB_PCROPConfig_1: (+1)
+   \   0000001C   0x43A1             BICS     R1,R1,R4
+   \   0000001E   0x8001             STRH     R1,[R0, #+0]
+   1150              }
+   1151            }
+   1152          }
+   \                     ??FLASH_OB_PCROPConfig_0: (+1)
+   \   00000020   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+   1153          
+   1154          /**
+   1155             * @brief Enables or disables the read/write protection (PCROP) of the desired 
+   1156            *         sectors
+   1157            *           
+   1158            * @note   This function can be used only for STM32F42xxx/43xxx devices.
+   1159            *   
+   1160            * @param  OB_PCROP: specifies the sector(s) to be read/write protected or unprotected.
+   1161            *          This parameter can be one of the following values:
+   1162            *            @arg OB_PCROP: A value between OB_PCROP_Sector12 and OB_PCROP_Sector23 
+   1163            *            @arg OB_PCROP_Sector_All
+   1164            * @param  Newstate: new state of the Write Protection.
+   1165            *          This parameter can be: ENABLE or DISABLE.
+   1166            * @retval None  
+   1167            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1168          void FLASH_OB_PCROP1Config(uint32_t OB_PCROP, FunctionalState NewState)
+   1169          { 
+   \                     FLASH_OB_PCROP1Config: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   1170            FLASH_Status status = FLASH_COMPLETE;
+   1171            
+   1172            /* Check the parameters */
+   1173            assert_param(IS_OB_PCROP(OB_PCROP));
+   1174            assert_param(IS_FUNCTIONAL_STATE(NewState));
+   1175              
+   1176            status = FLASH_WaitForLastOperation();
+   1177          
+   1178            if(status == FLASH_COMPLETE)
+   \   00000006   0x.... 0x....      BL       FLASH_WaitForLastOperation
+   \   0000000A   0x2809             CMP      R0,#+9
+   \   0000000C   0xD108             BNE.N    ??FLASH_OB_PCROP1Config_0
+   1179            { 
+   1180              if(NewState != DISABLE)
+   \   0000000E   0x....             LDR.N    R0,??DataTable38_10  ;; 0x40023c1a
+   \   00000010   0x2D00             CMP      R5,#+0
+   \   00000012   0x8801             LDRH     R1,[R0, #+0]
+   \   00000014   0xD002             BEQ.N    ??FLASH_OB_PCROP1Config_1
+   1181              {
+   1182                *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)OB_PCROP;
+   \   00000016   0x4321             ORRS     R1,R4,R1
+   \   00000018   0x8001             STRH     R1,[R0, #+0]
+   \   0000001A   0xBD31             POP      {R0,R4,R5,PC}
+   1183              }
+   1184              else
+   1185              {
+   1186                *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~OB_PCROP);
+   \                     ??FLASH_OB_PCROP1Config_1: (+1)
+   \   0000001C   0x43A1             BICS     R1,R1,R4
+   \   0000001E   0x8001             STRH     R1,[R0, #+0]
+   1187              }
+   1188            }
+   1189          }
+   \                     ??FLASH_OB_PCROP1Config_0: (+1)
+   \   00000020   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+   1190          
+   1191          
+   1192          /**
+   1193            * @brief  Sets the read protection level.
+   1194            * @param  OB_RDP: specifies the read protection level.
+   1195            *          This parameter can be one of the following values:
+   1196            *            @arg OB_RDP_Level_0: No protection
+   1197            *            @arg OB_RDP_Level_1: Read protection of the memory
+   1198            *            @arg OB_RDP_Level_2: Full chip protection
+   1199            *   
+   1200            * /!\ Warning /!\ When enabling OB_RDP level 2 it's no more possible to go back to level 1 or 0
+   1201            *    
+   1202            * @retval None
+   1203            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1204          void FLASH_OB_RDPConfig(uint8_t OB_RDP)
+   1205          {
+   \                     FLASH_OB_RDPConfig: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   1206            FLASH_Status status = FLASH_COMPLETE;
+   1207          
+   1208            /* Check the parameters */
+   1209            assert_param(IS_OB_RDP(OB_RDP));
+   1210          
+   1211            status = FLASH_WaitForLastOperation();
+   1212          
+   1213            if(status == FLASH_COMPLETE)
+   \   00000004   0x.... 0x....      BL       FLASH_WaitForLastOperation
+   \   00000008   0x2809             CMP      R0,#+9
+   \   0000000A   0xD101             BNE.N    ??FLASH_OB_RDPConfig_0
+   1214            {
+   1215              *(__IO uint8_t*)OPTCR_BYTE1_ADDRESS = OB_RDP;
+   \   0000000C   0x....             LDR.N    R0,??DataTable38_12  ;; 0x40023c15
+   \   0000000E   0x7004             STRB     R4,[R0, #+0]
+   1216          
+   1217            }
+   1218          }
+   \                     ??FLASH_OB_RDPConfig_0: (+1)
+   \   00000010   0xBD10             POP      {R4,PC}          ;; return
+   1219          
+   1220          /**
+   1221            * @brief  Programs the FLASH User Option Byte: IWDG_SW / RST_STOP / RST_STDBY.    
+   1222            * @param  OB_IWDG: Selects the IWDG mode
+   1223            *          This parameter can be one of the following values:
+   1224            *            @arg OB_IWDG_SW: Software IWDG selected
+   1225            *            @arg OB_IWDG_HW: Hardware IWDG selected
+   1226            * @param  OB_STOP: Reset event when entering STOP mode.
+   1227            *          This parameter  can be one of the following values:
+   1228            *            @arg OB_STOP_NoRST: No reset generated when entering in STOP
+   1229            *            @arg OB_STOP_RST: Reset generated when entering in STOP
+   1230            * @param  OB_STDBY: Reset event when entering Standby mode.
+   1231            *          This parameter  can be one of the following values:
+   1232            *            @arg OB_STDBY_NoRST: No reset generated when entering in STANDBY
+   1233            *            @arg OB_STDBY_RST: Reset generated when entering in STANDBY
+   1234            * @retval None
+   1235            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1236          void FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY)
+   1237          {
+   \                     FLASH_OB_UserConfig: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+   \   00000004   0x460D             MOV      R5,R1
+   \   00000006   0x4616             MOV      R6,R2
+   1238            uint8_t optiontmp = 0xFF;
+   1239            FLASH_Status status = FLASH_COMPLETE; 
+   1240          
+   1241            /* Check the parameters */
+   1242            assert_param(IS_OB_IWDG_SOURCE(OB_IWDG));
+   1243            assert_param(IS_OB_STOP_SOURCE(OB_STOP));
+   1244            assert_param(IS_OB_STDBY_SOURCE(OB_STDBY));
+   1245          
+   1246            /* Wait for last operation to be completed */
+   1247            status = FLASH_WaitForLastOperation();
+   1248            
+   1249            if(status == FLASH_COMPLETE)
+   \   00000008   0x.... 0x....      BL       FLASH_WaitForLastOperation
+   \   0000000C   0x2809             CMP      R0,#+9
+   \   0000000E   0xD108             BNE.N    ??FLASH_OB_UserConfig_0
+   1250            { 
+   1251          #if defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F469_479xx)
+   1252              /* Mask OPTLOCK, OPTSTRT, BOR_LEV and BFB2 bits */
+   1253              optiontmp =  (uint8_t)((*(__IO uint8_t *)OPTCR_BYTE0_ADDRESS) & (uint8_t)0x1F);
+   1254          #endif /* STM32F427_437xx ||  STM32F429_439xx ||  STM32F469_479xx */
+   1255          
+   1256          #if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F410xx) || defined(STM32F411xE) || defined(STM32F446xx)
+   1257              /* Mask OPTLOCK, OPTSTRT and BOR_LEV bits */
+   1258              optiontmp =  (uint8_t)((*(__IO uint8_t *)OPTCR_BYTE0_ADDRESS) & (uint8_t)0x0F); 
+   \   00000010   0x....             LDR.N    R0,??DataTable38_8  ;; 0x40023c14
+   \   00000012   0x7801             LDRB     R1,[R0, #+0]
+   \   00000014   0xF001 0x010F      AND      R1,R1,#0xF
+   1259          #endif /* STM32F40_41xxx || STM32F401xx || STM32F410xx || STM32F411xE || STM32F446xx */ 
+   1260          
+   1261              /* Update User Option Byte */
+   1262              *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS = OB_IWDG | (uint8_t)(OB_STDBY | (uint8_t)(OB_STOP | ((uint8_t)optiontmp))); 
+   \   00000018   0xEA46 0x0204      ORR      R2,R6,R4
+   \   0000001C   0x432A             ORRS     R2,R5,R2
+   \   0000001E   0x4311             ORRS     R1,R1,R2
+   \   00000020   0x7001             STRB     R1,[R0, #+0]
+   1263            }  
+   1264          }
+   \                     ??FLASH_OB_UserConfig_0: (+1)
+   \   00000022   0xBD70             POP      {R4-R6,PC}       ;; return
+   1265          
+   1266          /**
+   1267            * @brief  Configure the Dual Bank Boot.
+   1268            *   
+   1269            * @note   This function can be used only for STM32F42xxx/43xxx devices.
+   1270            *      
+   1271            * @param  OB_BOOT: specifies the Dual Bank Boot Option byte.
+   1272            *          This parameter can be one of the following values:
+   1273            *            @arg OB_Dual_BootEnabled: Dual Bank Boot Enable
+   1274            *            @arg OB_Dual_BootDisabled: Dual Bank Boot Disabled
+   1275            * @retval None
+   1276            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1277          void FLASH_OB_BootConfig(uint8_t OB_BOOT)
+   1278          {
+   1279            /* Check the parameters */
+   1280            assert_param(IS_OB_BOOT(OB_BOOT));
+   1281          
+   1282            /* Set Dual Bank Boot */
+   1283            *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BFB2);
+   \                     FLASH_OB_BootConfig: (+1)
+   \   00000000   0x....             LDR.N    R1,??DataTable38_8  ;; 0x40023c14
+   \   00000002   0x780A             LDRB     R2,[R1, #+0]
+   \   00000004   0xF002 0x02EF      AND      R2,R2,#0xEF
+   \   00000008   0x700A             STRB     R2,[R1, #+0]
+   1284            *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= OB_BOOT;
+   \   0000000A   0x780A             LDRB     R2,[R1, #+0]
+   \   0000000C   0x4310             ORRS     R0,R0,R2
+   \   0000000E   0x7008             STRB     R0,[R1, #+0]
+   1285          
+   1286          }
+   \   00000010   0x4770             BX       LR               ;; return
+   1287          
+   1288          /**
+   1289            * @brief  Sets the BOR Level. 
+   1290            * @param  OB_BOR: specifies the Option Bytes BOR Reset Level.
+   1291            *          This parameter can be one of the following values:
+   1292            *            @arg OB_BOR_LEVEL3: Supply voltage ranges from 2.7 to 3.6 V
+   1293            *            @arg OB_BOR_LEVEL2: Supply voltage ranges from 2.4 to 2.7 V
+   1294            *            @arg OB_BOR_LEVEL1: Supply voltage ranges from 2.1 to 2.4 V
+   1295            *            @arg OB_BOR_OFF: Supply voltage ranges from 1.62 to 2.1 V
+   1296            * @retval None
+   1297            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1298          void FLASH_OB_BORConfig(uint8_t OB_BOR)
+   1299          {
+   1300            /* Check the parameters */
+   1301            assert_param(IS_OB_BOR(OB_BOR));
+   1302          
+   1303            /* Set the BOR Level */
+   1304            *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BOR_LEV);
+   \                     FLASH_OB_BORConfig: (+1)
+   \   00000000   0x....             LDR.N    R1,??DataTable38_8  ;; 0x40023c14
+   \   00000002   0x780A             LDRB     R2,[R1, #+0]
+   \   00000004   0xF002 0x02F3      AND      R2,R2,#0xF3
+   \   00000008   0x700A             STRB     R2,[R1, #+0]
+   1305            *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= OB_BOR;
+   \   0000000A   0x780A             LDRB     R2,[R1, #+0]
+   \   0000000C   0x4310             ORRS     R0,R0,R2
+   \   0000000E   0x7008             STRB     R0,[R1, #+0]
+   1306          
+   1307          }
+   \   00000010   0x4770             BX       LR               ;; return
+   1308          
+   1309          /**
+   1310            * @brief  Launch the option byte loading.
+   1311            * @param  None
+   1312            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+   1313            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+   1314            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1315          FLASH_Status FLASH_OB_Launch(void)
+   1316          {
+   1317            FLASH_Status status = FLASH_COMPLETE;
+   1318          
+   1319            /* Set the OPTSTRT bit in OPTCR register */
+   1320            *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= FLASH_OPTCR_OPTSTRT;
+   \                     FLASH_OB_Launch: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_8  ;; 0x40023c14
+   \   00000002   0x7801             LDRB     R1,[R0, #+0]
+   \   00000004   0xF041 0x0102      ORR      R1,R1,#0x2
+   \   00000008   0x7001             STRB     R1,[R0, #+0]
+   1321          
+   1322            /* Wait for last operation to be completed */
+   1323            status = FLASH_WaitForLastOperation();
+   1324          
+   1325            return status;
+   \   0000000A   0x....             B.N      FLASH_WaitForLastOperation
+   1326          }
+   1327          
+   1328          /**
+   1329            * @brief  Returns the FLASH User Option Bytes values.
+   1330            * @param  None
+   1331            * @retval The FLASH User Option Bytes values: IWDG_SW(Bit0), RST_STOP(Bit1)
+   1332            *         and RST_STDBY(Bit2).
+   1333            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1334          uint8_t FLASH_OB_GetUser(void)
+   1335          {
+   1336            /* Return the User Option Byte */
+   1337            return (uint8_t)(FLASH->OPTCR >> 5);
+   \                     FLASH_OB_GetUser: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_8  ;; 0x40023c14
+   \   00000002   0x6800             LDR      R0,[R0, #+0]
+   \   00000004   0x0940             LSRS     R0,R0,#+5
+   \   00000006   0xB2C0             UXTB     R0,R0
+   \   00000008   0x4770             BX       LR               ;; return
+   1338          }
+   1339          
+   1340          /**
+   1341            * @brief  Returns the FLASH Write Protection Option Bytes value.
+   1342            * @param  None
+   1343            * @retval The FLASH Write Protection  Option Bytes value
+   1344            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1345          uint16_t FLASH_OB_GetWRP(void)
+   1346          {
+   1347            /* Return the FLASH write protection Register value */
+   1348            return (*(__IO uint16_t *)(OPTCR_BYTE2_ADDRESS));
+   \                     FLASH_OB_GetWRP: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_9  ;; 0x40023c16
+   \   00000002   0x8800             LDRH     R0,[R0, #+0]
+   \   00000004   0x4770             BX       LR               ;; return
+   1349          }
+   1350          
+   1351          /**
+   1352            * @brief  Returns the FLASH Write Protection Option Bytes value.
+   1353            *   
+   1354            * @note   This function can be used only for STM32F42xxx/43xxx devices.
+   1355            *   
+   1356            * @param  None
+   1357            * @retval The FLASH Write Protection  Option Bytes value
+   1358            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1359          uint16_t FLASH_OB_GetWRP1(void)
+   1360          {
+   1361            /* Return the FLASH write protection Register value */
+   1362            return (*(__IO uint16_t *)(OPTCR1_BYTE2_ADDRESS));
+   \                     FLASH_OB_GetWRP1: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_10  ;; 0x40023c1a
+   \   00000002   0x8800             LDRH     R0,[R0, #+0]
+   \   00000004   0x4770             BX       LR               ;; return
+   1363          }
+   1364          
+   1365          /**
+   1366            * @brief  Returns the FLASH PC Read/Write Protection Option Bytes value.
+   1367            *   
+   1368            * @note   This function can be used only for STM32F42xxx/43xxx devices and STM32F401xx/411xE devices.
+   1369            *   
+   1370            * @param  None
+   1371            * @retval The FLASH PC Read/Write Protection Option Bytes value
+   1372            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1373          uint16_t FLASH_OB_GetPCROP(void)
+   1374          {
+   1375            /* Return the FLASH PC Read/write protection Register value */
+   1376            return (*(__IO uint16_t *)(OPTCR_BYTE2_ADDRESS));
+   \                     FLASH_OB_GetPCROP: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_9  ;; 0x40023c16
+   \   00000002   0x8800             LDRH     R0,[R0, #+0]
+   \   00000004   0x4770             BX       LR               ;; return
+   1377          }
+   1378          
+   1379          /**
+   1380            * @brief  Returns the FLASH PC Read/Write Protection Option Bytes value.
+   1381            *   
+   1382            * @note   This function can be used only for STM32F42xxx/43xxx devices. 
+   1383            *     
+   1384            * @param  None
+   1385            * @retval The FLASH PC Read/Write Protection Option Bytes value
+   1386            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1387          uint16_t FLASH_OB_GetPCROP1(void)
+   1388          {
+   1389            /* Return the FLASH write protection Register value */
+   1390            return (*(__IO uint16_t *)(OPTCR1_BYTE2_ADDRESS));
+   \                     FLASH_OB_GetPCROP1: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_10  ;; 0x40023c1a
+   \   00000002   0x8800             LDRH     R0,[R0, #+0]
+   \   00000004   0x4770             BX       LR               ;; return
+   1391          }
+   1392          
+   1393          /**
+   1394            * @brief  Returns the FLASH Read Protection level.
+   1395            * @param  None
+   1396            * @retval FLASH ReadOut Protection Status:
+   1397            *           - SET, when OB_RDP_Level_1 or OB_RDP_Level_2 is set
+   1398            *           - RESET, when OB_RDP_Level_0 is set
+   1399            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1400          FlagStatus FLASH_OB_GetRDP(void)
+   1401          {
+   1402            FlagStatus readstatus = RESET;
+   \                     FLASH_OB_GetRDP: (+1)
+   \   00000000   0x2000             MOVS     R0,#+0
+   1403          
+   1404            if ((*(__IO uint8_t*)(OPTCR_BYTE1_ADDRESS) != (uint8_t)OB_RDP_Level_0))
+   \   00000002   0x....             LDR.N    R1,??DataTable38_12  ;; 0x40023c15
+   \   00000004   0x7809             LDRB     R1,[R1, #+0]
+   \   00000006   0x29AA             CMP      R1,#+170
+   \   00000008   0xD000             BEQ.N    ??FLASH_OB_GetRDP_0
+   1405            {
+   1406              readstatus = SET;
+   \   0000000A   0x2001             MOVS     R0,#+1
+   1407            }
+   1408            else
+   1409            {
+   1410              readstatus = RESET;
+   1411            }
+   1412            return readstatus;
+   \                     ??FLASH_OB_GetRDP_0: (+1)
+   \   0000000C   0x4770             BX       LR               ;; return
+   1413          }
+   1414          
+   1415          /**
+   1416            * @brief  Returns the FLASH BOR level.
+   1417            * @param  None
+   1418            * @retval The FLASH BOR level:
+   1419            *           - OB_BOR_LEVEL3: Supply voltage ranges from 2.7 to 3.6 V
+   1420            *           - OB_BOR_LEVEL2: Supply voltage ranges from 2.4 to 2.7 V
+   1421            *           - OB_BOR_LEVEL1: Supply voltage ranges from 2.1 to 2.4 V
+   1422            *           - OB_BOR_OFF   : Supply voltage ranges from 1.62 to 2.1 V  
+   1423            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1424          uint8_t FLASH_OB_GetBOR(void)
+   1425          {
+   1426            /* Return the FLASH BOR level */
+   1427            return (uint8_t)(*(__IO uint8_t *)(OPTCR_BYTE0_ADDRESS) & (uint8_t)0x0C);
+   \                     FLASH_OB_GetBOR: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable38_8  ;; 0x40023c14
+   \   00000002   0x7800             LDRB     R0,[R0, #+0]
+   \   00000004   0xF000 0x000C      AND      R0,R0,#0xC
+   \   00000008   0x4770             BX       LR               ;; return
+   1428          }
+   1429          
+   1430          /**
+   1431            * @}
+   1432            */
+   1433          
+   1434          /** @defgroup FLASH_Group4 Interrupts and flags management functions
+   1435           *  @brief   Interrupts and flags management functions
+   1436           *
+   1437          @verbatim   
+   1438           ===============================================================================
+   1439                        ##### Interrupts and flags management functions #####
+   1440           ===============================================================================  
+   1441          @endverbatim
+   1442            * @{
+   1443            */
+   1444          
+   1445          /**
+   1446            * @brief  Enables or disables the specified FLASH interrupts.
+   1447            * @param  FLASH_IT: specifies the FLASH interrupt sources to be enabled or disabled.
+   1448            *          This parameter can be any combination of the following values:
+   1449            *            @arg FLASH_IT_ERR: FLASH Error Interrupt
+   1450            *            @arg FLASH_IT_EOP: FLASH end of operation Interrupt
+   1451            * @retval None 
+   1452            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1453          void FLASH_ITConfig(uint32_t FLASH_IT, FunctionalState NewState)
+   1454          {
+   1455            /* Check the parameters */
+   1456            assert_param(IS_FLASH_IT(FLASH_IT)); 
+   1457            assert_param(IS_FUNCTIONAL_STATE(NewState));
+   1458          
+   1459            if(NewState != DISABLE)
+   \                     FLASH_ITConfig: (+1)
+   \   00000000   0x....             LDR.N    R2,??DataTable38_4  ;; 0x40023c10
+   \   00000002   0x2900             CMP      R1,#+0
+   \   00000004   0x6811             LDR      R1,[R2, #+0]
+   \   00000006   0xD002             BEQ.N    ??FLASH_ITConfig_0
+   1460            {
+   1461              /* Enable the interrupt sources */
+   1462              FLASH->CR |= FLASH_IT;
+   \   00000008   0x4308             ORRS     R0,R0,R1
+   \   0000000A   0x6010             STR      R0,[R2, #+0]
+   \   0000000C   0x4770             BX       LR
+   1463            }
+   1464            else
+   1465            {
+   1466              /* Disable the interrupt sources */
+   1467              FLASH->CR &= ~(uint32_t)FLASH_IT;
+   \                     ??FLASH_ITConfig_0: (+1)
+   \   0000000E   0xEA21 0x0000      BIC      R0,R1,R0
+   \   00000012   0x6010             STR      R0,[R2, #+0]
+   1468            }
+   1469          }
+   \   00000014   0x4770             BX       LR               ;; return
+   1470          
+   1471          /**
+   1472            * @brief  Checks whether the specified FLASH flag is set or not.
+   1473            * @param  FLASH_FLAG: specifies the FLASH flag to check.
+   1474            *          This parameter can be one of the following values:
+   1475            *            @arg FLASH_FLAG_EOP: FLASH End of Operation flag 
+   1476            *            @arg FLASH_FLAG_OPERR: FLASH operation Error flag 
+   1477            *            @arg FLASH_FLAG_WRPERR: FLASH Write protected error flag 
+   1478            *            @arg FLASH_FLAG_PGAERR: FLASH Programming Alignment error flag
+   1479            *            @arg FLASH_FLAG_PGPERR: FLASH Programming Parallelism error flag
+   1480            *            @arg FLASH_FLAG_PGSERR: FLASH Programming Sequence error flag
+   1481            *            @arg FLASH_FLAG_RDERR: FLASH (PCROP) Read Protection error flag (STM32F42xx/43xxx and STM32F401xx/411xE devices) 
+   1482            *            @arg FLASH_FLAG_BSY: FLASH Busy flag
+   1483            * @retval The new state of FLASH_FLAG (SET or RESET).
+   1484            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1485          FlagStatus FLASH_GetFlagStatus(uint32_t FLASH_FLAG)
+   1486          {
+   1487            FlagStatus bitstatus = RESET;
+   \                     FLASH_GetFlagStatus: (+1)
+   \   00000000   0x2100             MOVS     R1,#+0
+   1488            /* Check the parameters */
+   1489            assert_param(IS_FLASH_GET_FLAG(FLASH_FLAG));
+   1490          
+   1491            if((FLASH->SR & FLASH_FLAG) != (uint32_t)RESET)
+   \   00000002   0x....             LDR.N    R2,??DataTable38_13  ;; 0x40023c0c
+   \   00000004   0x6812             LDR      R2,[R2, #+0]
+   \   00000006   0x4202             TST      R2,R0
+   \   00000008   0xD000             BEQ.N    ??FLASH_GetFlagStatus_0
+   1492            {
+   1493              bitstatus = SET;
+   \   0000000A   0x2101             MOVS     R1,#+1
+   1494            }
+   1495            else
+   1496            {
+   1497              bitstatus = RESET;
+   1498            }
+   1499            /* Return the new state of FLASH_FLAG (SET or RESET) */
+   1500            return bitstatus; 
+   \                     ??FLASH_GetFlagStatus_0: (+1)
+   \   0000000C   0x4608             MOV      R0,R1
+   \   0000000E   0x4770             BX       LR               ;; return
+   1501          }
+   1502          
+   1503          /**
+   1504            * @brief  Clears the FLASH's pending flags.
+   1505            * @param  FLASH_FLAG: specifies the FLASH flags to clear.
+   1506            *          This parameter can be any combination of the following values:
+   1507            *            @arg FLASH_FLAG_EOP: FLASH End of Operation flag 
+   1508            *            @arg FLASH_FLAG_OPERR: FLASH operation Error flag 
+   1509            *            @arg FLASH_FLAG_WRPERR: FLASH Write protected error flag 
+   1510            *            @arg FLASH_FLAG_PGAERR: FLASH Programming Alignment error flag 
+   1511            *            @arg FLASH_FLAG_PGPERR: FLASH Programming Parallelism error flag
+   1512            *            @arg FLASH_FLAG_PGSERR: FLASH Programming Sequence error flag
+   1513            *            @arg FLASH_FLAG_RDERR: FLASH Read Protection error flag (STM32F42xx/43xxx and STM32F401xx/411xE devices)   
+   1514            * @retval None
+   1515            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1516          void FLASH_ClearFlag(uint32_t FLASH_FLAG)
+   1517          {
+   1518            /* Check the parameters */
+   1519            assert_param(IS_FLASH_CLEAR_FLAG(FLASH_FLAG));
+   1520            
+   1521            /* Clear the flags */
+   1522            FLASH->SR = FLASH_FLAG;
+   \                     FLASH_ClearFlag: (+1)
+   \   00000000   0x....             LDR.N    R1,??DataTable38_13  ;; 0x40023c0c
+   \   00000002   0x6008             STR      R0,[R1, #+0]
+   1523          }
+   \   00000004   0x4770             BX       LR               ;; return
+   1524          
+   1525          /**
+   1526            * @brief  Returns the FLASH Status.
+   1527            * @param  None
+   1528            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+   1529            *                       FLASH_ERROR_WRP, FLASH_ERROR_RD, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+   1530            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1531          FLASH_Status FLASH_GetStatus(void)
+   1532          {
+   1533            FLASH_Status flashstatus = FLASH_COMPLETE;
+   \                     FLASH_GetStatus: (+1)
+   \   00000000   0x2009             MOVS     R0,#+9
+   1534            
+   1535            if((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY) 
+   \   00000002   0x....             LDR.N    R1,??DataTable38_13  ;; 0x40023c0c
+   \   00000004   0x680A             LDR      R2,[R1, #+0]
+   \   00000006   0x03D2             LSLS     R2,R2,#+15
+   \   00000008   0xD501             BPL.N    ??FLASH_GetStatus_0
+   1536            {
+   1537              flashstatus = FLASH_BUSY;
+   \   0000000A   0x2001             MOVS     R0,#+1
+   \   0000000C   0x4770             BX       LR
+   1538            }
+   1539            else 
+   1540            {  
+   1541              if((FLASH->SR & FLASH_FLAG_WRPERR) != (uint32_t)0x00)
+   \                     ??FLASH_GetStatus_0: (+1)
+   \   0000000E   0x680A             LDR      R2,[R1, #+0]
+   \   00000010   0x06D2             LSLS     R2,R2,#+27
+   \   00000012   0xD501             BPL.N    ??FLASH_GetStatus_1
+   1542              { 
+   1543                flashstatus = FLASH_ERROR_WRP;
+   \   00000014   0x2006             MOVS     R0,#+6
+   \   00000016   0x4770             BX       LR
+   1544              }
+   1545              else
+   1546              {
+   1547                if((FLASH->SR & FLASH_FLAG_RDERR) != (uint32_t)0x00)
+   \                     ??FLASH_GetStatus_1: (+1)
+   \   00000018   0x680A             LDR      R2,[R1, #+0]
+   \   0000001A   0x05D2             LSLS     R2,R2,#+23
+   \   0000001C   0xD501             BPL.N    ??FLASH_GetStatus_2
+   1548                { 
+   1549                  flashstatus = FLASH_ERROR_RD;
+   \   0000001E   0x2002             MOVS     R0,#+2
+   \   00000020   0x4770             BX       LR
+   1550                } 
+   1551                else 
+   1552                {
+   1553                  if((FLASH->SR & (uint32_t)0xE0) != (uint32_t)0x00)
+   \                     ??FLASH_GetStatus_2: (+1)
+   \   00000022   0x680A             LDR      R2,[R1, #+0]
+   \   00000024   0xF012 0x0FE0      TST      R2,#0xE0
+   \   00000028   0xD001             BEQ.N    ??FLASH_GetStatus_3
+   1554                  {
+   1555                    flashstatus = FLASH_ERROR_PROGRAM; 
+   \   0000002A   0x2007             MOVS     R0,#+7
+   \   0000002C   0x4770             BX       LR
+   1556                  }
+   1557                  else
+   1558                  {
+   1559                    if((FLASH->SR & FLASH_FLAG_OPERR) != (uint32_t)0x00)
+   \                     ??FLASH_GetStatus_3: (+1)
+   \   0000002E   0x6809             LDR      R1,[R1, #+0]
+   \   00000030   0x0789             LSLS     R1,R1,#+30
+   \   00000032   0xD500             BPL.N    ??FLASH_GetStatus_4
+   1560                    {
+   1561                      flashstatus = FLASH_ERROR_OPERATION;
+   \   00000034   0x2008             MOVS     R0,#+8
+   1562                    }
+   1563                    else
+   1564                    {
+   1565                      flashstatus = FLASH_COMPLETE;
+   1566                    }
+   1567                  }
+   1568                }
+   1569              }
+   1570            }
+   1571            /* Return the FLASH Status */
+   1572            return flashstatus;
+   \                     ??FLASH_GetStatus_4: (+1)
+   \   00000036   0x4770             BX       LR               ;; return
+   1573          }
+   1574          
+   1575          /**
+   1576            * @brief  Waits for a FLASH operation to complete.
+   1577            * @param  None
+   1578            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+   1579            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+   1580            */
+
+   \                                 In section .text, align 2, keep-with-next
+   1581          FLASH_Status FLASH_WaitForLastOperation(void)
+   1582          { 
+   \                     FLASH_WaitForLastOperation: (+1)
+   \   00000000   0xB580             PUSH     {R7,LR}
+   1583            __IO FLASH_Status status = FLASH_COMPLETE;
+   \   00000002   0x2009             MOVS     R0,#+9
+   \   00000004   0xF88D 0x0000      STRB     R0,[SP, #+0]
+   1584             
+   1585            /* Check for the FLASH Status */
+   1586            status = FLASH_GetStatus();
+   \   00000008   0x.... 0x....      BL       FLASH_GetStatus
+   \   0000000C   0xF88D 0x0000      STRB     R0,[SP, #+0]
+   \   00000010   0xE003             B.N      ??FLASH_WaitForLastOperation_0
+   1587          
+   1588            /* Wait for the FLASH operation to complete by polling on BUSY flag to be reset.
+   1589               Even if the FLASH operation fails, the BUSY flag will be reset and an error
+   1590               flag will be set */
+   1591            while(status == FLASH_BUSY)
+   1592            {
+   1593              status = FLASH_GetStatus();
+   \                     ??FLASH_WaitForLastOperation_1: (+1)
+   \   00000012   0x.... 0x....      BL       FLASH_GetStatus
+   \   00000016   0xF88D 0x0000      STRB     R0,[SP, #+0]
+   1594            }
+   \                     ??FLASH_WaitForLastOperation_0: (+1)
+   \   0000001A   0xF99D 0x0000      LDRSB    R0,[SP, #+0]
+   \   0000001E   0x2801             CMP      R0,#+1
+   \   00000020   0xD0F7             BEQ.N    ??FLASH_WaitForLastOperation_1
+   1595            /* Return the operation status */
+   1596            return status;
+   \   00000022   0xF99D 0x0000      LDRSB    R0,[SP, #+0]
+   \   00000026   0xBD02             POP      {R1,PC}          ;; return
+   1597          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38:
+   \   00000000   0x40023C00         DC32     0x40023c00
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_1:
+   \   00000000   0x40023C04         DC32     0x40023c04
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_2:
+   \   00000000   0x45670123         DC32     0x45670123
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_3:
+   \   00000000   0xCDEF89AB         DC32     0xcdef89ab
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_4:
+   \   00000000   0x40023C10         DC32     0x40023c10
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_5:
+   \   00000000   0x40023C08         DC32     0x40023c08
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_6:
+   \   00000000   0x08192A3B         DC32     0x8192a3b
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_7:
+   \   00000000   0x4C5D6E7F         DC32     0x4c5d6e7f
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_8:
+   \   00000000   0x40023C14         DC32     0x40023c14
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_9:
+   \   00000000   0x40023C16         DC32     0x40023c16
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_10:
+   \   00000000   0x40023C1A         DC32     0x40023c1a
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_11:
+   \   00000000   0x40023C17         DC32     0x40023c17
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_12:
+   \   00000000   0x40023C15         DC32     0x40023c15
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable38_13:
+   \   00000000   0x40023C0C         DC32     0x40023c0c
+   1598          
+   1599          /**
+   1600            * @}
+   1601            */ 
+   1602          
+   1603          /**
+   1604            * @}
+   1605            */ 
+   1606          
+   1607          /**
+   1608            * @}
+   1609            */ 
+   1610          
+   1611          /**
+   1612            * @}
+   1613            */
+   1614          
+   1615          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   FLASH_ClearFlag
+       0   FLASH_DataCacheCmd
+       0   FLASH_DataCacheReset
+      16   FLASH_EraseAllBank1Sectors
+        16   -> FLASH_WaitForLastOperation
+      16   FLASH_EraseAllBank2Sectors
+        16   -> FLASH_WaitForLastOperation
+      16   FLASH_EraseAllSectors
+        16   -> FLASH_WaitForLastOperation
+      16   FLASH_EraseSector
+        16   -> FLASH_WaitForLastOperation
+       0   FLASH_GetFlagStatus
+       0   FLASH_GetStatus
+       0   FLASH_ITConfig
+       0   FLASH_InstructionCacheCmd
+       0   FLASH_InstructionCacheReset
+       0   FLASH_Lock
+       0   FLASH_OB_BORConfig
+       0   FLASH_OB_BootConfig
+       0   FLASH_OB_GetBOR
+       0   FLASH_OB_GetPCROP
+       0   FLASH_OB_GetPCROP1
+       0   FLASH_OB_GetRDP
+       0   FLASH_OB_GetUser
+       0   FLASH_OB_GetWRP
+       0   FLASH_OB_GetWRP1
+       0   FLASH_OB_Launch
+         0   -> FLASH_WaitForLastOperation
+       0   FLASH_OB_Lock
+      16   FLASH_OB_PCROP1Config
+        16   -> FLASH_WaitForLastOperation
+      16   FLASH_OB_PCROPConfig
+        16   -> FLASH_WaitForLastOperation
+       0   FLASH_OB_PCROPSelectionConfig
+       8   FLASH_OB_RDPConfig
+         8   -> FLASH_WaitForLastOperation
+       0   FLASH_OB_Unlock
+      16   FLASH_OB_UserConfig
+        16   -> FLASH_WaitForLastOperation
+      16   FLASH_OB_WRP1Config
+        16   -> FLASH_WaitForLastOperation
+      16   FLASH_OB_WRPConfig
+        16   -> FLASH_WaitForLastOperation
+       0   FLASH_PrefetchBufferCmd
+      16   FLASH_ProgramByte
+        16   -> FLASH_WaitForLastOperation
+      24   FLASH_ProgramDoubleWord
+        24   -> FLASH_WaitForLastOperation
+      16   FLASH_ProgramHalfWord
+        16   -> FLASH_WaitForLastOperation
+      16   FLASH_ProgramWord
+        16   -> FLASH_WaitForLastOperation
+       0   FLASH_SetLatency
+       0   FLASH_Unlock
+       8   FLASH_WaitForLastOperation
+         8   -> FLASH_GetStatus
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable38
+       4  ??DataTable38_1
+       4  ??DataTable38_10
+       4  ??DataTable38_11
+       4  ??DataTable38_12
+       4  ??DataTable38_13
+       4  ??DataTable38_2
+       4  ??DataTable38_3
+       4  ??DataTable38_4
+       4  ??DataTable38_5
+       4  ??DataTable38_6
+       4  ??DataTable38_7
+       4  ??DataTable38_8
+       4  ??DataTable38_9
+       6  FLASH_ClearFlag
+      26  FLASH_DataCacheCmd
+      14  FLASH_DataCacheReset
+      88  FLASH_EraseAllBank1Sectors
+      88  FLASH_EraseAllBank2Sectors
+      90  FLASH_EraseAllSectors
+     108  FLASH_EraseSector
+      16  FLASH_GetFlagStatus
+      56  FLASH_GetStatus
+      22  FLASH_ITConfig
+      26  FLASH_InstructionCacheCmd
+      14  FLASH_InstructionCacheReset
+      14  FLASH_Lock
+      18  FLASH_OB_BORConfig
+      18  FLASH_OB_BootConfig
+      10  FLASH_OB_GetBOR
+       6  FLASH_OB_GetPCROP
+       6  FLASH_OB_GetPCROP1
+      14  FLASH_OB_GetRDP
+      10  FLASH_OB_GetUser
+       6  FLASH_OB_GetWRP
+       6  FLASH_OB_GetWRP1
+      12  FLASH_OB_Launch
+      12  FLASH_OB_Lock
+      34  FLASH_OB_PCROP1Config
+      34  FLASH_OB_PCROPConfig
+      14  FLASH_OB_PCROPSelectionConfig
+      18  FLASH_OB_RDPConfig
+      18  FLASH_OB_Unlock
+      36  FLASH_OB_UserConfig
+      34  FLASH_OB_WRP1Config
+      34  FLASH_OB_WRPConfig
+      26  FLASH_PrefetchBufferCmd
+      52  FLASH_ProgramByte
+      60  FLASH_ProgramDoubleWord
+      56  FLASH_ProgramHalfWord
+      56  FLASH_ProgramWord
+       8  FLASH_SetLatency
+      24  FLASH_Unlock
+      40  FLASH_WaitForLastOperation
+
+ 
+ 1 286 bytes in section .text
+ 
+ 1 286 bytes of CODE memory
+
+Errors: none
+Warnings: none
